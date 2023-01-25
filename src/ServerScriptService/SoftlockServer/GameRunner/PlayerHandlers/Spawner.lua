@@ -55,7 +55,7 @@ function Spawner.New(Player)
 	assert(IsPlayer(Player), "The player object must be a player instance.")
 	
 	local Obj = Object.New("PlayerSpawner")
-	local IsAwaitingSpawn = false -- Set to true when the player dies
+	--local IsAwaitingSpawn = false -- Set to true when the player dies
 	
 	local Connections = {}
 	
@@ -181,7 +181,7 @@ function Spawner.New(Player)
 	
 	local function HandleDeath()
 		if Obj.AutoRespawns == true then
-			IsAwaitingSpawn = true
+			--IsAwaitingSpawn = true
 			WaitForRespawnTime()
 			
 			if CanSpawnPlayer() then
@@ -229,7 +229,7 @@ function Spawner.New(Player)
 	
 	-- If the player's character is spawned.
 	Obj.SetProperty("IsSpawned", false, function(val)
-		IsAwaitingSpawn = false
+		--IsAwaitingSpawn = false
 		
 		if val == true then
 			SpawnAtSelected()
@@ -242,7 +242,7 @@ function Spawner.New(Player)
 	
 	-- If the player's character can collide with other players.
 	Obj.SetProperty("CanCharCollide", Spawner.PlayersCollideByDefault, function(val)
-		SetCharCollidable(Obj.Character, val)
+		SetCharCollidable(val)
 	end)
 	
 	-- Sets if the character can auto-respawn.
