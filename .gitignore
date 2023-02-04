@@ -1,2 +1,5 @@
+# studio .lock files
+/*.rbxlx.lock
+
 # sourcemap
 sourcemap.json
