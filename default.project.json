@@ -1,5 +1,5 @@
 {
-  "name": "softlocked-classic",
+  "name": "softlocked",
   "tree": {
     "$className": "DataModel",
     "ReplicatedStorage": {
