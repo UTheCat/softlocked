@@ -9,3 +9,4 @@ This game takes lots of inspiration from these cool platformers that you should 
 
 ## Setup
 There will likely be better ways to set this up in the future; but for now, duplicate ```template.rbxlx``` and modify it as you wish.
+
