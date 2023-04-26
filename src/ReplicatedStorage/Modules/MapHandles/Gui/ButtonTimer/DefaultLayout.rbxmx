@@ -1,0 +1,31 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<Meta name="ExplicitAutoJoints">true</Meta>
+	<External>null</External>
+	<External>nil</External>
+	<Item class="UIGridLayout" referent="RBX8B5437B643A240639407F148BE37F0C5">
+		<Properties>
+			<BinaryString name="AttributesSerialize"></BinaryString>
+			<UDim2 name="CellPadding">
+				<XS>0</XS>
+				<XO>5</XO>
+				<YS>0</YS>
+				<YO>5</YO>
+			</UDim2>
+			<UDim2 name="CellSize">
+				<XS>0</XS>
+				<XO>200</XO>
+				<YS>0</YS>
+				<YO>100</YO>
+			</UDim2>
+			<token name="FillDirection">1</token>
+			<int name="FillDirectionMaxCells">0</int>
+			<token name="HorizontalAlignment">0</token>
+			<string name="Name">DefaultLayout</string>
+			<token name="SortOrder">0</token>
+			<int64 name="SourceAssetId">-1</int64>
+			<token name="StartCorner">0</token>
+			<BinaryString name="Tags"></BinaryString>
+			<token name="VerticalAlignment">1</token>
+		</Properties>
+	</Item>
+</roblox>
