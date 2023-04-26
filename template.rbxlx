@@ -4,8 +4,8 @@
 	<Item class="Workspace" referent="RBXDB0C74C9A1B249369E6AFBBFDCD298A0">
 		<Properties>
 			<bool name="AllowThirdPartySales">false</bool>
-			<token name="AnimationWeightedBlendFix">0</token>
 			<BinaryString name="AttributesSerialize"></BinaryString>
+			<token name="AvatarUnificationMode">0</token>
 			<token name="ClientAnimatorThrottling">0</token>
 			<BinaryString name="CollisionGroupData">AQEABP////8HRGVmYXVsdA==</BinaryString>
 			<Ref name="CurrentCamera">RBX9924F438B48C47658B0A3E3895280068</Ref>
@@ -51,7 +51,8 @@
 			<token name="RejectCharacterDeletions">0</token>
 			<token name="ReplicateInstanceDestroySetting">0</token>
 			<token name="Retargeting">0</token>
-			<token name="SignalBehavior">0</token>
+			<float name="ScaleFactor">1</float>
+			<token name="SignalBehavior2">0</token>
 			<int64 name="SourceAssetId">-1</int64>
 			<token name="StreamOutBehavior">0</token>
 			<bool name="StreamingEnabled">false</bool>
@@ -83,27 +84,27 @@
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>-10.0421352</X>
-					<Y>27.0463448</Y>
-					<Z>977.170471</Z>
-					<R00>0.892192483</R00>
-					<R01>0.102143273</R01>
-					<R02>-0.439953804</R02>
-					<R10>-7.45057971e-09</R10>
-					<R11>0.974091768</R11>
-					<R12>0.226153105</R12>
-					<R20>0.451655358</R20>
-					<R21>-0.201772094</R21>
-					<R22>0.869077384</R22>
+					<X>19.6096897</X>
+					<Y>24.7445812</Y>
+					<Z>983.171631</Z>
+					<R00>0.453429937</R00>
+					<R01>-0.100028291</R01>
+					<R02>0.885661125</R02>
+					<R10>-3.72529074e-09</R10>
+					<R11>0.993682444</R11>
+					<R12>0.112228423</R12>
+					<R20>-0.891291976</R20>
+					<R21>-0.05088773</R21>
+					<R22>0.450565338</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
 				<float name="FieldOfView">70</float>
 				<token name="FieldOfViewMode">0</token>
 				<CoordinateFrame name="Focus">
-					<X>-9.16225624</X>
-					<Y>26.5940533</Y>
-					<Z>975.432373</Z>
+					<X>17.8382626</X>
+					<Y>24.5201111</Y>
+					<Z>982.270447</Z>
 					<R00>1</R00>
 					<R01>0</R01>
 					<R02>0</R02>
@@ -1098,6 +1099,7 @@ gcLgc4RKxr21zq2UlJSM]]></BinaryString>
 				<string name="Name">Portals</string>
 				<bool name="NeedsPivotMigration">false</bool>
 				<Ref name="PrimaryPart">null</Ref>
+				<float name="ScaleFactor">1</float>
 				<int64 name="SourceAssetId">-1</int64>
 				<BinaryString name="Tags"></BinaryString>
 				<UniqueId name="UniqueId">079dd8a1bab63e0a024846cb00234c74</UniqueId>
@@ -1147,6 +1149,7 @@ gcLgc4RKxr21zq2UlJSM]]></BinaryString>
 					<string name="Name">ExampleTower</string>
 					<bool name="NeedsPivotMigration">false</bool>
 					<Ref name="PrimaryPart">null</Ref>
+					<float name="ScaleFactor">1</float>
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
 					<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002ecb3c</UniqueId>
@@ -1418,6 +1421,7 @@ gcLgc4RKxr21zq2UlJSM]]></BinaryString>
 						<string name="Name">Decor</string>
 						<bool name="NeedsPivotMigration">false</bool>
 						<Ref name="PrimaryPart">null</Ref>
+						<float name="ScaleFactor">1</float>
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
 						<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002ecb40</UniqueId>
@@ -2840,6 +2844,7 @@ gcLgc4RKxr21zq2UlJSM]]></BinaryString>
 				<string name="Name">Lobby</string>
 				<bool name="NeedsPivotMigration">false</bool>
 				<Ref name="PrimaryPart">null</Ref>
+				<float name="ScaleFactor">1</float>
 				<int64 name="SourceAssetId">-1</int64>
 				<BinaryString name="Tags"></BinaryString>
 				<UniqueId name="UniqueId">78aa06c01e61697f027658b4000cd4f5</UniqueId>
@@ -13923,14 +13928,40 @@ return MouseLockController
 					<R22>1</R22>
 				</CoordinateFrame>
 				<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+				<token name="LevelOfDetail">0</token>
 				<bool name="ManualActivationOnly">false</bool>
+				<CoordinateFrame name="ModelMeshCFrame">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<SharedString name="ModelMeshData">yuZpQdnvvUBOTYh1jqZ2cA==</SharedString>
+				<Vector3 name="ModelMeshSize">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<token name="ModelStreamingMode">0</token>
 				<string name="Name">Noclip</string>
+				<bool name="NeedsPivotMigration">false</bool>
+				<Ref name="PrimaryPart">null</Ref>
 				<bool name="RequiresHandle">false</bool>
+				<float name="ScaleFactor">1</float>
 				<int64 name="SourceAssetId">-1</int64>
 				<BinaryString name="Tags"></BinaryString>
 				<Content name="TextureId"><null></null></Content>
 				<string name="ToolTip"></string>
 				<UniqueId name="UniqueId">3879cf7078e0a1fe024c23e000148f5f</UniqueId>
+				<OptionalCoordinateFrame name="WorldPivotData"></OptionalCoordinateFrame>
 			</Properties>
 			<Item class="LocalScript" referent="RBXB90C271FC8C742629E188355229A5BC3">
 				<Properties>
@@ -14277,6 +14308,7 @@ end]]></ProtectedString>
 			<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
 			<string name="Name">StarterGui</string>
 			<bool name="ResetPlayerGuiOnSpawn">true</bool>
+			<token name="RtlTextSupport">0</token>
 			<token name="ScreenOrientation">2</token>
 			<bool name="ShowDevelopmentGui">true</bool>
 			<int64 name="SourceAssetId">-1</int64>
@@ -14794,13 +14826,13 @@ local Lobby = workspace:WaitForChild("Lobby")
 local MainSpawn = Lobby:WaitForChild("_Spawn")
 
 local LobbyLauncher = {}
-local SpawnDelay = game:GetService("Players").RespawnTime
+--local SpawnDelay = game:GetService("Players").RespawnTime
 
 local function HasDisposalFunc(Val)
 	return typeof(Val) == "table" and typeof(Val.Dispose) == "function"
 end
 
-local WhitelistedJoinIds = {game.CreatorId, 1564385423}
+--local WhitelistedJoinIds = {game.CreatorId, 1564385423}
 
 local function CanJoin(Player)
 	return true--table.find(WhitelistedJoinIds, Player.UserId) ~= nil
@@ -14891,7 +14923,7 @@ function LobbyLauncher.New()
 			end
 		end
 		
-		PlayerObjects = nil
+		PlayerObjects = {}
 	end)
 	
 	return LobbyLaunch
@@ -14962,7 +14994,7 @@ Players.CharacterAutoLoads = false -- So that this module takes care of spawning
 --PhysicsService:CollisionGroupSetCollidable(Spawner.PlayerCollisionGroup, Spawner.PlayerCollisionGroup, false)
 
 local function IsPlayer(Player)
-	return typeof(Player == "Instance" and Player:IsA("Player"))
+	return typeof(Player == "Instance") and Player:IsA("Player")
 end
 
 local function TogglePartPlayerCollision(Part, Collides)
@@ -14977,7 +15009,7 @@ function Spawner.New(Player)
 	assert(IsPlayer(Player), "The player object must be a player instance.")
 	
 	local Obj = Object.New("PlayerSpawner")
-	local IsAwaitingSpawn = false -- Set to true when the player dies
+	--local IsAwaitingSpawn = false -- Set to true when the player dies
 	
 	local Connections = {}
 	
@@ -15103,7 +15135,7 @@ function Spawner.New(Player)
 	
 	local function HandleDeath()
 		if Obj.AutoRespawns == true then
-			IsAwaitingSpawn = true
+			--IsAwaitingSpawn = true
 			WaitForRespawnTime()
 			
 			if CanSpawnPlayer() then
@@ -15151,7 +15183,7 @@ function Spawner.New(Player)
 	
 	-- If the player's character is spawned.
 	Obj.SetProperty("IsSpawned", false, function(val)
-		IsAwaitingSpawn = false
+		--IsAwaitingSpawn = false
 		
 		if val == true then
 			SpawnAtSelected()
@@ -15164,7 +15196,7 @@ function Spawner.New(Player)
 	
 	-- If the player's character can collide with other players.
 	Obj.SetProperty("CanCharCollide", Spawner.PlayersCollideByDefault, function(val)
-		SetCharCollidable(Obj.Character, val)
+		SetCharCollidable(val)
 	end)
 	
 	-- Sets if the character can auto-respawn.
@@ -15190,7 +15222,8 @@ function Spawner.New(Player)
 	return Obj
 end
 
-return Spawner]]></ProtectedString>
+return Spawner
+]]></ProtectedString>
 							<int64 name="SourceAssetId">-1</int64>
 							<BinaryString name="Tags"></BinaryString>
 							<UniqueId name="UniqueId">0ee705e8faf759c20180fd2000018eaa</UniqueId>
@@ -24414,6 +24447,7 @@ return Portals]]></ProtectedString>
 						<string name="Name">ExampleTower</string>
 						<bool name="NeedsPivotMigration">false</bool>
 						<Ref name="PrimaryPart">null</Ref>
+						<float name="ScaleFactor">1</float>
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
 						<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dca0f</UniqueId>
@@ -24958,6 +24992,7 @@ a2J1ZwkAAABTdGFydFRpbWUFAAAAAAwAAABUYXJnZXRWb2x1bWUGAAAAAAAA4D8=]]></BinaryStrin
 								<string name="Name">_MusicZoneTest</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dca36</UniqueId>
@@ -25236,6 +25271,7 @@ a2J1ZwkAAABTdGFydFRpbWUFAAAAAAwAAABUYXJnZXRWb2x1bWUGAAAAAAAA4D8=]]></BinaryStrin
 								<string name="Name">_MusicZoneTest</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dca3b</UniqueId>
@@ -25417,6 +25453,7 @@ a2J1ZwkAAABTdGFydFRpbWUFAAAAAAwAAABUYXJnZXRWb2x1bWUGAAAAAAAA4D8=]]></BinaryStrin
 								<string name="Name">PhysicsGroup</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dca3f</UniqueId>
@@ -25475,6 +25512,7 @@ a2J1ZwkAAABTdGFydFRpbWUFAAAAAAwAAABUYXJnZXRWb2x1bWUGAAAAAAAA4D8=]]></BinaryStrin
 										<string name="Name">Lever</string>
 										<bool name="NeedsPivotMigration">false</bool>
 										<Ref name="PrimaryPart">null</Ref>
+										<float name="ScaleFactor">1</float>
 										<int64 name="SourceAssetId">-1</int64>
 										<BinaryString name="Tags"></BinaryString>
 										<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dca41</UniqueId>
@@ -25823,6 +25861,7 @@ YXRpb25UaW1lBgAAAAAAAAhADgAAAFNpbXVsYXRlT25Mb2FkAwE=]]></BinaryString>
 											<string name="Name">Detail</string>
 											<bool name="NeedsPivotMigration">false</bool>
 											<Ref name="PrimaryPart">null</Ref>
+											<float name="ScaleFactor">1</float>
 											<int64 name="SourceAssetId">-1</int64>
 											<BinaryString name="Tags"></BinaryString>
 											<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dca49</UniqueId>
@@ -26650,6 +26689,7 @@ YXRpb25UaW1lBgAAAAAAAAhADgAAAFNpbXVsYXRlT25Mb2FkAwE=]]></BinaryString>
 										<string name="Name">Spinner</string>
 										<bool name="NeedsPivotMigration">false</bool>
 										<Ref name="PrimaryPart">null</Ref>
+										<float name="ScaleFactor">1</float>
 										<int64 name="SourceAssetId">-1</int64>
 										<BinaryString name="Tags"></BinaryString>
 										<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dca52</UniqueId>
@@ -27137,6 +27177,7 @@ YXRpb25UaW1lBgAAAAAAAAhADgAAAFNpbXVsYXRlT25Mb2FkAwE=]]></BinaryString>
 											<string name="Name">Detail</string>
 											<bool name="NeedsPivotMigration">false</bool>
 											<Ref name="PrimaryPart">null</Ref>
+											<float name="ScaleFactor">1</float>
 											<int64 name="SourceAssetId">-1</int64>
 											<BinaryString name="Tags"></BinaryString>
 											<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dca5f</UniqueId>
@@ -28885,6 +28926,7 @@ YXRpb25UaW1lBgAAAAAAAAhADgAAAFNpbXVsYXRlT25Mb2FkAwE=]]></BinaryString>
 											<float name="LineThickness">0.150000006</float>
 											<string name="Name">SelectionBox</string>
 											<int64 name="SourceAssetId">-1</int64>
+											<bool name="StudioSelectionBox">false</bool>
 											<Color3 name="SurfaceColor3">
 												<R>1</R>
 												<G>1</G>
@@ -29623,6 +29665,7 @@ bgaamZmZmZnJPw0AAABTdGlja0R1cmF0aW9uBgAAAAAAABRA]]></BinaryString>
 								<string name="Name">HealthChanger</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dcaca</UniqueId>
@@ -29841,6 +29884,7 @@ CwAAAFJlcGVhdERlbGF5BgAAAAAAAPA/]]></BinaryString>
 								<string name="Name">BubbleSpawn</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dcad0</UniqueId>
@@ -30471,6 +30515,7 @@ bWVudHMGAAAAAABAb0ANAAAAU3RvcHNWZWxvY2l0eQMB]]></BinaryString>
 									<string name="Name">_MusicZone_F1</string>
 									<bool name="NeedsPivotMigration">false</bool>
 									<Ref name="PrimaryPart">null</Ref>
+									<float name="ScaleFactor">1</float>
 									<int64 name="SourceAssetId">-1</int64>
 									<BinaryString name="Tags"></BinaryString>
 									<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dcb7e</UniqueId>
@@ -30654,6 +30699,7 @@ YXJ0VGltZQYAAAAAAAAAAAwAAABUYXJnZXRWb2x1bWUGAAAAAAAA8D8=]]></BinaryString>
 									<string name="Name">_MusicZone_F2_to_3</string>
 									<bool name="NeedsPivotMigration">false</bool>
 									<Ref name="PrimaryPart">null</Ref>
+									<float name="ScaleFactor">1</float>
 									<int64 name="SourceAssetId">-1</int64>
 									<BinaryString name="Tags"></BinaryString>
 									<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dcb82</UniqueId>
@@ -30837,6 +30883,7 @@ aW1lBgAAAAAAAAAADAAAAFRhcmdldFZvbHVtZQYAAAAAAADwPw==]]></BinaryString>
 									<string name="Name">_MusicZone_F4_to_5</string>
 									<bool name="NeedsPivotMigration">false</bool>
 									<Ref name="PrimaryPart">null</Ref>
+									<float name="ScaleFactor">1</float>
 									<int64 name="SourceAssetId">-1</int64>
 									<BinaryString name="Tags"></BinaryString>
 									<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002ea3b1</UniqueId>
@@ -31020,6 +31067,7 @@ AAAA8D8=]]></BinaryString>
 									<string name="Name">_MusicZone_F6_to_7</string>
 									<bool name="NeedsPivotMigration">false</bool>
 									<Ref name="PrimaryPart">null</Ref>
+									<float name="ScaleFactor">1</float>
 									<int64 name="SourceAssetId">-1</int64>
 									<BinaryString name="Tags"></BinaryString>
 									<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002ea986</UniqueId>
@@ -31203,6 +31251,7 @@ b2x1bWUGAAAAAAAA8D8=]]></BinaryString>
 									<string name="Name">_MusicZone_F8_to_9</string>
 									<bool name="NeedsPivotMigration">false</bool>
 									<Ref name="PrimaryPart">null</Ref>
+									<float name="ScaleFactor">1</float>
 									<int64 name="SourceAssetId">-1</int64>
 									<BinaryString name="Tags"></BinaryString>
 									<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002eb08f</UniqueId>
@@ -31386,6 +31435,7 @@ YXJnZXRWb2x1bWUGAAAAAAAA8D8=]]></BinaryString>
 									<string name="Name">_MusicZone_F10</string>
 									<bool name="NeedsPivotMigration">false</bool>
 									<Ref name="PrimaryPart">null</Ref>
+									<float name="ScaleFactor">1</float>
 									<int64 name="SourceAssetId">-1</int64>
 									<BinaryString name="Tags"></BinaryString>
 									<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002eb1f8</UniqueId>
@@ -31569,6 +31619,7 @@ CQAAAFN0YXJ0VGltZQYAAAAAAAAAAAwAAABUYXJnZXRWb2x1bWUGAAAAAAAA8D8=]]></BinaryStrin
 								<string name="Name">PhysicsGroup</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">1b0bd29145615b0402a73de50016ffb0</UniqueId>
@@ -31627,6 +31678,7 @@ CQAAAFN0YXJ0VGltZQYAAAAAAAAAAAwAAABUYXJnZXRWb2x1bWUGAAAAAAAA8D8=]]></BinaryStrin
 										<string name="Name">Lever</string>
 										<bool name="NeedsPivotMigration">false</bool>
 										<Ref name="PrimaryPart">null</Ref>
+										<float name="ScaleFactor">1</float>
 										<int64 name="SourceAssetId">-1</int64>
 										<BinaryString name="Tags"></BinaryString>
 										<UniqueId name="UniqueId">1b0bd29145615b0402a73de50016ffb2</UniqueId>
@@ -31975,6 +32027,7 @@ YXRpb25UaW1lBgAAAAAAAAhADgAAAFNpbXVsYXRlT25Mb2FkAwE=]]></BinaryString>
 											<string name="Name">Detail</string>
 											<bool name="NeedsPivotMigration">false</bool>
 											<Ref name="PrimaryPart">null</Ref>
+											<float name="ScaleFactor">1</float>
 											<int64 name="SourceAssetId">-1</int64>
 											<BinaryString name="Tags"></BinaryString>
 											<UniqueId name="UniqueId">1b0bd29145615b0402a73de50016ffba</UniqueId>
@@ -32802,6 +32855,7 @@ YXRpb25UaW1lBgAAAAAAAAhADgAAAFNpbXVsYXRlT25Mb2FkAwE=]]></BinaryString>
 										<string name="Name">Spinner</string>
 										<bool name="NeedsPivotMigration">false</bool>
 										<Ref name="PrimaryPart">null</Ref>
+										<float name="ScaleFactor">1</float>
 										<int64 name="SourceAssetId">-1</int64>
 										<BinaryString name="Tags"></BinaryString>
 										<UniqueId name="UniqueId">1b0bd29145615b0402a73de50016ffc3</UniqueId>
@@ -33289,6 +33343,7 @@ YXRpb25UaW1lBgAAAAAAAAhADgAAAFNpbXVsYXRlT25Mb2FkAwE=]]></BinaryString>
 											<string name="Name">Detail</string>
 											<bool name="NeedsPivotMigration">false</bool>
 											<Ref name="PrimaryPart">null</Ref>
+											<float name="ScaleFactor">1</float>
 											<int64 name="SourceAssetId">-1</int64>
 											<BinaryString name="Tags"></BinaryString>
 											<UniqueId name="UniqueId">1b0bd29145615b0402a73de50016ffd0</UniqueId>
@@ -35012,6 +35067,7 @@ YXRpb25UaW1lBgAAAAAAAAhADgAAAFNpbXVsYXRlT25Mb2FkAwE=]]></BinaryString>
 											<float name="LineThickness">0.150000006</float>
 											<string name="Name">SelectionBox</string>
 											<int64 name="SourceAssetId">-1</int64>
+											<bool name="StudioSelectionBox">false</bool>
 											<Color3 name="SurfaceColor3">
 												<R>1</R>
 												<G>1</G>
@@ -35056,6 +35112,7 @@ YXRpb25UaW1lBgAAAAAAAAhADgAAAFNpbXVsYXRlT25Mb2FkAwE=]]></BinaryString>
 								<string name="Name">Button</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">RBX218B4E5C02CF4C239580A9BC97817FF5</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">26d4d768d3c374fe02aac98f000bc852</UniqueId>
@@ -36094,6 +36151,7 @@ end]]></ProtectedString>
 											<float name="LineThickness">0.150000006</float>
 											<string name="Name">SelectionBox</string>
 											<int64 name="SourceAssetId">-1</int64>
+											<bool name="StudioSelectionBox">false</bool>
 											<Color3 name="SurfaceColor3">
 												<R>0.0509803966</R>
 												<G>0.411764741</G>
@@ -36538,6 +36596,7 @@ ZW5jeQUAAAAA]]></BinaryString>
 								<string name="Name">Button_F1</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">RBX00A23F844A244CF782AE6794D72038CE</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">4bd2b016e6f77a7602ac376c0035300f</UniqueId>
@@ -37625,6 +37684,7 @@ end]]></ProtectedString>
 								<string name="Name">HealthChanger</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">1b0bd29145615b0402a73de5000cb967</UniqueId>
@@ -38225,6 +38285,7 @@ bgaamZmZmZnJPw0AAABTdGlja0R1cmF0aW9uBgAAAAAAABRA]]></BinaryString>
 								<float name="LineThickness">0.150000006</float>
 								<string name="Name">SelectionBox</string>
 								<int64 name="SourceAssetId">-1</int64>
+								<bool name="StudioSelectionBox">false</bool>
 								<Color3 name="SurfaceColor3">
 									<R>1</R>
 									<G>1</G>
@@ -50086,6 +50147,7 @@ return Launcher]]></ProtectedString>
 							<string name="Name">Frame</string>
 							<bool name="NeedsPivotMigration">false</bool>
 							<Ref name="PrimaryPart">RBXAC2F8D93006140AC8F32EB2A2F382714</Ref>
+							<float name="ScaleFactor">1</float>
 							<int64 name="SourceAssetId">-1</int64>
 							<BinaryString name="Tags"></BinaryString>
 							<UniqueId name="UniqueId">1a48727e5cdfb5c302a5e0d0002dcb53</UniqueId>
@@ -54183,6 +54245,16 @@ return Launcher]]></ProtectedString>
 					</Item>
 				</Item>
 			</Item>
+		</Item>
+		<Item class="Folder" referent="RBX8A50E44F988544CB92C8A03B3017EC86">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+				<string name="Name">Archimedes_Storage</string>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+				<UniqueId name="UniqueId">15e2abc6d384e44f045a061100003099</UniqueId>
+			</Properties>
 		</Item>
 	</Item>
 	<Item class="ReplicatedStorage" referent="RBX812ED06759EF4E558D05FDC562F7588F">
@@ -79344,6 +79416,7 @@ return MusicPlayer]]></ProtectedString>
 					<string name="Name">Default</string>
 					<bool name="NeedsPivotMigration">false</bool>
 					<Ref name="PrimaryPart">null</Ref>
+					<float name="ScaleFactor">1</float>
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
 					<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6517</UniqueId>
@@ -79402,6 +79475,7 @@ return MusicPlayer]]></ProtectedString>
 							<string name="Name">Stand</string>
 							<bool name="NeedsPivotMigration">false</bool>
 							<Ref name="PrimaryPart">null</Ref>
+							<float name="ScaleFactor">1</float>
 							<int64 name="SourceAssetId">-1</int64>
 							<BinaryString name="Tags"></BinaryString>
 							<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6518</UniqueId>
@@ -79985,6 +80059,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">ImageFrame</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6519</UniqueId>
@@ -81131,6 +81206,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">ImageFrame</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b651a</UniqueId>
@@ -82181,6 +82257,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">ImageFrame</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b651b</UniqueId>
@@ -83231,6 +83308,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b651c</UniqueId>
@@ -84150,6 +84228,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b651d</UniqueId>
@@ -85069,6 +85148,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b651e</UniqueId>
@@ -85988,6 +86068,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b651f</UniqueId>
@@ -86907,6 +86988,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6520</UniqueId>
@@ -87537,6 +87619,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">PartTemplate</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6521</UniqueId>
@@ -88069,6 +88152,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6522</UniqueId>
@@ -88699,6 +88783,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6523</UniqueId>
@@ -89329,6 +89414,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6524</UniqueId>
@@ -89959,6 +90045,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6525</UniqueId>
@@ -91268,6 +91355,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6526</UniqueId>
@@ -92189,6 +92277,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6527</UniqueId>
@@ -93110,6 +93199,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6528</UniqueId>
@@ -94833,6 +94923,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b6529</UniqueId>
@@ -95267,6 +95358,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b652a</UniqueId>
@@ -95797,6 +95889,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">Model</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b652b</UniqueId>
@@ -96619,6 +96712,7 @@ return MusicPlayer]]></ProtectedString>
 								<string name="Name">PartTemplate</string>
 								<bool name="NeedsPivotMigration">false</bool>
 								<Ref name="PrimaryPart">null</Ref>
+								<float name="ScaleFactor">1</float>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 								<UniqueId name="UniqueId">78aa06c01e61697f027658b4000b652c</UniqueId>
