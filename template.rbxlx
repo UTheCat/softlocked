@@ -84,18 +84,18 @@
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>19.6096897</X>
-					<Y>24.7445812</Y>
-					<Z>983.171631</Z>
-					<R00>0.453429937</R00>
-					<R01>-0.100028291</R01>
-					<R02>0.885661125</R02>
-					<R10>-3.72529074e-09</R10>
-					<R11>0.993682444</R11>
-					<R12>0.112228423</R12>
-					<R20>-0.891291976</R20>
-					<R21>-0.05088773</R21>
-					<R22>0.450565338</R22>
+					<X>18.4610043</X>
+					<Y>24.9321671</Y>
+					<Z>984.125854</Z>
+					<R00>0.948026359</R00>
+					<R01>-0.0655553117</R01>
+					<R02>0.311365604</R02>
+					<R10>3.72528985e-09</R10>
+					<R11>0.978546917</R11>
+					<R12>0.206024528</R12>
+					<R20>-0.318191797</R20>
+					<R21>-0.195316687</R21>
+					<R22>0.927688241</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
@@ -71550,3330 +71550,6 @@ return Launcher]]></ProtectedString>
 					</Properties>
 				</Item>
 			</Item>
-			<Item class="Folder" referent="RBX23B9DCD441934CF79658CF895637F40B">
-				<Properties>
-					<BinaryString name="AttributesSerialize"></BinaryString>
-					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-					<string name="Name">Gui</string>
-					<int64 name="SourceAssetId">-1</int64>
-					<BinaryString name="Tags"></BinaryString>
-					<UniqueId name="UniqueId">0ee705e8faf759c20180fd200001887b</UniqueId>
-				</Properties>
-				<Item class="ModuleScript" referent="RBX168EA5437BE3402C80AD958DD009A010">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-						<Content name="LinkedSource"><null></null></Content>
-						<string name="Name">BrowserLib</string>
-						<string name="ScriptGuid">{9B7E3A96-2A43-435F-B5F4-8879E6D3150C}</string>
-						<ProtectedString name="Source"><![CDATA[--[[
-BrowserLib.lua by udev2192
-
-The module that contains all the functions to boost the efficiency of the Map Browser development
-
-Make sure to put sizes and positions according to the anchor point Vector2.new(0.5,0.5)
-
-This module is designed for client use
-
-Revamped 9 March 2021 to be less confusing and more OOP based
-]]--
-
-local mod = {}
-
--- CONSTANTS --
-local DEFAULT_FONT = Enum.Font.GothamBold -- When a font is not specified when applicable, this font will be applied
-local UI_COLOR_SEQUENCE = ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(128, 0, 255)), ColorSequenceKeypoint.new(1,Color3.fromRGB(204, 0, 255))}) -- The color sequence of the UIGradients used by the text objects
-local GRADIENT_ROTATION_INCREMENT = 0.5 -- How much rotating gradients rotate by for each frame
-local TWEEN_INFO = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out) -- The TweenInfo used to Tween objects
-local CORNER_RADIUS = 0 -- How much to round the corner of the GUI objects out of 1 (leave at 0 to turn this off)
-local DEFAULT_LAYER = 2 -- The default ZIndex a GUI object is set to when one is not specified
----------------
-
--- Property Configuration --
-local Defaults = {
-	-- Format: ["Instance/Class name"] = {Properties}
-	["TextButton"] = {
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Size = UDim2.new(0.25,0,0.25,0),
-		Position = UDim2.new(0.5,0,0.5,0),
-
-		BackgroundColor3 = Color3.new(0,0,0),
-		TextColor3 = Color3.new(1,1,1),
-		Font = DEFAULT_FONT,
-		Text = "Blank Text",
-		TextScaled = true,
-		BorderMode = Enum.BorderMode.Inset,
-		BorderColor3 = Color3.new(1,1,1),
-		BorderSizePixel = 2,
-		ZIndex = DEFAULT_LAYER
-	},
-
-	["TextLabel"] = {
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Size = UDim2.new(0.25,0,0.25,0),
-		Position = UDim2.new(0.5,0,0.5,0),
-
-		BackgroundTransparency = 1,
-		TextColor3 = Color3.new(1,1,1),
-		Font = DEFAULT_FONT,
-		Text = "Blank Text",
-		TextScaled = true,
-		BorderMode = Enum.BorderMode.Inset,
-		BorderSizePixel = 0,
-		TextStrokeTransparency = 0,
-		ZIndex = DEFAULT_LAYER
-	},
-
-	["TextBox"] = {
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Size = UDim2.new(0.25,0,0.25,0),
-		Position = UDim2.new(0.5,0,0.5,0),
-		
-		BackgroundTransparency = 1,
-		TextColor3 = Color3.new(1,1,1),
-		Font = DEFAULT_FONT,
-		PlaceholderText = "Blank Placeholder Text",
-		Text = "",
-		TextScaled = true,
-		BorderMode = Enum.BorderMode.Inset,
-		BorderColor3 = Color3.new(1,1,1),
-		BorderSizePixel = 0,
-		ZIndex = DEFAULT_LAYER,
-	},
-
-	["Frame"] = {
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Size = UDim2.new(0.25,0,0.25,0),
-		Position = UDim2.new(0.5,0,0.5,0),
-
-		BorderMode = Enum.BorderMode.Inset,
-		BorderColor3 = Color3.new(1,1,1),
-		BorderSizePixel = 2,
-		BackgroundColor3 = Color3.new(1,1,1),
-		BackgroundTransparency = 0.75,
-		ClipsDescendants = true,
-		ZIndex = DEFAULT_LAYER
-	}
-}
-----------------------------
-
--- UI framework:
-local ClickConnections = {} -- Stores the Activated connections for buttons
-local GradientConnections = {} -- Stores the Stepped connections for GUI objects with rotating gradients
-local TextBoxConnections = {} -- Stores the FocusLost connections when a function is binded to the FunctionOnInput
-
-local RunService = game:GetService("RunService")
-local TweenService = game:GetService("TweenService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local ScreenGui = script.Parent
-
-local RepModules = ReplicatedStorage:WaitForChild("Modules")
-local UtilModules = RepModules:WaitForChild("Utils")
-
--- Reference the utility library
-local Util = UtilModules:WaitForChild("Utility")
-if Util:IsA("ModuleScript") then
-	Util = require(Util)
-end
-
--- Apply property configurations:
-for i, v in pairs(Defaults) do
-	if typeof(v) == "table" then
-		Util.SetPropertyDefaults(i, v)
-	end
-end
-
--- Make some constants accessible by other scripts/modules
-mod.ColorSequence = UI_COLOR_SEQUENCE
-mod.ModuleFont = DEFAULT_FONT
-
--- Functions/methods (new):
-function mod.ApplyFinishes(Object) -- Applies finishing touches to the provided instance
-	if typeof(Object) == "Instance" then
-		-- Apply the gradient
-		local Gradient = Instance.new("UIGradient") -- Add the gradient to make a cool ui effect
-		Gradient.Color = UI_COLOR_SEQUENCE
-		Gradient.Rotation = 90
-		Gradient.Parent = Object
-
-		-- Apply the corner radius
-		if CORNER_RADIUS > 0 then
-			local Corner = Instance.new("UICorner")
-			Corner.CornerRadius = UDim.new(CORNER_RADIUS, 0)
-			Corner.Parent = Object
-		end
-
-		-- Return the redesigned GUI object
-		return Object
-	else
-		warn("Object type must be an Instance.")
-		return nil
-	end
-end
-
-function mod.RotateGradient(Object, IsRotating) -- Rotates the ui gradient for the specified gui object an even cooler effect
-	if Object ~= nil and Object:IsA("GuiObject") then
-		if IsRotating ~= nil and typeof(IsRotating) == "boolean" then
-			local Gradient = Object:WaitForChild("UIGradient", 4)
-			if Gradient then
-				if IsRotating then
-					GradientConnections[Object] = RunService.Stepped:Connect(function()
-						Gradient.Rotation = Gradient.Rotation + GRADIENT_ROTATION_INCREMENT
-					end)
-				else
-					if GradientConnections[Object] ~= nil then
-						GradientConnections[Object]:Disconnect()
-						GradientConnections[Object] = nil
-					end
-				end
-			else
-				warn("Couldn't find a UIGradient in the specified GUI object.")
-			end
-		else
-			warn("IsRotating (argument 2) isn't specified or isn't a boolean (true/false).")
-		end
-	else
-		warn("The object (argument 1) isn't specified or isn't a GUI object.")
-	end
-end
-
-function mod.New(Type, Properties) -- Constructs a recognized Instance by this UI framework
-	-- Please use this over the old constructors as this one is much more simplified
-	if typeof(Defaults[Type]) == "table" then
-		-- Make the object
-		local Object = Util.CreateInstance(Type, Properties)
-
-		-- Finish off the object
-		mod.ApplyFinishes(Object)
-
-		-- Return the finished object
-		return Object
-	else
-		warn(tostring(Type) .. " isn't recognized by this version of BrowserLib.")
-	end
-end
-
-return mod
-
---[[
-Old functions/methods (please don't use any of these as they are much harder to use):
-function mod.MakeButton(Text, Size, Position)
-	local Button = Util.CreateInstance("TextButton", {
-		-- Make the UI object
-		Text = Text,
-		Size = Size,
-		Position = Position
-	})
-	
-	mod.ApplyFinishes(Button)
-	
-	return Button
-end
-
-function mod.MakeLabel(Text, Size, Position)
-	local Label = Util.CreateInstance("TextButton", {
-		-- Make the UI object
-		Text = Text,
-		Size = Size,
-		Position = Position
-	})
-
-	mod.ApplyFinishes(Label)
-	
-	return Label
-end
-
-function mod.MakeTextBox(PlaceholderText, Size, Position, Parent, FunctionOnInput, Layer, Font)
-	-- FunctionOnInput should account for the first parameter that is passed to it, which is the text entered
-	local TextBox = Instance.new("TextBox") -- Make the TextBox
-	TextBox.AnchorPoint = Vector2.new(0.5,0.5)
-	TextBox.Size = Size
-	TextBox.Position = Position
-	TextBox.BackgroundTransparency = 1
-	TextBox.TextColor3 = Color3.new(1,1,1)
-	TextBox.Font = Font or DEFAULT_FONT
-	TextBox.PlaceholderText = PlaceholderText or "Blank Placeholder Text"
-	TextBox.Text = ""
-	TextBox.TextScaled = true
-	TextBox.BorderMode = Enum.BorderMode.Inset
-	TextBox.BorderColor3 = Color3.new(1,1,1)
-	TextBox.BorderSizePixel = 0
-	TextBox.ZIndex = Layer or DEFAULT_LAYER
-
-	if CORNER_RADIUS > 0 then
-		local Corner = Instance.new("UICorner")
-		Corner.CornerRadius = UDim.new(CORNER_RADIUS, 0)
-		Corner.Parent = TextBox
-	end
-	
-	if FunctionOnInput ~= nil then
-		if typeof(FunctionOnInput) == "function" then
-			TextBox.FocusLost:Connect(function()
-				local TextBoxText = TextBox.Text
-				FunctionOnInput(TextBoxText)
-				TextBoxText = nil
-			end)
-		else
-			warn("When choosing to specify the FunctionOnInput (argument 5), make sure it is a function and that the first argument of that function will have the text entered passed to")
-		end
-	end
-
-	TextBox.Parent = Parent or ScreenGui
-	return TextBox
-end
-
-function mod.BindFunction(Button, FunctionWhenClicked)
-	if Button ~= nil and Button:IsA("TextButton") then
-		if FunctionWhenClicked ~= nil and typeof(FunctionWhenClicked) == "function" then
-			ClickConnections[Button] = Button.Activated:Connect(FunctionWhenClicked) -- Bind the specified function
-		else
-			warn("FunctionWhenClick (argument 2) isn't specified or isn't a function so the button will do nothing.")
-		end
-	else
-		warn("The Button specified (argument 1) isn't provided or isn't a TextButton.")
-	end
-end
-
-function mod.UnbindFunction(Button)
-	if Button ~= nil and Button:IsA("TextButton") then
-		if ClickConnections[Button] ~= nil then
-			ClickConnections[Button]:Disconnect()
-			ClickConnections[Button] = nil
-		end
-	else
-		warn("The button isn't specified in the first and only argument or the object provided isn't a TextButton.")
-	end
-end
-
-function mod.UnbindFunctionOnInput(TextBox)
-	if TextBox ~= nil and TextBox:IsA("TextBox") then
-		if TextBoxConnections[TextBox] ~= nil then
-			TextBoxConnections[TextBox]:Disconnect()
-			TextBoxConnections[TextBox] = nil
-		end
-	else
-		warn("The TextBox isn't specified in the first and only argument or the object provided isn't a TextBox.")
-	end
-end
-
-function mod.MakeFrame(Size, Position, Parent, Layer, AddColor)
-	local Frame = Instance.new("Frame") -- Make the Frame
-	Frame.AnchorPoint = Vector2.new(0.5,0.5)
-	Frame.Size = Size
-	Frame.Position = Position
-	Frame.BorderMode = Enum.BorderMode.Inset
-	Frame.BorderColor3 = Color3.new(1,1,1)
-	Frame.BorderSizePixel = 2
-	if AddColor then
-		Frame.BackgroundColor3 = Color3.new(1,1,1)
-	else
-		Frame.BackgroundColor3 = Color3.new(0,0,0)
-	end
-	Frame.BackgroundTransparency = 0.75
-	Frame.ClipsDescendants = true
-	Frame.ZIndex = Layer or DEFAULT_LAYER
-	
-	if AddColor then
-		local Gradient = Instance.new("UIGradient") -- Add the gradient to make a cool ui effect
-		Gradient.Color = UI_COLOR_SEQUENCE
-		Gradient.Rotation = 90
-		Gradient.Parent = Frame
-	end
-
-	if CORNER_RADIUS > 0 then
-		local Corner = Instance.new("UICorner")
-		Corner.CornerRadius = UDim.new(CORNER_RADIUS, 0)
-		Corner.Parent = Frame
-	end
-	
-	Frame.Parent = Parent or ScreenGui
-	return Frame
-end
-
-function mod.AddARC(GuiObject, Ratio)
-	-- Add an AspectRatioConstraint to a GUIObject which is needed in certain UI design cases
-	if GuiObject:IsA("GuiBase") then
-		local AspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-		AspectRatioConstraint.AspectRatio = Ratio or 1
-		AspectRatioConstraint.DominantAxis = Enum.DominantAxis.Height
-		AspectRatioConstraint.Parent = GuiObject
-
-		return AspectRatioConstraint
-	end
-end
-
-function mod.Tween(Object, PropertiesToTween, DelayThread) -- The DelayThread should be true/false and specifes whether the tween delays the current thread or not
-	if Object ~= nil then
-		if PropertiesToTween ~= nil and typeof(PropertiesToTween) == "table" then
-			if DelayThread == nil or typeof(DelayThread) == "boolean" then
-				local Tween = TweenService:Create(Object, TWEEN_INFO, PropertiesToTween)
-				local function PlayTween()
-					Tween:Play()
-					Tween.Completed:Wait()
-					Tween:Destroy()
-					Tween = nil
-				end
-				if DelayThread then
-					PlayTween()
-				else
-					coroutine.wrap(PlayTween)()
-				end
-				return Tween
-			else
-				warn("When specified, the DelayThread argument (argument 3) should be a boolean (true/false) detailing whether to yield the current thread while the tween is playing or not")
-			end
-		else
-			warn("PropertiesToTween (argument 2) isn't specified or isn't a table of object properties to tween.")
-		end
-	else
-		warn("The Object (argument 1) isn't specified")
-	end
-end
---]]]]></ProtectedString>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-						<UniqueId name="UniqueId">0ee705e8faf759c20180fd2000018eac</UniqueId>
-					</Properties>
-				</Item>
-				<Item class="Folder" referent="RBX16CB634F76834F3F960EAA3EAF9A641C">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-						<string name="Name">Themes</string>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-						<UniqueId name="UniqueId">0ee705e8faf759c20180fd200001887c</UniqueId>
-					</Properties>
-					<Item class="ModuleScript" referent="RBX0F129D46D1F8458D9234FD457B1624D0">
-						<Properties>
-							<BinaryString name="AttributesSerialize"></BinaryString>
-							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">Wavy</string>
-							<string name="ScriptGuid">{AB4C496C-231A-4232-B0F5-093377636F56}</string>
-							<ProtectedString name="Source"><![CDATA[--[[
-This is a simplistic/aEsThEtIc gui theme.
-
-Originally designed for the FE2 Map Browser, which is a
-long abandoned project.
-
-By udev2192
-]]--
-
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
-local Utils = RepModules:WaitForChild("Utils")
-local BaseScheme = require(Utils:WaitForChild("BaseScheme"))
-
-RepModules, Utils = nil, nil
-
-local Wavy = BaseScheme.GetScheme("UI_" .. script.Name)
-
--- CONSTANTS --
-local DEFAULT_FONT = Enum.Font.Gotham -- When a font is not specified when applicable, this font will be applied
-local UI_COLOR_SEQUENCE = ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(128, 0, 255)), ColorSequenceKeypoint.new(1,Color3.fromRGB(204, 0, 255))}) -- The color sequence of the UIGradients used by the text objects
-local GRADIENT_ROTATION_INCREMENT = 0.5 -- How much rotating gradients rotate by for each frame
-local TWEEN_INFO = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out) -- The TweenInfo used to Tween objects
-local CORNER_RADIUS = 0 -- How much to round the corner of the GUI objects out of 1 (leave at 0 to turn this off)
-local DEFAULT_LAYER = 2 -- The default ZIndex a GUI object is set to when one is not specified
----------------
-
--- Property Configuration --
-local Defaults = {
-	-- Format: ["Instance/Class name"] = {Properties}
-	["TextButton"] = {
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Size = UDim2.new(0.25,0,0.25,0),
-		Position = UDim2.new(0.5,0,0.5,0),
-
-		BackgroundColor3 = Color3.new(0,0,0),
-		TextColor3 = Color3.new(1,1,1),
-		Font = DEFAULT_FONT,
-		Text = "Blank Text",
-		TextScaled = true,
-		BorderMode = Enum.BorderMode.Inset,
-		BorderColor3 = Color3.new(1,1,1),
-		BorderSizePixel = 2,
-		ZIndex = DEFAULT_LAYER
-	},
-
-	["TextLabel"] = {
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Size = UDim2.new(0.25,0,0.25,0),
-		Position = UDim2.new(0.5,0,0.5,0),
-
-		BackgroundTransparency = 1,
-		TextColor3 = Color3.new(1,1,1),
-		Font = DEFAULT_FONT,
-		Text = "Blank Text",
-		TextScaled = true,
-		BorderMode = Enum.BorderMode.Inset,
-		BorderSizePixel = 0,
-		TextStrokeTransparency = 0,
-		ZIndex = DEFAULT_LAYER
-	},
-
-	["TextBox"] = {
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Size = UDim2.new(0.25,0,0.25,0),
-		Position = UDim2.new(0.5,0,0.5,0),
-		
-		BackgroundTransparency = 1,
-		TextColor3 = Color3.new(1,1,1),
-		Font = DEFAULT_FONT,
-		PlaceholderText = "Blank Placeholder Text",
-		Text = "",
-		TextScaled = true,
-		BorderMode = Enum.BorderMode.Inset,
-		BorderColor3 = Color3.new(1,1,1),
-		BorderSizePixel = 0,
-		ZIndex = DEFAULT_LAYER,
-	},
-
-	["Frame"] = {
-		AnchorPoint = Vector2.new(0.5,0.5),
-		Size = UDim2.new(0.25,0,0.25,0),
-		Position = UDim2.new(0.5,0,0.5,0),
-
-		BorderMode = Enum.BorderMode.Inset,
-		BorderColor3 = Color3.new(1,1,1),
-		BorderSizePixel = 2,
-		BackgroundColor3 = Color3.new(1,1,1),
-		BackgroundTransparency = 0.75,
-		ClipsDescendants = true,
-		ZIndex = DEFAULT_LAYER
-	}
-}
-----------------------------
-
--- UI framework:
-local ClickConnections = {} -- Stores the Activated connections for buttons
-local GradientConnections = {} -- Stores the Stepped connections for GUI objects with rotating gradients
-local TextBoxConnections = {} -- Stores the FocusLost connections when a function is binded to the FunctionOnInput
-
-local RunService = game:GetService("RunService")
-local TweenService = game:GetService("TweenService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local ScreenGui = script.Parent
-
-local RepModules = ReplicatedStorage:WaitForChild("Modules")
-local UtilModules = RepModules:WaitForChild("Utils")
-
--- Reference the utility library
-local Util = UtilModules:WaitForChild("Utility")
-if Util:IsA("ModuleScript") then
-	Util = require(Util)
-end
-
--- Apply property configurations:
-for i, v in pairs(Defaults) do
-	if typeof(v) == "table" then
-		Util.SetPropertyDefaults(i, v)
-	end
-end
-
--- Make some constants accessible by other scripts/modules
-Wavy.ColorSequence = UI_COLOR_SEQUENCE
-Wavy.ModuleFont = DEFAULT_FONT
-
--- Apply defaults
-Wavy.Defaults = Defaults
-
--- Functions/methods (new):
-function Wavy.ApplyFinishes(Object) -- Applies finishing touches to the provided instance
-	if typeof(Object) == "Instance" then
-		-- Apply the gradient
-		local Gradient = Instance.new("UIGradient") -- Add the gradient to make a cool ui effect
-		Gradient.Color = UI_COLOR_SEQUENCE
-		Gradient.Rotation = 90
-		Gradient.Parent = Object
-
-		-- Apply the corner radius
-		if CORNER_RADIUS > 0 then
-			local Corner = Instance.new("UICorner")
-			Corner.CornerRadius = UDim.new(CORNER_RADIUS, 0)
-			Corner.Parent = Object
-		end
-
-		-- Return the redesigned GUI object
-		return Object
-	else
-		warn("Object type must be an Instance.")
-		return nil
-	end
-end
-
-function Wavy.RotateGradient(Object, IsRotating) -- Rotates the ui gradient for the specified gui object an even cooler effect
-	if Object ~= nil and Object:IsA("GuiObject") then
-		if IsRotating ~= nil and typeof(IsRotating) == "boolean" then
-			local Gradient = Object:WaitForChild("UIGradient", 4)
-			if Gradient then
-				if IsRotating then
-					GradientConnections[Object] = RunService.Stepped:Connect(function()
-						Gradient.Rotation = Gradient.Rotation + GRADIENT_ROTATION_INCREMENT
-					end)
-				else
-					if GradientConnections[Object] ~= nil then
-						GradientConnections[Object]:Disconnect()
-						GradientConnections[Object] = nil
-					end
-				end
-			else
-				warn("Couldn't find a UIGradient in the specified GUI object.")
-			end
-		else
-			warn("IsRotating (argument 2) isn't specified or isn't a boolean (true/false).")
-		end
-	else
-		warn("The object (argument 1) isn't specified or isn't a GUI object.")
-	end
-end
-
--- Kept for backwards compatibility.
-function Wavy.New(Type, Properties) -- Constructs a recognized Instance by this UI framework
-	-- Please use this over the old constructors as this one is much more simplified
-	if typeof(Defaults[Type]) == "table" then
-		-- Make the object
-		local Object = Util.CreateInstance(Type, Properties)
-
-		-- Finish off the object
-		Wavy.ApplyFinishes(Object)
-
-		-- Return the finished object
-		return Object
-	else
-		warn(tostring(Type) .. " isn't recognized by this version of BrowserLib.")
-	end
-end
-
-return Wavy
-
---[[
-Old functions/methods (please don't use any of these as they are much harder to use):
-function mod.MakeButton(Text, Size, Position)
-	local Button = Util.CreateInstance("TextButton", {
-		-- Make the UI object
-		Text = Text,
-		Size = Size,
-		Position = Position
-	})
-	
-	mod.ApplyFinishes(Button)
-	
-	return Button
-end
-
-function mod.MakeLabel(Text, Size, Position)
-	local Label = Util.CreateInstance("TextButton", {
-		-- Make the UI object
-		Text = Text,
-		Size = Size,
-		Position = Position
-	})
-
-	mod.ApplyFinishes(Label)
-	
-	return Label
-end
-
-function mod.MakeTextBox(PlaceholderText, Size, Position, Parent, FunctionOnInput, Layer, Font)
-	-- FunctionOnInput should account for the first parameter that is passed to it, which is the text entered
-	local TextBox = Instance.new("TextBox") -- Make the TextBox
-	TextBox.AnchorPoint = Vector2.new(0.5,0.5)
-	TextBox.Size = Size
-	TextBox.Position = Position
-	TextBox.BackgroundTransparency = 1
-	TextBox.TextColor3 = Color3.new(1,1,1)
-	TextBox.Font = Font or DEFAULT_FONT
-	TextBox.PlaceholderText = PlaceholderText or "Blank Placeholder Text"
-	TextBox.Text = ""
-	TextBox.TextScaled = true
-	TextBox.BorderMode = Enum.BorderMode.Inset
-	TextBox.BorderColor3 = Color3.new(1,1,1)
-	TextBox.BorderSizePixel = 0
-	TextBox.ZIndex = Layer or DEFAULT_LAYER
-
-	if CORNER_RADIUS > 0 then
-		local Corner = Instance.new("UICorner")
-		Corner.CornerRadius = UDim.new(CORNER_RADIUS, 0)
-		Corner.Parent = TextBox
-	end
-	
-	if FunctionOnInput ~= nil then
-		if typeof(FunctionOnInput) == "function" then
-			TextBox.FocusLost:Connect(function()
-				local TextBoxText = TextBox.Text
-				FunctionOnInput(TextBoxText)
-				TextBoxText = nil
-			end)
-		else
-			warn("When choosing to specify the FunctionOnInput (argument 5), make sure it is a function and that the first argument of that function will have the text entered passed to")
-		end
-	end
-
-	TextBox.Parent = Parent or ScreenGui
-	return TextBox
-end
-
-function mod.BindFunction(Button, FunctionWhenClicked)
-	if Button ~= nil and Button:IsA("TextButton") then
-		if FunctionWhenClicked ~= nil and typeof(FunctionWhenClicked) == "function" then
-			ClickConnections[Button] = Button.Activated:Connect(FunctionWhenClicked) -- Bind the specified function
-		else
-			warn("FunctionWhenClick (argument 2) isn't specified or isn't a function so the button will do nothing.")
-		end
-	else
-		warn("The Button specified (argument 1) isn't provided or isn't a TextButton.")
-	end
-end
-
-function mod.UnbindFunction(Button)
-	if Button ~= nil and Button:IsA("TextButton") then
-		if ClickConnections[Button] ~= nil then
-			ClickConnections[Button]:Disconnect()
-			ClickConnections[Button] = nil
-		end
-	else
-		warn("The button isn't specified in the first and only argument or the object provided isn't a TextButton.")
-	end
-end
-
-function mod.UnbindFunctionOnInput(TextBox)
-	if TextBox ~= nil and TextBox:IsA("TextBox") then
-		if TextBoxConnections[TextBox] ~= nil then
-			TextBoxConnections[TextBox]:Disconnect()
-			TextBoxConnections[TextBox] = nil
-		end
-	else
-		warn("The TextBox isn't specified in the first and only argument or the object provided isn't a TextBox.")
-	end
-end
-
-function mod.MakeFrame(Size, Position, Parent, Layer, AddColor)
-	local Frame = Instance.new("Frame") -- Make the Frame
-	Frame.AnchorPoint = Vector2.new(0.5,0.5)
-	Frame.Size = Size
-	Frame.Position = Position
-	Frame.BorderMode = Enum.BorderMode.Inset
-	Frame.BorderColor3 = Color3.new(1,1,1)
-	Frame.BorderSizePixel = 2
-	if AddColor then
-		Frame.BackgroundColor3 = Color3.new(1,1,1)
-	else
-		Frame.BackgroundColor3 = Color3.new(0,0,0)
-	end
-	Frame.BackgroundTransparency = 0.75
-	Frame.ClipsDescendants = true
-	Frame.ZIndex = Layer or DEFAULT_LAYER
-	
-	if AddColor then
-		local Gradient = Instance.new("UIGradient") -- Add the gradient to make a cool ui effect
-		Gradient.Color = UI_COLOR_SEQUENCE
-		Gradient.Rotation = 90
-		Gradient.Parent = Frame
-	end
-
-	if CORNER_RADIUS > 0 then
-		local Corner = Instance.new("UICorner")
-		Corner.CornerRadius = UDim.new(CORNER_RADIUS, 0)
-		Corner.Parent = Frame
-	end
-	
-	Frame.Parent = Parent or ScreenGui
-	return Frame
-end
-
-function mod.AddARC(GuiObject, Ratio)
-	-- Add an AspectRatioConstraint to a GUIObject which is needed in certain UI design cases
-	if GuiObject:IsA("GuiBase") then
-		local AspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-		AspectRatioConstraint.AspectRatio = Ratio or 1
-		AspectRatioConstraint.DominantAxis = Enum.DominantAxis.Height
-		AspectRatioConstraint.Parent = GuiObject
-
-		return AspectRatioConstraint
-	end
-end
-
-function mod.Tween(Object, PropertiesToTween, DelayThread) -- The DelayThread should be true/false and specifes whether the tween delays the current thread or not
-	if Object ~= nil then
-		if PropertiesToTween ~= nil and typeof(PropertiesToTween) == "table" then
-			if DelayThread == nil or typeof(DelayThread) == "boolean" then
-				local Tween = TweenService:Create(Object, TWEEN_INFO, PropertiesToTween)
-				local function PlayTween()
-					Tween:Play()
-					Tween.Completed:Wait()
-					Tween:Destroy()
-					Tween = nil
-				end
-				if DelayThread then
-					PlayTween()
-				else
-					coroutine.wrap(PlayTween)()
-				end
-				return Tween
-			else
-				warn("When specified, the DelayThread argument (argument 3) should be a boolean (true/false) detailing whether to yield the current thread while the tween is playing or not")
-			end
-		else
-			warn("PropertiesToTween (argument 2) isn't specified or isn't a table of object properties to tween.")
-		end
-	else
-		warn("The Object (argument 1) isn't specified")
-	end
-end
---]]]]></ProtectedString>
-							<int64 name="SourceAssetId">-1</int64>
-							<BinaryString name="Tags"></BinaryString>
-							<UniqueId name="UniqueId">0ee705e8faf759c20180fd2000018ead</UniqueId>
-						</Properties>
-					</Item>
-				</Item>
-				<Item class="Folder" referent="RBX046D9CEC34804E6ABA259934A524ADEC">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-						<string name="Name">Components</string>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-						<UniqueId name="UniqueId">0ee705e8faf759c20180fd200001887d</UniqueId>
-					</Properties>
-					<Item class="ModuleScript" referent="RBXCBCC1A403DAE4FD2A94EF3FBAD18D7CC">
-						<Properties>
-							<BinaryString name="AttributesSerialize"></BinaryString>
-							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">GridMenu</string>
-							<string name="ScriptGuid">{62E62259-21F5-4978-9802-47BC553B099D}</string>
-							<ProtectedString name="Source"><![CDATA[--[[
-This component provides a menu that has multiple options the user can select
-via a grid of options.
-
-Default UI scheme is designed for specific games
-
-By udev2192
-]]--
-
-local ZERO_UDIM2 = UDim2.new(0, 0, 0, 0)
-local PRIMARY_COMPONENT_ZINDEX = 3
-local MENU_FRAME_ZINDEX = 1
-local CLOSE_BUTTON_NAME = "CloseButton"
-
-local Package = script.Parent
-local BaseComponent = require(Package:WaitForChild("BaseComponent"))
-local IconButton = require(Package:WaitForChild("IconButton"))
-local Util = BaseComponent.GetUtils()
-
-local GridMenu = {}
-GridMenu.__index = GridMenu
-
--- The default name used for the GridMenu gui instance.
-GridMenu.GuiName = script.Name
-
---[[
-The color used by the closed button create in the
-corresponding constructor.
-]]--
-GridMenu.CloseButtonColor = Color3.fromHSV(0, 1, 0.6)
-
-GridMenu.CloseButtonCornerRadius = BaseComponent.DefaultCornerRadius
-GridMenu.ContentFrameSize = UDim2.new(0.85, 0, 0.6, 0)
---GridMenu.CloseButtonAspectRatio = 1
-
--- The color gradient of the line at the top of the menu
-GridMenu.HeaderLineGradient = ColorSequence.new({
-	ColorSequenceKeypoint.new(0, Color3.fromHSV(0, 0, 1)),
-	ColorSequenceKeypoint.new(1, Color3.fromHSV(0, 0, 0.5))
-})
-
--- Toggles a component/GUI instance's visibility.
-local function ToggleGuiVisibility(Gui, IsVisible)
-	if typeof(Gui) == "Instance" then
-		Gui.Visible = IsVisible
-	elseif typeof(Gui) == "table" and Gui.SetVisible ~= nil then
-		Gui.SetVisible(IsVisible)
-	end
-end
-
--- Gets the GUI instance from a component.
-local function GetGuiFromComponent(Component)
-	if typeof(Component) == "Instance" then
-		return Component
-	elseif typeof(Component) == "table" and Component.Gui ~= nil then
-		return Component.Gui
-	else
-		return nil
-	end
-end
-
-function GridMenu.New()
-	local Menu = BaseComponent.New("Frame")
-	local IsFadingIn = false
-	
-	local CloseButtonInit = IconButton.New("X")
-	local CloseConnection
-	local IsClosing = false
-	
-	local DefaultCornerRadius = BaseComponent.DefaultCornerRadius
-
-	Menu.CloseButton = CloseButtonInit
-	
-	-- The contents in the content frame.
-	local Contents = {}
-	
-	local ContentFrameSize = GridMenu.ContentFrameSize
-	
-	-- If the menu will override a GUI instance's
-	-- layout order.
-	Menu.OverridesLayoutOrder = true
-	
-	-- The next size of the line displayed at the top.
-	Menu.HeaderLineSize = UDim2.new(ContentFrameSize.X.Scale, ContentFrameSize.X.Offset, 0.01, 0)
-	
-	-- The next position of the menu frame.
-	Menu.FramePosition = UDim2.new(0.5, 0, 0.5, 0)
-	
-	-- The position offset of the menu frame when it gets hidden.
-	Menu.FrameHideOffset = UDim2.new(0, 0, 0, 0)--UDim2.new(0, 0, 0.1, 0)
-	
-	-- Background image transparency when the menu is made visible.
-	Menu.BackImageTransparency = 0.5
-	
-	Menu.CornerRadius = UDim.new(0, 10)
-	
-	Menu.Rows = 2
-	Menu.Columns = 5
-	Menu.ContentPadding = UDim2.new(0.05, 0, 0.05, 0)
-	
-	local function GetHiddenHeaderLineSize()
-		local LineSize = Menu.HeaderLineSize or ZERO_UDIM2
-		
-		return UDim2.new(0, 0, LineSize.Y.Scale, LineSize.Y.Offset)
-	end
-	
-	local function GetFrameHiddenPos()
-		return Menu.FramePosition + Menu.FrameHideOffset
-	end
-	
-	local function ToggleCloseVisible(IsVisible)
-		local CloseButton = Menu.CloseButton
-		if CloseButton ~= nil then
-			CloseButton.SetVisible(Menu.ShowsCloseButton and IsVisible)
-		end
-	end
-	
-	Menu.SetProperty("ShowsCloseButton", true, function(IsVisible)
-		IsVisible = IsVisible and IsFadingIn
-		
-		CloseButtonInit.Gui.Visible = IsVisible
-	end)
-	
-	-- Create the GUI components
-	local MenuFrame = Menu.Gui
-	MenuFrame.Visible = false
-	MenuFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	MenuFrame.BackgroundTransparency = 1
-	MenuFrame.ClipsDescendants = true
-	MenuFrame.ZIndex = MENU_FRAME_ZINDEX
-	MenuFrame.Name = GridMenu.GuiName
-	MenuFrame.Position = GetFrameHiddenPos()
-	assert(MenuFrame ~= nil, "The GUI from the BaseComponent is missing.")
-	
-	local Theme = Menu.GetTheme()
-	
-	local TitleLabel = Theme.MakeInstance("TextLabel", {
-		Font = Enum.Font.GothamBold,
-		Size = UDim2.new(ContentFrameSize.X.Scale, ContentFrameSize.X.Offset, 0.1, 0),
-		Position = UDim2.new(0.5, 0, 0.15, 0),
-		TextTransparency = 1,
-		TextStrokeTransparency = 1,
-		BackgroundTransparency = 1,
-		Text = "Title",
-		Name = "Title",
-		
-		TextXAlignment = Enum.TextXAlignment.Left,
-		
-		ZIndex = PRIMARY_COMPONENT_ZINDEX,
-		
-		Parent = MenuFrame
-	})
-	
-	local HeaderLine = Theme.MakeInstance("Frame", {
-		Size = GetHiddenHeaderLineSize(),
-		Position = UDim2.new(0.5, 0, 0.25, 0),
-		BorderSizePixel = 0,
-		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-		BackgroundTransparency = 0,
-		Name = "HeaderLine",
-		
-		ZIndex = PRIMARY_COMPONENT_ZINDEX,
-		
-		Parent = MenuFrame
-	})
-	
-	local CloseButtonGui = CloseButtonInit.Gui
-	if CloseButtonGui ~= nil then
-		ToggleCloseVisible(false)
-		CloseButtonGui.BackgroundColor3 = GridMenu.CloseButtonColor
-
-		CloseButtonGui.AnchorPoint = Vector2.new(0.5, 0.5)
-		CloseButtonGui.Size = UDim2.new(0.1, 0, 0.1, 0)
-		CloseButtonGui.Position = UDim2.new(0.9, 0, 0.125, 0)
-		
-		--BaseComponent.AddAspectRatio(CloseButtonGui, GridMenu.CloseButtonAspectRatio)
-
-		CloseButtonGui.ZIndex = PRIMARY_COMPONENT_ZINDEX
-
-		CloseButtonGui.Name = CLOSE_BUTTON_NAME
-
-		CloseConnection = CloseButtonInit.GetButton().Activated:Connect(function()
-			if IsClosing == false then
-				IsClosing = true
-
-				Menu.SetVisible(false)
-
-				IsClosing = false
-			end
-		end)
-		
-		BaseComponent.AddCornerRadius(CloseButtonGui, GridMenu.CloseButtonCornerRadius)
-
-		CloseButtonGui.Parent = Menu.Gui
-	else
-		error("Close button IconButton is missing the .Gui property.")
-	end
-
-	CloseButtonInit = nil
-	
-	-- Initialize the frame that display the buttons/labels
-	local ContentFrame = Theme.MakeInstance("Frame", {
-		Size = GridMenu.ContentFrameSize,
-		Position = UDim2.new(0.5, 0, 0.6, 0),
-		BackgroundTransparency = 1,
-		BorderSizePixel = 0,
-		ClipsDescendants = true,
-		Name = "ContentFrame",
-		
-		ZIndex = PRIMARY_COMPONENT_ZINDEX,
-		
-		Parent = MenuFrame
-	})
-	
-	-- Apply a grid layout to the content frame
-	local Layout = Theme.MakeInstance("UIGridLayout", {
-		SortOrder = Enum.SortOrder.LayoutOrder,
-
-		HorizontalAlignment = Enum.HorizontalAlignment.Center,
-		VerticalAlignment = Enum.VerticalAlignment.Center
-	})
-	
-	Menu.ContentFrame = ContentFrame
-	
-	--[[
-	Updates the layout of the content frame.
-	]]--
-	function Menu.UpdateLayout()
-		local Padding = Menu.ContentPadding
-		Layout.CellPadding = Padding
-		Layout.CellSize = BaseComponent.GetGridItemSize(Menu.Rows, Menu.Columns, Padding)
-	end
-	
-	Menu.UpdateLayout()
-	
-	--[[
-	<boolean> - If the grid layout is currently being used.
-	]]--
-	Menu.SetProperty("IsUsingGrid", false, function(IsUsing)
-		if IsUsing == true then
-			Menu.UpdateLayout()
-			Layout.Parent = ContentFrame
-		else
-			if Layout.Parent ~= nil then
-				Layout.Parent = nil
-			end
-		end
-	end)
-	
-	-- Apply a gradient to the animation line
-	Theme.MakeInstance("UIGradient", {
-		Color = GridMenu.HeaderLineGradient,
-		Rotation = 0,
-		Transparency = NumberSequence.new({
-			NumberSequenceKeypoint.new(0, 1),
-			NumberSequenceKeypoint.new(0.5, 0),
-			NumberSequenceKeypoint.new(1, 1)
-		}),
-		Parent = HeaderLine
-	})
-	
-	-- Give the menu rounded corners
-	local MenuCorner = BaseComponent.AddCornerRadius(MenuFrame, DefaultCornerRadius)
-	
-	DefaultCornerRadius, ContentFrameSize = nil
-	
-	-- Refreshes the stored components' layout order.
-	local function RefreshLayoutOrder()
-		if Menu.OverridesLayoutOrder == true then
-			for i, v in pairs(Contents) do
-				local Gui = GetGuiFromComponent(v)
-				
-				if Gui ~= nil then
-					Gui.LayoutOrder = i
-				end
-				
-				Gui = nil
-			end
-		end
-	end
-	
-	-- Visibility handler
-	local function OnVisibleChanged(IsVisible)	
-		local Transparency
-		local NewImageTransparency
-		local NewHeaderLineSize
-		local DestinationPos
-		local DestinationOffsetted = GetFrameHiddenPos()
-		
-		-- Determine destination tween variables
-		if IsVisible == true then
-			Transparency = 0
-			NewImageTransparency = Menu.BackImageTransparency or 0
-			
-			NewHeaderLineSize = Menu.HeaderLineSize
-			DestinationPos = Menu.FramePosition
-			
-			IsFadingIn = true
-		else
-			Transparency = 1
-			NewImageTransparency = 1
-			
-			NewHeaderLineSize = GetHiddenHeaderLineSize()
-			DestinationPos = GetFrameHiddenPos()
-			
-			IsFadingIn = false
-		end
-		
-		-- Animate
-		local Info = Menu.TweeningInfo
-		if Info ~= nil then
-			if IsFadingIn == true and IsVisible == true then
-				MenuFrame.Visible = true
-			end
-			
-			ToggleCloseVisible(IsVisible)
-			
-			Util.Tween(MenuFrame, Info, {Position = DestinationPos, BackgroundTransparency = Transparency})
-			Util.Tween(HeaderLine, Info, {Size = NewHeaderLineSize})
-			Util.Tween(TitleLabel, Info, {TextTransparency = Transparency})
-			
-			--if BackgroundImage ~= nil then
-			--	Util.Tween(BackgroundImage, Info, {ImageTransparency = NewImageTransparency})
-			--end
-			
-			for i, v in pairs(Contents) do
-				ToggleGuiVisibility(v, IsVisible)
-			end
-			
-			task.wait(Info.Time)
-			
-			if IsFadingIn == false and IsVisible == false then
-				MenuFrame.Visible = false
-				MenuFrame.Position = DestinationOffsetted
-			end
-		end
-	end
-	
-	--[[
-	Returns:
-	<boolean> - If the GUI is currently trying to be shown.
-	]]--
-	function Menu.IsFadingIn()
-		return IsFadingIn
-	end
-	
-	--[[
-	Sets the title displayed at the top of the menu.
-	
-	Params:
-	Title <string> - The title to display.
-	]]--
-	function Menu.SetTitle(Title)
-		assert(typeof(Title) == "string", "Argument 1 must be a string.")
-		
-		TitleLabel.Text = Title
-	end
-	
-	--[[
-	Adds a component to the content frame.
-	
-	Params:
-	Component <variant> - The component or GUI instance to add.
-	LayoutOrder <number> - An optional argument that specifies
-						   the component to add's layout order.
-	]]--
-	function Menu.AddComponent(Component, LayoutOrder)
-		if typeof(LayoutOrder) == "number" then
-			table.insert(Contents, LayoutOrder, Component)
-		else
-			table.insert(Contents, Component)
-		end
-		
-		RefreshLayoutOrder()
-		GetGuiFromComponent(Component).Parent = ContentFrame
-	end
-	
-	--[[
-	Destroys the close button used and disconnects the
-	event code used to make it work.
-	]]--
-	function Menu.DestroyCloseButton()
-		local CloseButton = Menu.CloseButton
-		if CloseButton ~= nil then
-			CloseButton.Dispose()
-			CloseButton = nil
-		end
-
-		if CloseConnection ~= nil then
-			CloseConnection:Disconnect()
-			CloseConnection = nil
-
-			IsClosing = nil
-		end
-	end
-	
-	--[[
-	Removes a component from the content frame.
-	
-	Params:
-	Component <variant> - The component or GUI instance to remove.
-	]]--
-	function Menu.RemoveComponent(Component)
-		local Index = table.find(Contents, Component)
-		if Index ~= nil then
-			-- Maually remove from the table to preserve
-			-- the layout order of other components.
-			Contents[Index] = nil
-		end
-		
-		GetGuiFromComponent(Component).Parent = nil
-		RefreshLayoutOrder()
-	end
-	
-	Menu.VisibleChanged.Connect(OnVisibleChanged)
-	
-	Menu.AddDisposalListener(function()
-		Menu.VisibleChanged.Disconnect(OnVisibleChanged)
-		Menu.DestroyCloseButton()
-		
-		-- Only destroy Layout and MenuFrame because
-		-- it contains all the other UI components
-		-- used to make the menu.
-		Layout:Destroy()
-		MenuFrame:Destroy()
-		
-		-- Then, garbage collect the GUI.
-		MenuFrame, TitleLabel, HeaderLine, ContentFrame = nil, nil, nil, nil
-	end)
-	
-	return Menu
-end
-
-return GridMenu]]></ProtectedString>
-							<int64 name="SourceAssetId">-1</int64>
-							<BinaryString name="Tags"></BinaryString>
-							<UniqueId name="UniqueId">0ee705e8faf759c20180fd2000018eae</UniqueId>
-						</Properties>
-					</Item>
-					<Item class="ModuleScript" referent="RBX6A9D5D5DB4794D26A31C5A7EDB84FF3C">
-						<Properties>
-							<BinaryString name="AttributesSerialize"></BinaryString>
-							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">BaseComponent</string>
-							<string name="ScriptGuid">{01558004-C3B3-4CC7-A767-C76A98830262}</string>
-							<ProtectedString name="Source"><![CDATA[--[[
-This acts as a base container/interface for a UI component.
-
-Hiding/showing handling functions can be binded to signals
-that are provided.
-
-By udev2192
-]]--
-
-local UI_CORNER_CLASS_NAME = "UICorner"
-
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
-local UtilRepModules = RepModules:WaitForChild("Utils")
-local Themes = script.Parent.Parent:WaitForChild("Themes")
-
-local Object = require(UtilRepModules:WaitForChild("Object"))
-local Signal = require(UtilRepModules:WaitForChild("Signal"))
-local Utils = require(UtilRepModules:WaitForChild("Utility"))
-
-local BaseComponent = {}
-BaseComponent.__index = BaseComponent
-
-export type Component = Object.ObjectPool & {
-	Gui: GuiObject,
-	TweeningInfo: TweenInfo,
-	HandleBeforeDispose: boolean,
-	AutoDestroyGui: boolean,
-	BackImageTransparency: number,
-	CornerRadius: UDim?,
-	
-	GetTheme: () -> {},
-	GetBackground: () -> ImageLabel,
-	SetVisible: (IsVisible: boolean) -> (),
-	SetImage: (Image: ImageLabel, DestroyLast: boolean) -> (),
-	
-	VisibleChanged: Signal.Signal,
-}
-
-BaseComponent.BgImageDefaultZIndex = 2
-BaseComponent.DefaultTheme = "Wavy"
-
-BaseComponent.AspectRatioDominantAxis = Enum.DominantAxis.Height
-
--- For reference
-BaseComponent.DefaultCornerRadius = UDim.new(0, 10)
-BaseComponent.DefaultGradientFade = NumberSequence.new({
-	NumberSequenceKeypoint.new(0, 1),
-	NumberSequenceKeypoint.new(0.25, 0.25),
-	NumberSequenceKeypoint.new(0.75, 0.25),
-	NumberSequenceKeypoint.new(1, 1)
-})
-
---[[
-Returns:
-<table> - The table of general utility functions
-]]--
-function BaseComponent.GetUtils()
-	return Utils
-end
-
---[[
-Calculates a cell size to be used with a UIGridLayout
-based on the number of rows, columns, and the cell padding
-
-Params:
-Rows <number> - The desired number of rows
-Columns <number> - The desired number of columns
-Padding <UDim2> - THe desired content padding
-]]--
-function BaseComponent.GetGridItemSize(Rows: number, Columns: number, Padding: number): UDim2
-	return UDim2.new(
-		(1 / math.max(Rows, 1)) - Padding.X.Scale,
-		-Padding.X.Offset,
-		(1 / math.max(Columns, 1)) - Padding.Y.Scale,
-		-Padding.Y.Offset
-	)
-end
-
---[[
-Adds a UIGradient fade to the specified GUI component
-
-Params:
-Ui <Instance> - The UI object to apply the gradient to
-Transparency <NumberSequence?> - The transparency sequence to use
-
-Returns:
-<UIGradient> - The UIGradient created
-]]--
-function BaseComponent.AddGradientFade(Ui: Instance?, Transparency: NumberSequence?): UIGradient
-	return Utils.CreateInstance("UIGradient", {
-		Transparency = Transparency or BaseComponent.DefaultGradientFade,
-		Parent = Ui
-	})
-end
-
---[[
-Applies a UI corner to the UI component provided.
-
-Params:
-Ui <Instance> - The component to apply a UI corner to.
-Radius <UDim> - The radius to apply.
-
-Returns:
-<UIAspectRatioConstraint> - The aspect ratio constraint used.
-]]--
-function BaseComponent.AddCornerRadius(Ui: Instance, Radius: UDim): UICorner
-	return Utils.CreateInstance("UICorner", {
-		CornerRadius = Radius or BaseComponent.DefaultCornerRadius,
-		Parent = Ui
-	})
-end
-
---[[
-Applies an aspect ratio to a UI component.
-
-Params:
-Ui <Instance> - The component to apply an aspect ratio to.
-Ratio <number> - The aspect ratio of the component (from 0-1).
-
-Returns:
-<UIAspectRatioConstraint> - The aspect ratio constraint used.
-]]--
-function BaseComponent.AddAspectRatio(Ui: Instance, Ratio: number): UIAspectRatioConstraint
-	return Utils.CreateInstance("UIAspectRatioConstraint", {
-		DominantAxis = BaseComponent.AspectRatioDominantAxis,
-		AspectRatio = Ratio,
-		Parent = Ui
-	})
-end
-
---[[
-Fades to a certain text color for a text-based GUI component
-
-Params:
-TextObject <GuiObject> - The text based component to fade
-Color <Color3> - The destination text color.
-Duration <number> - How long to do the fade
-
-Returns:
-<BaseTween> - The tween created
-]]--
-function BaseComponent.FadeTextColor(TextObject: GuiObject, Color: Color3, Duration: number): Tween
-	return Utils.Tween(
-		TextObject,
-		TweenInfo.new(Duration, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
-		{TextColor3 = Color}
-	)
-end
-
---[[
-Creates a frame that can be used as a button overlay for hover/click effects
-
-Params:
-Button <GuiObject> - The GuiObject to use when creating the overlay
-Radius <UDim> (optional) - If specified, creates a UICorner to go with
-						   the overlay using this argument as the radius
-
-Returns:
-<Frame> - The overlay created
-]]--
-function BaseComponent.CreateButtonOverlay(Button: GuiObject, Radius: UDim?) : Frame
-	local Frame = Utils.CreateInstance("Frame", {
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		Size = UDim2.new(1, 0, 1, 0),
-		Position = UDim2.new(0.5, 0, 0.5, 0),
-
-		BackgroundTransparency = 1,
-		BackgroundColor3 = Color3.new(1, 1, 1),
-		BorderSizePixel = 0
-	})
-	
-	if Radius then
-		BaseComponent.AddCornerRadius(Frame, Radius)
-	end
-	
-	return Frame
-end
-
---[[
-Constructs the BaseComponent.
-
-Params:
-ClassName (string) - The name of the instance/class to construct
-ThemeName (string) (optional) - The name of the theme used to construct
-							  	the instance/class.
-							  	
-Returns:
-<BaseComponent> - The constructed object
-]]--
-function BaseComponent.New(ClassName: string, ThemeName: string?): Component
-	assert(typeof(ClassName) == "string", "Argument 1 must be a string.")
-
-	ThemeName = ThemeName or BaseComponent.DefaultTheme
-
-	local Obj = Object.New("BaseComponent")
-
-	-- Create the GUI based on the theme provided.
-	local UsedTheme = require(Themes:WaitForChild(ThemeName))
-
-	local IsFadingIn = false
-	
-	local FrameCorner
-	local BackgroundImage
-	local BGImageCorner
-
-	--[[
-	The GUI created from initialization.
-	]]--
-	Obj.Gui = UsedTheme.MakeInstance(ClassName)
-
-	--[[
-	The object's preferred tweening info/animation style.
-	]]--
-	Obj.TweeningInfo = TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
-
-	--[[
-	If the hiding animation is played when
-	the object is being disposed.
-	]]--
-	Obj.HandleBeforeDispose = true
-
-	--[[
-	If the GUI is destroyed when Dispose()
-	is called. This waits for the hide animation
-	to be finished if it will be played during
-	object disposal.
-	]]--
-	Obj.AutoDestroyGui = true
-
-	--[[
-	<number> - How transparent the background image is.
-	]]--
-	Obj.BackImageTransparency = 0.5
-	
-	--[[
-	<UDim?> - The dimensions of the UI's corner radius.
-	]]--
-	Obj.SetProperty("CornerRadius", BaseComponent.DefaultCornerRadius, function(Radius)
-		if Radius == nil or Radius == UDim.new(0, 0) then
-			if FrameCorner ~= nil then
-				FrameCorner:Destroy()
-				FrameCorner = nil
-			end
-		else
-			local Gui = Obj.Gui
-			if Gui ~= nil then
-				local Corner = Gui:FindFirstChildOfClass(UI_CORNER_CLASS_NAME)
-					or Instance.new(UI_CORNER_CLASS_NAME)
-				FrameCorner = Corner
-				
-				if Corner ~= nil then
-					Corner.CornerRadius = Radius
-					Corner.Parent = Gui
-				end
-			end
-		end
-		
-		if BGImageCorner ~= nil then
-			BGImageCorner.CornerRadius = Radius
-		end
-	end)
-
-	--[[
-	Fired when the GUI is requested to be visible or invisble.
-	
-	Params:
-	Visible (boolean) - Whether the GUI is being requested for
-						visibility or not.
-	]]--
-	Obj.VisibleChanged = Signal.New()
-
-	--[[
-	Returns the GUI scheme associated.
-	]]--
-	function Obj.GetTheme()
-		return UsedTheme
-	end
-	
-	--[[
-	Returns:
-	<ImageLabel> - The ImageLabel used as the background. If none is
-				   currently set, nil is returned.
-	]]--
-	function Obj.GetBackground()
-		return BackgroundImage
-	end
-
-	--[[
-	Toggles the GUI's visibility and fires it.
-	
-	Params:
-	IsVisible (boolean) - Whether or not to make the GUI visible.
-	]]--
-	function Obj.SetVisible(IsVisible)
-		local Gui = Obj.Gui
-		local VisibleChanged = Obj.VisibleChanged
-
-		if Gui ~= nil and VisibleChanged ~= nil then
-			if IsVisible == true then
-				--Gui.Visible = true
-				IsFadingIn = true
-				VisibleChanged.Fire(true)
-			else
-				IsFadingIn = false
-				VisibleChanged.Fire(false)
-				--Gui.Visible = false
-			end
-
-			if BackgroundImage ~= nil then
-				if IsVisible == IsFadingIn then
-					local BGTransparency
-
-					if IsFadingIn == true then
-						BGTransparency = Obj.BackImageTransparency or 0
-					else
-						BGTransparency = 1
-					end
-
-					local TweeningInfo = Obj.TweeningInfo
-
-					if TweeningInfo ~= nil then
-						coroutine.wrap(function()
-							if IsVisible == IsFadingIn and IsFadingIn == true then
-								BackgroundImage.Visible = true
-							end
-
-							local Tween = Utils.Tween(
-								BackgroundImage,
-								TweeningInfo,
-								{ImageTransparency = BGTransparency}
-							)
-
-							task.wait(TweeningInfo.Time)
-
-							-- See if it animated back before
-							-- toggling visibility
-							if IsVisible == IsFadingIn and IsFadingIn == false then
-								BackgroundImage.Visible = false
-								BackgroundImage.ImageTransparency = 1
-							end
-						end)()
-					else
-						if IsVisible == IsFadingIn then
-							BackgroundImage.ImageTransparency = BGTransparency
-						end
-					end 
-				end
-			end
-		end
-
-		Gui, VisibleChanged = nil, nil
-	end
-
-	--[[
-	Sets the ImageLabel instance to use as a background.
-	If an ImageLabel is provided, its ZIndex, Transparency,
-	and Parent properties will be overriden.
-	
-	A UI corner will also be added to the ImageLabel.
-	
-	Params:
-	Image <ImageLabel> - The image label instance to use.
-						 Specify with nil the current one.
-	DestroyLast <boolean> - Whether or not to destroy the
-							last background image.
-	]]--
-	function Obj.SetImage(Image, DestroyLast)
-		assert(Image == nil or (typeof(Image) == "Instance" and Image:IsA("ImageLabel")), "Argument 1 must be an ImageLabel or nil.")
-
-		local LastImage
-
-		if Image ~= nil then
-			if DestroyLast == true then
-				LastImage = BackgroundImage
-			end
-
-			BackgroundImage = Image
-			BGImageCorner = BaseComponent.AddCornerRadius(Image, BaseComponent.DefaultCornerRadius)
-
-			Image.ZIndex = BaseComponent.BgImageDefaultZIndex
-
-			local Gui = Obj.Gui
-			if Gui ~= nil then
-				if Gui.Visible == true then
-					Image.ImageTransparency = Obj.BackImageTransparency or 0
-					Image.Visible = true
-				else
-					Image.ImageTransparency = 1
-					Image.Visible = false
-				end
-
-				Image.Parent = Gui
-			end
-		elseif BackgroundImage ~= nil then
-			BackgroundImage.Parent = nil
-			BackgroundImage, BGImageCorner = nil
-		end
-
-		if DestroyLast == true then
-			LastImage = LastImage or BackgroundImage
-
-			if LastImage ~= nil then
-				LastImage:Destroy()
-			end
-		end
-	end
-
-	Obj.OnDisposal = function()
-		if Obj.HandleBeforeDispose == true then
-			Obj.SetVisible(false)
-		end
-
-		local VisibleChanged = Obj.VisibleChanged
-		if VisibleChanged ~= nil then
-			VisibleChanged.DisconnectAll()
-		end
-		VisibleChanged = nil
-		
-		Obj.SetImage(nil)
-
-		if Obj.AutoDestroyGui == true then
-			local Gui = Obj.Gui
-			if Gui ~= nil then
-				Gui:Destroy()
-			end
-			Gui = nil
-		end
-
-		UsedTheme = nil
-	end
-
-	return Obj
-end
-
-return BaseComponent]]></ProtectedString>
-							<int64 name="SourceAssetId">-1</int64>
-							<BinaryString name="Tags"></BinaryString>
-							<UniqueId name="UniqueId">0ee705e8faf759c20180fd2000018eaf</UniqueId>
-						</Properties>
-					</Item>
-					<Item class="ModuleScript" referent="RBX3CFC13C9BA624068B92AB9CD2AFD4A60">
-						<Properties>
-							<BinaryString name="AttributesSerialize"></BinaryString>
-							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">IconButton</string>
-							<string name="ScriptGuid">{72500B33-BA84-4E21-8F45-EBEF02FEAA21}</string>
-							<ProtectedString name="Source"><![CDATA[--[[
-A text button but with an icon and animation to go with it.
-
-You can set if it's clickable (so there won't have to be a separate
-class for the TextLabel variant)
-
-The image itself is also able to be toggled.
-
-By udev2192
-]]--
-
-local ZERO_UDIM2 = UDim2.new(0, 0, 0, 0)
-
-local BaseComponent = require(script.Parent:WaitForChild("BaseComponent"))
-local Util = BaseComponent.GetUtils()
-
-local IconButton = {}
-IconButton.__index = IconButton
-
-local DefaultSounds = script:WaitForChild("DefaultSounds")
-
-local function AssertBoolean(Value, ArgNum)
-	assert(typeof(Value) == "boolean", "Argument " .. ArgNum .. " must be a boolean")
-end
-
-function IconButton.New(ButtonText)
-	local Button = BaseComponent.New("Frame")
-	local ButtonGui = Button.Gui
-	local Theme = Button.GetTheme()
-	
-	local IsFadingIn = false
-	local HoverEffectFadingIn = false
-	local ClickEffectEnabled = false
-	
-	local ClickEffectConnections = {}
-	
-	local HoverEffectFrame: Frame
-	
-	-- The background transparency of the button when it's visible.
-	Button.BackTransparency = 0
-	
-	Button.HoverEffectSizeOffset = UDim2.new(0.1, 0, 0.1, 0)
-	Button.ClickSizeOffset = UDim2.new(0, 10, 0, 10)--UDim2.new(0.1, 0, 0.1, 0)
-	Button.ClickEffectTweenInfo = TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
-	
-	Button.ClickSound = DefaultSounds:WaitForChild("Click")
-	Button.HoverOnSound = DefaultSounds:WaitForChild("HoverOn")
-	Button.HoverOffSound = nil
-	
-	Theme.ApplyProperties(ButtonGui, ButtonGui.ClassName, {
-		Visible = false,
-		Size = UDim2.new(0.5, 0, 0.1, 0),
-		Position = UDim2.new(0.5, 0, 0.5, 0),
-		BackgroundTransparency = 1,
-		BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-		BorderSizePixel = 0,
-		ClipsDescendants = false,
-		Name = script.Name
-	})
-	
-	-- Create the GUI components that make up the button.
-	local RealButton = Theme.MakeInstance("TextButton", {
-		-- The actual button.
-		Visible = true,
-		
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		Size = UDim2.new(1, 0, 1, 0),
-		Position = UDim2.new(0.5, 0, 0.5, 0),
-		
-		TextStrokeTransparency = 1,
-		BackgroundTransparency = 1,
-		BorderSizePixel = 0,
-		Text = "",
-		Name = "InputReceiver",
-		
-		ZIndex = 3,
-		AutoButtonColor = false,
-		ClipsDescendants = false,
-		
-		Parent = ButtonGui
-	})
-	
-	local ButtonText = Theme.MakeInstance("TextLabel", {
-		Size = UDim2.new(0.9, 0, 0.9, 0),
-		Position = UDim2.new(0.5, 0, 0.5, 0),
-		BackgroundTransparency = 1,
-		BorderSizePixel = 0,
-		TextTransparency = 1,
-		TextStrokeTransparency = 1,
-		Text = ButtonText or "BUTTON",
-		Name = "ButtonText",
-		
-		ZIndex = 2,
-		Parent = ButtonGui
-	})
-	
-	local IconFrame = Theme.MakeInstance("ImageLabel", {
-		Visible = false,
-		Size = UDim2.new(0.3, 0, 0.5, 0),
-		Position = UDim2.new(0.3, 0, 0.5, 0),
-		ImageTransparency = 1,
-		BackgroundTransparency = 1,
-		BorderSizePixel = 0,
-		ImageColor3 = ButtonText.TextColor3,
-		ScaleType = Enum.ScaleType.Fit,
-		Image = "",
-		Name = "Icon",
-		
-		ZIndex = 2,
-		Parent = ButtonGui
-	})
-	
-	-- Give the button rounded corners
-	--local UICorner = Theme.MakeInstance("UICorner", {
-	--	CornerRadius = IconButton.DefaultCornerRadius,
-	--	Parent = ButtonGui
-	--})
-	
-	-- Visibility handler
-	local function OnVisibleChanged(IsVisible)	
-		local Transparency = 0
-		local BGTransparency = 0
-		local NewHeaderLineSize = nil
-		local DestinationPos = nil
-
-		-- Determine destination tween variables
-		if IsVisible == true then
-			Transparency = 0
-			BGTransparency = Button.BackTransparency
-
-			IsFadingIn = true
-		else
-			Transparency = 1
-			BGTransparency = 1
-
-			IsFadingIn = false
-		end
-
-		-- Animate
-		local Info = Button.TweeningInfo
-		if Info ~= nil then
-			if IsFadingIn == true and IsVisible == true then
-				ButtonGui.Visible = true
-			end
-			
-			Util.Tween(ButtonGui, Info, {BackgroundTransparency = BGTransparency})
-			Util.Tween(ButtonText, Info, {TextTransparency = Transparency, TextStrokeTransparency = 1})
-			Util.Tween(IconFrame, Info, {ImageTransparency = Transparency})
-
-			task.wait(Info.Time)
-
-			if IsFadingIn == false and IsVisible == false then
-				ButtonGui.Visible = false
-			end
-		end
-	end
-	
-	--[[
-	Returns:
-	
-	<TextButton> - The actual button that you can bind input to.
-	]]--
-	function Button.GetButton()
-		return RealButton
-	end
-	
-	--[[
-	Returns:
-	
-	<TextLabel> - The display text label for the button.
-	]]--
-	function Button.GetDisplayLabel()
-		return ButtonText
-	end
-	
-	--[[
-	Sets the text displayed on the button.
-	
-	Params:
-	Text <string> - The text to display.
-	]]--
-	function Button.SetText(Text)
-		ButtonText.Text = Text
-	end
-	
-	--[[
-	Sets the icon displayed via the specified url.
-	
-	Params:
-	URL <Color3> - The URL of the image to display.
-				   If this argument is nil, the image is hidden
-				   and the button text is centered.
-	]]--
-	function Button.SetIcon(URL)
-		if URL ~= nil then
-			ButtonText.Size = UDim2.new(0.6, 0, 0.9, 0)
-			ButtonText.Position = UDim2.new(0.6, 0, 0.5, 0)
-			
-			IconFrame.Image = URL
-			IconFrame.Visible = true
-		else
-			IconFrame.Visible = false
-			IconFrame.Image = ""
-			
-			ButtonText.Size = UDim2.new(0.9, 0, 0.9, 0)
-			ButtonText.Position = UDim2.new(0.5, 0, 0.5, 0)
-		end
-	end
-	
-	--[[
-	Sets the color of the UI components that make up the button.
-	
-	Params:
-	NewColor <string> - The color to change to.
-	]]--
-	function Button.SetColor(NewColor)
-		ButtonText.TextColor3 = NewColor
-		IconFrame.ImageColor3 = NewColor
-	end
-	
-	--[[
-	Sets if rich text is enabled.
-	
-	Params:
-	UseRichText <boolean> - Whether or not to use rich text.
-	]]--
-	function Button.SetRichTextEnabled(UseRichText)
-		AssertBoolean(UseRichText, 1)
-		
-		ButtonText.RichText = UseRichText
-	end
-	
-	--[[
-	Sets if the button can take in input (including clicks).
-	
-	Params:
-	IsEnabled <boolean> - Whether or not to use rich text.
-	]]--
-	function Button.SetInputEnabled(IsEnabled)
-		AssertBoolean(IsEnabled, 1)
-		
-		RealButton.Visible = IsEnabled
-	end
-	
-	local function SetClickFrameToMaxSize()
-		Util.Tween(HoverEffectFrame, TweenInfo, {
-			Size = RealButton.Size + Button.HoverEffectSizeOffset
-		})
-	end
-	
-	--[[
-	<boolean> - Whether or not there is a hover and click animation
-	]]--
-	Button.SetProperty("ClickEffectEnabled", true, function(Enabled)
-		if Enabled then
-			if ClickEffectEnabled == false then
-				ClickEffectEnabled = true
-				
-				table.insert(ClickEffectConnections, RealButton.MouseLeave:Connect(function()
-					HoverEffectFadingIn = false
-					
-					if HoverEffectFrame then
-						local TweeningInfo = Button.ClickEffectTweenInfo
-						Util.Tween(HoverEffectFrame, TweeningInfo, {
-							BackgroundTransparency = 1,
-						})
-						
-						local Sound = Button.HoverOffSound
-						if Sound then
-							Sound:Play()
-						end
-						
-						local Elapsed = 0
-						local WaitTime = TweeningInfo.Time
-						while true do
-							if HoverEffectFadingIn == false and HoverEffectFrame and Elapsed < WaitTime then
-								Elapsed += task.wait()
-							else
-								break
-							end
-						end
-
-						if HoverEffectFadingIn == false and HoverEffectFrame then
-							HoverEffectFrame:Destroy()
-							HoverEffectFrame = nil
-						end
-					end
-				end))
-				
-				table.insert(ClickEffectConnections, RealButton.MouseEnter:Connect(function()
-					HoverEffectFadingIn = true
-					
-					if HoverEffectFrame == nil then
-						HoverEffectFrame = BaseComponent.CreateButtonOverlay(RealButton, Button.CornerRadius)
-						HoverEffectFrame.Parent = RealButton
-					end
-					
-					Util.Tween(HoverEffectFrame, Button.ClickEffectTweenInfo, {
-						BackgroundTransparency = 0.5
-					})
-					
-					local Sound = Button.HoverOnSound
-					if Sound then
-						Sound:Play()
-					end
-				end))
-				
-				table.insert(ClickEffectConnections, RealButton.Activated:Connect(function()
-					local ClickFrame = BaseComponent.CreateButtonOverlay(RealButton, Button.CornerRadius)
-					ClickFrame.BackgroundTransparency = 0.5
-					ClickFrame.Parent = RealButton
-					
-					local TweeningInfo = Button.ClickEffectTweenInfo
-					Util.Tween(ClickFrame, TweeningInfo, {
-						Size = RealButton.Size + Button.ClickSizeOffset,
-						BackgroundTransparency = 1
-					})
-					
-					local Sound = Button.ClickSound
-					if Sound then
-						Sound:Play()
-					end
-					
-					task.wait(TweeningInfo.Time)
-					ClickFrame:Destroy()
-				end))
-			end
-		else
-			if ClickEffectEnabled then
-				for i, v in pairs(ClickEffectConnections) do
-					v:Disconnect()
-				end
-				
-				ClickEffectConnections = {}
-				ClickEffectEnabled = false
-			end
-		end
-	end)
-	
-	--Button.SetProperty("CornerRadius", BaseComponent.DefaultCornerRadius, function(Radius)
-	--	UICorner.CornerRadius = Radius
-	--end)
-	
-	Button.VisibleChanged.Connect(OnVisibleChanged)
-	
-	Button.AddDisposalListener(function()
-		ButtonGui:Destroy()
-		Button.ClickEffectEnabled = false
-	end)
-	
-	return Button
-end
-
-return IconButton]]></ProtectedString>
-							<int64 name="SourceAssetId">-1</int64>
-							<BinaryString name="Tags"></BinaryString>
-							<UniqueId name="UniqueId">0ee705e8faf759c20180fd2000018eb0</UniqueId>
-						</Properties>
-						<Item class="Folder" referent="RBXD9DD44D37B7749D5956A95DAF9F29C95">
-							<Properties>
-								<BinaryString name="AttributesSerialize"></BinaryString>
-								<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-								<string name="Name">DefaultSounds</string>
-								<int64 name="SourceAssetId">-1</int64>
-								<BinaryString name="Tags"></BinaryString>
-								<UniqueId name="UniqueId">51fe0be2f3123e160210a323000852dc</UniqueId>
-							</Properties>
-							<Item class="Sound" referent="RBX2731DEDCDBC943899481267E52652D14">
-								<Properties>
-									<BinaryString name="AttributesSerialize"></BinaryString>
-									<float name="EmitterSize">10</float>
-									<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-									<NumberRange name="LoopRegion">0 60000 </NumberRange>
-									<bool name="Looped">false</bool>
-									<string name="Name">Click</string>
-									<bool name="PlayOnRemove">false</bool>
-									<NumberRange name="PlaybackRegion">0 60000 </NumberRange>
-									<bool name="PlaybackRegionsEnabled">false</bool>
-									<float name="PlaybackSpeed">1</float>
-									<bool name="Playing">false</bool>
-									<token name="RollOffMode">0</token>
-									<Ref name="SoundGroup">null</Ref>
-									<Content name="SoundId"><url>rbxassetid://12221976</url></Content>
-									<int64 name="SourceAssetId">-1</int64>
-									<BinaryString name="Tags"></BinaryString>
-									<double name="TimePosition">0</double>
-									<UniqueId name="UniqueId">51fe0be2f3123e160210a323000852c6</UniqueId>
-									<float name="Volume">0.5</float>
-									<float name="xmlRead_MaxDistance_3">10000</float>
-								</Properties>
-							</Item>
-							<Item class="Sound" referent="RBXF516A2EDA3C54BF3937D3375CB99175A">
-								<Properties>
-									<BinaryString name="AttributesSerialize"></BinaryString>
-									<float name="EmitterSize">10</float>
-									<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-									<NumberRange name="LoopRegion">0 60000 </NumberRange>
-									<bool name="Looped">false</bool>
-									<string name="Name">HoverOn</string>
-									<bool name="PlayOnRemove">false</bool>
-									<NumberRange name="PlaybackRegion">0 60000 </NumberRange>
-									<bool name="PlaybackRegionsEnabled">false</bool>
-									<float name="PlaybackSpeed">1</float>
-									<bool name="Playing">false</bool>
-									<token name="RollOffMode">0</token>
-									<Ref name="SoundGroup">null</Ref>
-									<Content name="SoundId"><url>rbxassetid://12222170</url></Content>
-									<int64 name="SourceAssetId">-1</int64>
-									<BinaryString name="Tags"></BinaryString>
-									<double name="TimePosition">0</double>
-									<UniqueId name="UniqueId">51fe0be2f3123e160210a323000852b0</UniqueId>
-									<float name="Volume">0.5</float>
-									<float name="xmlRead_MaxDistance_3">10000</float>
-								</Properties>
-							</Item>
-						</Item>
-					</Item>
-					<Item class="ModuleScript" referent="RBXC7EF341036BB48ACB85352E21CA6B07F">
-						<Properties>
-							<BinaryString name="AttributesSerialize"></BinaryString>
-							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">GradientFrame</string>
-							<string name="ScriptGuid">{837987C4-08FC-46D9-8841-F726298DC2C1}</string>
-							<ProtectedString name="Source"><![CDATA[--[[
-A frame with a customizable gradient.
-
-By udev2192
-]]--
-
-local ZERO_UDIM2 = UDim2.new(0, 0, 0, 0)
-
-local BaseComponent = require(script.Parent:WaitForChild("BaseComponent"))
-
-local GradientFrame = {}
-GradientFrame.__index = GradientFrame
-GradientFrame.UiClassName = "Frame"
-GradientFrame.GradientClassName = "UIGradient"
-
---[[
-<table> - A set of gradient transparency presets for convienence.
-]]--
-GradientFrame.TransparencyPresets = {
-	Underline = NumberSequence.new(
-		{
-			NumberSequenceKeypoint.new(0, 1),
-			NumberSequenceKeypoint.new(0.25, 0),
-			NumberSequenceKeypoint.new(0.75, 0),
-			NumberSequenceKeypoint.new(1, 1)
-		}
-	)
-}
-
-function GradientFrame.New()
-	local Frame = BaseComponent.New(GradientFrame.UiClassName)
-	local Theme = BaseComponent.GetTheme()
-
-	local FrameGui = Frame.Gui
-
-	local CurrentGradient
-
-	Theme.ApplyProperties(FrameGui, {
-		Visible = false
-	})
-
-	--[[
-	Stamps a clone of the provided UIGradient onto
-	the frame
-	
-	Params:
-	Gradient <UIGradient> - The UIGradient to attach.
-							Pass nil to this argument to
-							get rid of the gradient.
-	IsCloning <boolean> - If the clone of the gradient will be used
-						  (optional, defaults to true)
-	]]--
-	function Frame.SetGradient(Gradient, IsCloning)
-		if IsCloning == nil then
-			IsCloning = true
-		end
-
-		if Gradient ~= nil then
-			if CurrentGradient ~= nil then
-				Frame.SetGradient(nil)
-			end
-
-			local Used
-
-			if IsCloning == true then
-				Used = Gradient:Clone()
-			else
-				Used = Gradient
-			end
-
-			CurrentGradient = Used
-			Used.Parent = FrameGui
-		else
-			CurrentGradient:Destroy()
-			CurrentGradient = nil
-		end
-	end
-
-	--[[
-	Stamps a UIGradient onto the frame using a ColorSequence.
-	
-	Params:
-	Color <ColorSequence> - The color sequence to use.
-	
-	Returns:
-	<UIGradient> - The UIGradient made
-	]]--
-	function Frame.SetGradientColor(Color)
-		local Gradient = Instance.new("UIGradient")
-		Gradient.Color = Color
-
-		Frame.SetGradient(Gradient, false)
-
-		return Gradient
-	end
-
-	return Frame
-end
-
-return GradientFrame]]></ProtectedString>
-							<int64 name="SourceAssetId">-1</int64>
-							<BinaryString name="Tags"></BinaryString>
-							<UniqueId name="UniqueId">277710896d65f34c0188ec8e000232c5</UniqueId>
-						</Properties>
-					</Item>
-					<Item class="ModuleScript" referent="RBX8F72BC39E2C8455886AA991E6F46E473">
-						<Properties>
-							<BinaryString name="AttributesSerialize"></BinaryString>
-							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">MenuSet</string>
-							<string name="ScriptGuid">{C6FD0529-8D90-4D72-BE97-910CE926E8A1}</string>
-							<ProtectedString name="Source"><![CDATA[--[[
-Provides a GUI-based structure that can hold multiple instances of the GridMenu.
-
-In other words, this makes sets of menus much easier to handle. This is because
-it makes sure only one gui frame is displayed at a time.
-
-By udev2192
-]]--
-
-local BaseComponent = require(script.Parent:WaitForChild("BaseComponent"))
-
-local MenuSet = {}
-MenuSet.__index = MenuSet
-MenuSet.ClassName = script.Name
-MenuSet.GuiClassName = "Frame"
-
-local function AssertString(ArgNum, String)
-	assert(typeof(String) == "string", "Argument " .. ArgNum .. " must be a string.")
-end
-
-function MenuSet.New()
-	local Set = BaseComponent.New(MenuSet.GuiClassName)
-	local Gui = Set.Gui
-	
-	Gui.Name = MenuSet.ClassName
-	Gui.ClipsDescendants = false
-	Gui.BackgroundTransparency = 1
-	
-	-- Stored gui components
-	local Stored = {}
-	local Listeners = {}
-	
-	-- Shown gui ids
-	local Shown = {}
-	
-	--[[
-	<boolean> - Whether or not to limit the frames shown at a certain time
-				to 1.
-	]]--
-	Set.SingleFrameOnly = true
-	
-	--[[
-	<string> - The string identifier of the
-			   menu being shown.
-			   If none are being shown,
-			   this field is nil.
-	]]--
-	Set.ShownId = nil
-	
-	--[[
-	<Vector2> - A specific anchor point to enforce.
-			  	Leave this value as nil to not enforce this.
-	]]--
-	Set.GuiAnchorPoint = Vector2.new(0.5, 0.5)
-	
-	--[[
-	<UDim2> - A specific GUI size to enforce.
-			  Leave this value as nil to not enforce this.
-	]]--
-	Set.GuiSize = UDim2.new(1, 0, 1, 0)
-	
-	--[[
-	<UDim2> - A specific GUI position to enforce.
-			  Leave this value as nil to not enforce this.
-	]]--
-	Set.GuiPosition = UDim2.new(0.5, 0, 0.5, 0)
-	
-	--[[
-	Params:
-	<string> - The string identifier that refers to the menu
-			   requesting to be hidden.
-	]]--
-	function Set.Hide(Name)
-		local Component = Stored[Name]
-
-		if Component ~= nil then
-			Set.ShownId = nil
-
-			local ShowIndex = table.find(Shown, Name)
-			if ShowIndex ~= nil then
-				table.remove(Shown, ShowIndex)
-			end
-
-			Component.SetVisible(false)
-		end
-	end
-
-	--[[
-	Hides all of the currently shown menus.
-	]]--
-	function Set.HideAll()
-		for i, v in pairs(Shown) do
-			Set.ShownId = nil
-			Set.Hide(v)
-		end
-	end
-
-	--[[
-	Params:
-	<string> - The string identifier that refers to the menu
-			   requesting to be shown.
-	]]--
-	function Set.Show(Name)
-		local Component = Stored[Name]
-
-		if Component ~= nil then
-			-- Hide the previous
-			if Set.SingleFrameOnly == true then
-				local LastId = Set.ShownId
-				if LastId ~= nil then
-					Set.Hide(LastId)
-				end
-			end
-
-			-- Show the current
-			table.insert(Shown, Name)
-			Set.ShownId = Name
-			Component.SetVisible(true)
-		end
-	end
-	
-	--[[
-	Removes a component from the set.
-	
-	Params:
-	<string> - The string identifier that refers
-			   to the component being removed.
-	]]--
-	function Set.Remove(Name)
-		Stored[Name] = nil
-		
-		local Connection = Listeners[Name]
-		if Connection ~= nil then
-			Connection:Disconnect()
-			Listeners[Name] = nil
-			Connection = nil
-		end
-	end
-	
-	--[[
-	Adds a component to the set. The specified
-	component will get reparented to the gui set's frame.
-	
-	Params:
-	<string> - The string identifier for the gui.
-	<BaseComponent> - The component itself.
-	]]--
-	function Set.Add(Name, NewGui)
-		AssertString(1, Name)
-		assert(typeof(NewGui) == "table" and NewGui.SetVisible ~= nil, "Argument 2 must be a BaseComponent.")
-		
-		Stored[Name] = NewGui
-		
-		local CloseButton = NewGui.CloseButton
-		if CloseButton ~= nil then
-			Listeners[Name] = CloseButton.GetButton().Activated:Connect(function()
-				Set.Hide(Name)
-			end)
-		end
-		
-		local ActualGui = NewGui.Gui
-		if ActualGui ~= nil then
-			local Anchor = Set.GuiAnchorPoint
-			local Size = Set.GuiSize
-			local Pos = Set.GuiPosition
-			
-			if Anchor ~= nil then
-				ActualGui.AnchorPoint = Anchor
-			end
-			if Size ~= nil then
-				ActualGui.Size = Size
-			end
-			if Pos ~= nil then
-				ActualGui.Position = Pos
-			end
-			
-			ActualGui.Parent = Gui
-		end
-	end
-	
-	Set.AddDisposalListener(Set.HideAll)
-	
-	return Set
-end
-
-return MenuSet]]></ProtectedString>
-							<int64 name="SourceAssetId">-1</int64>
-							<BinaryString name="Tags"></BinaryString>
-							<UniqueId name="UniqueId">06b102e85829aad701aa47c90002fe34</UniqueId>
-						</Properties>
-					</Item>
-					<Item class="ModuleScript" referent="RBX96D909EE87494DE7B74A0390E9723FD8">
-						<Properties>
-							<BinaryString name="AttributesSerialize"></BinaryString>
-							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">NpcDialog</string>
-							<string name="ScriptGuid">{2D9E5745-F475-4DF4-9C29-BC2D2A469B5E}</string>
-							<ProtectedString name="Source"><![CDATA[--[[
-Displays a GUI that can be used to display an NPC dialog
-
-By udev2192
-]]--
-
-local UIComponents = script.Parent
-
-local BaseComponent = require(UIComponents:WaitForChild("BaseComponent"))
-local IconButton = require(UIComponents:WaitForChild("IconButton"))
-
-local UtilRepModules = UIComponents.Parent.Parent:WaitForChild("Utils")
-
-local Signal = require(
-	UtilRepModules
-	:WaitForChild("Signal")
-)
-
-local Util = BaseComponent.GetUtils()
-local TweenGroup = require(UtilRepModules:WaitForChild("TweenGroup"))
-
-local NpcDialog = {}
-NpcDialog.__index = NpcDialog
-
-NpcDialog.ClassName = script.Name
-NpcDialog.DefaultBackgroundColor = Color3.fromRGB(0, 0, 0)
-
---[[
-<table> - Dialog context actions by string
-]]--
-NpcDialog.ContextActions = {
-	Start = "Start",
-	Continue = "...",
-	SkipToEnd = "Skip to End",
-	Close = "Leave"
-}
-
---[[
-<NpcDialog.TypeActions> - A list of typing actions for the grapheme animation
-]]--
-NpcDialog.TypeActions = {
-	Write = 1,
-	Wait = 2,
-	Call = 3,
-	SetOptions = 4
-}
-
-function NpcDialog.Lerp(a, b, t)
-	return a + (b - a) * t
-end
-
-function NpcDialog.New()
-	local Dialog = BaseComponent.New("Frame")
-	local Gui = Dialog.Gui
-	local Theme = Dialog.GetTheme()
-
-	local CornerRadii = {}
-	local DialogOptions = {}
-	
-	--local OptionButtons = {}
-	--local OptionButtonEvents = {}
-
-	-- [character #] = duration in seconds
-	--local Delays = {}
-	local CompiledActionMap = {}
-	local ActionMapOptionIds = {}
-
-	-- Names originally assigned to each option
-	-- (order matters so the RemoveOption function works)
-	local OptionButtonIds = {}
-
-	local IsWritingGraphemes = false
-	local IsUsingTextList = false
-	local IsUsingActionMap = false
-	local IsUsingContinueButton = false
-	local IsFadingIn = false
-
-	local DestinationGraphemeCount = 0
-	local TotalMaxGraphemes = 0
-	local TextListIndex = 0
-
-	local CurrentTextList
-	local DialogTextClickEvent
-	local ActionMapFullString
-
-	Dialog.FrameSize = UDim2.new(1, 0, 0.25, 0)
-	Dialog.FramePosition = UDim2.new(0.5, 0, 0.75, 0)
-	Dialog.HiddenSizeOffset = UDim2.new(-0.075, 0, -0.075, 0)
-	Dialog.BackTransparency = 0.5
-	Dialog.MinColumns = 5
-	Dialog.OptionsPadding = UDim2.new(0.1, 0, 0.1, 0)
-	Dialog.ClearWhenHidden = true
-	
-	--[[
-	<string?> - The id of the last selected option
-	]]--
-	Dialog.LastAnswerId = nil
-
-	Gui.Visible = false
-	Gui.AnchorPoint = Vector2.new(0.5, 0.5)
-	Gui.Size = Dialog.FrameSize
-	Gui.Position = Dialog.FramePosition
-
-	Gui.BackgroundColor3 = NpcDialog.DefaultBackgroundColor
-	Gui.BackgroundTransparency = 1
-	Gui.BorderSizePixel = 0
-	Gui.Name = NpcDialog.ClassName
-
-	BaseComponent.AddAspectRatio(Gui, 2.75)
-
-	local DialogTextBG = Theme.MakeInstance("TextButton", {
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		Size = UDim2.new(0.63, 0, 1, 0),
-		Position = UDim2.new(0.315, 0, 0.5, 0),
-
-		BackgroundTransparency = 1,
-		BackgroundColor3 = NpcDialog.DefaultBackgroundColor,
-		BorderSizePixel = 0,
-
-		TextTransparency = 1,
-		TextStrokeTransparency = 1,
-		Text = "",
-
-		AutoButtonColor = false,
-
-		Parent = Gui
-	})
-
-	local OptionsFrame = Theme.MakeInstance("Frame", {
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		Size = UDim2.new(0.33, 0, 1, 0),
-		Position = UDim2.new(0.835, 0, 0.5, 0),
-
-		BackgroundTransparency = 1,
-		BackgroundColor3 = NpcDialog.DefaultBackgroundColor,
-		BorderSizePixel = 0,
-
-		Name = "OptionsFrame",
-
-		Parent = Gui
-	})
-
-	local OptionsGridHandler = Theme.MakeInstance("UIGridLayout", {
-		SortOrder = Enum.SortOrder.LayoutOrder,
-
-		HorizontalAlignment = Enum.HorizontalAlignment.Center,
-		VerticalAlignment = Enum.VerticalAlignment.Center,
-
-		CellPadding = Dialog.OptionsPadding,
-		CellSize = BaseComponent.GetGridItemSize(1, Dialog.MinColumns, Dialog.OptionsPadding),
-
-		Parent = OptionsFrame
-	})
-
-	local DialogText = Theme.MakeInstance("TextLabel", {
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		Size = UDim2.new(0.9, 0, 0.9, 0),
-		Position = UDim2.new(0.5, 0, 0.5, 0),
-
-		TextXAlignment = Enum.TextXAlignment.Left,
-		TextYAlignment = Enum.TextYAlignment.Top,
-
-		BorderSizePixel = 0,
-		MaxVisibleGraphemes = 0,
-
-		BackgroundTransparency = 1,
-		TextStrokeTransparency = 1,
-		TextTransparency = 1,
-
-		Font = Enum.Font.Gotham,
-
-		Parent = DialogTextBG
-	})
-
-	-- Extra rounded corners
-	for i, v in pairs({DialogTextBG, OptionsFrame}) do
-		table.insert(CornerRadii, BaseComponent.AddCornerRadius(v, Dialog.CornerRadius))
-	end
-
-	local function HideGui()
-		Gui.Visible = false
-
-		Gui.BackgroundTransparency = 1
-		Gui.Size = Dialog.FrameSize + Dialog.HiddenSizeOffset
-	end
-
-	HideGui()
-
-	--[[
-	<number> - The scrolling speed of the dialog in
-			   characters per second.
-	]]--
-	Dialog.ScrollSpeed = 30
-
-	--[[
-	<array> - An array of strings to type when scrolling
-			  through the dialog. This is useful for
-			  text-only dialogs, where the only option
-			  is continuing to the next bit of text
-	]]--
-	Dialog.TextList = {}
-	
-	Dialog.CharacterTypeSound = script:WaitForChild("CharacterTypeSound")
-
-	--[[
-	<string> - The next string to display on the dialog
-	]]--
-	Dialog.SetProperty("NextString", "", function(NewString)
-		TotalMaxGraphemes = string.len(NewString)
-		DialogText.Text = NewString
-	end)
-
-	--[[
-	<array> - The currently used action map. This is intended to be set
-			  using values from Dialog.ActionMap
-	]]--
-	Dialog.SetProperty("CurrentActionMap", {}, function(Map: {{[number]: any}})
-		DialogText.MaxVisibleGraphemes = 0
-		DialogText.Text = ""
-		ActionMapFullString = ""
-		--Delays = {}
-		CompiledActionMap = {}
-
-		local Length = #Map
-
-		if Length > 0 then
-			local Write = NpcDialog.TypeActions.Write
-
-			for i, v in ipairs(Map) do
-				if v[1] == Write then
-					local Str = v[2]
-					ActionMapFullString ..= Str
-					--elseif v[1] == Wait then
-					--	table.insert(Delays, {NextString:len(), v[2]})
-					--	ActionMapFullString ..= NextString
-					--	NextString = ""
-					table.insert(CompiledActionMap, {Write, Str:len()})
-				else
-					table.insert(CompiledActionMap, v)
-				end
-			end
-		end
-	end)
-	
-	--[[  
-	<array>
-	A list of actions for the npc dialog to iterate over using
-	UseActionMap().
-	
-	An example usage of ActionMap would be:
-	local CurrentDialog = NpcDialog.New()
-	local Actions = NpcDialog.TypeActions
-	CurrentDialog.ActionMap = {
-		{Actions.Write, "Hello!"}
-		{Actions.Wait, 0.5}
-		{Actions.Write, " This is an example of a dialog with a delay."}
-	}
-	CurrentDialog.UseActionMap()
-	]]--
-	Dialog.SetProperty("ActionMap", {}, function(Map: {{[number]: any}})
-		Dialog.CurrentActionMap = Map
-	end)
-
-	--[[
-	Sets the corner radius of the components used by the dialog
-	
-	Params:
-	Radius <UDim> - The radius dimensions to use.
-	]]--
-	function Dialog.SetCornerRadius(Radius)
-		Dialog.CornerRadius = Radius
-	end
-
-	--[[
-	Stops the typing "animation"
-	]]--
-	function Dialog.Pause()
-		IsUsingActionMap = false
-		IsWritingGraphemes = false
-	end
-
-	--[[
-	Clears the NPC dialog text
-	]]--
-	function Dialog.Clear()
-		DestinationGraphemeCount = 0
-		DialogText.MaxVisibleGraphemes = 0
-	end
-
-	--local function RefreshOptionLayout()
-	--	for i, v in ipairs(OptionButtons) do
-	--		local Button = v.Button
-
-	--		if Button then
-	--			Button.Gui.LayoutOrder = i
-	--		end
-	--	end
-	--end
-	
-	local function RemoveOptionByIndex(Index: number, Table: {})
-		if Table == nil then
-			Table = DialogOptions[Index]
-			
-			if Table == nil then
-				return
-			end
-		end
-		
-		table.remove(DialogOptions, Index)
-		
-		Table.Connection:Disconnect()
-		Table.Button.Dispose()
-	end
-	
-	--[[
-	Removes a dialog option and destroys it
-	
-	Params:
-	Id <string> - The option's string identifier
-	]]--
-	function Dialog.RemoveOption(Id)
-		assert(typeof(Id) == "string", "Argument 1 must be a string")
-		
-		for i, v in ipairs(DialogOptions) do
-			if Id == v.Id then
-				RemoveOptionByIndex(i, v)
-				break
-			end
-		end
-
-		--local Connection = OptionButtonEvents[Id]
-		--if Connection then
-		--	Connection:Disconnect()
-
-		--	OptionButtonEvents[Id] = nil
-		--	Connection = nil
-		--end
-
-		--local Index = table.find(OptionButtonIds, Id)
-		----print(Name, 1)
-		--if Index then
-		--	--print(Name, 2)
-		--	OptionButtons[Index].Dispose()
-
-		--	table.remove(OptionButtons, Index)
-		--	table.remove(OptionButtonIds, Index)
-		--end
-	end
-
-	--[[
-	Removes all currently stored options
-	]]--
-	function Dialog.ClearOptions()	
-		--while #OptionButtonIds > 0 do
-		--	Dialog.RemoveOption(OptionButtonIds[1])
-		--end
-		while #DialogOptions > 0 do
-			RemoveOptionByIndex(1)
-		end
-	end
-
-	--[[
-	Creates a dialog option using an IconButton
-	(Please use this in a synchronized thread since RemoveOption()
-	might break if you don't)
-	
-	Params:
-	Id <string> - An internal identifier for the option
-	Name <string> - The option's name/text
-	Order <number> (optional) - The order to place the button from top-left
-								to bottom-right. If left unspecified, the
-								button will be placed at the bottom-right
-	
-	Returns:
-	<IconButton> - The button created
-	]]--
-	function Dialog.AddOption(Id: string, Name: string, Order: number?, Callback: () -> ()?)
-		assert(typeof(Id) == "string", "Argument 1 must be a string")
-		assert(typeof(Name) == "string", "Argument 2 must be a string")
-		assert(Order == nil or typeof(Order) == "number", "Argument 3 must be a number or nil")
-		assert(Callback == nil or typeof(Callback) == "function", "Argument 4 must be a function or nil")
-
-		-- Important to check we're not creating
-		-- a duplicate option to prevent problems with
-		-- RemoveOption()
-		--assert(table.find(OptionButtonIds, Id) == nil, "The option by the name of '" .. Name .. "' already exists")
-
-		local Option = IconButton.New(Name)
-		local IsClicked = false
-		Option.AutoDestroyGui = true
-		Option.CornerRadius = Dialog.CornerRadius
-		
-		local OptionTable = {
-			Id = Id,
-			Button = Option,
-			Connection = Option.GetButton().Activated:Connect(function()
-				if not IsClicked then
-					IsClicked = true
-					Dialog.LastAnswerId = Id
-					Dialog.OptionSelected.Fire(Id)
-
-					if Callback then
-						Callback()
-					end
-
-					IsClicked = false
-				end
-			end)
-		}
-		
-		if Order then
-			table.insert(DialogOptions, Order, OptionTable)
-		else
-			table.insert(DialogOptions, OptionTable)
-		end
-		
-		Option.Gui.Parent = OptionsFrame
-
-		--if Order then
-		--	table.insert(OptionButtonIds, Order, Id)
-		--	table.insert(OptionButtons, Order, Option)
-		--else
-		--	table.insert(OptionButtonIds, Id)
-		--	table.insert(OptionButtons, Option)
-		--end
-		
-		-- For easy listener binding to Dialog.ActionRequested
-
-		--RefreshOptionLayout()
-		--Option.Gui.Parent = OptionsFrame
-
-		return Option
-	end
-	
-	--[[
-	Hides the dialog options
-	]]--
-	function Dialog.HideOptions()
-		for i, v in ipairs(DialogOptions) do
-			local Button = v.Button
-
-			if Button then
-				Button.SetVisible(false)
-			end
-		end
-	end
-	
-	--[[
-	Shows the dialog options
-	]]--
-	function Dialog.ShowOptions()
-		for i, v in ipairs(DialogOptions) do
-			local Button = v.Button
-
-			if Button then
-				Button.Gui.LayoutOrder = i
-				Button.SetVisible(true)
-			end
-		end
-	end
-
-	--[[
-	Returns:
-	<boolean> - If the typing animation is currently being played
-	]]--
-	function Dialog.IsTyping()
-		return IsWritingGraphemes
-	end
-
-	--[[
-	Returns:
-	<number> - The current number of characters typed
-	]]--
-	function Dialog.GetCharactersTyped()
-		return DialogText.MaxVisibleGraphemes
-	end
-
-	--[[
-	Skips to the end of the typing sequence
-	]]--
-	function Dialog.FinishTyping()
-		Dialog.Pause()
-		DialogText.MaxVisibleGraphemes = TotalMaxGraphemes
-	end
-
-	--[[
-	"Types" some text onto the dialog.
-	
-	Params:
-	NumGraphemes <number> - The amount of graphemes to type next.
-	]]--
-	function Dialog.Type(NumGraphemes)
-		assert(typeof(NumGraphemes) == "number", "Argument 1 must be a number.")
-
-		local PromptedString = Dialog.NextString
-
-		if PromptedString then
-			DestinationGraphemeCount = math.floor(math.min(DestinationGraphemeCount + NumGraphemes, TotalMaxGraphemes))
-		end
-
-		if not IsWritingGraphemes then
-			IsWritingGraphemes = true
-
-			local CurrentGraphemes = DialogText.MaxVisibleGraphemes
-			local CharTypeSound = Dialog.CharacterTypeSound
-
-			while IsWritingGraphemes do
-				local NextString = Dialog.NextString
-
-				if NextString then
-					CurrentGraphemes = math.min(
-						math.ceil(CurrentGraphemes + (Dialog.ScrollSpeed * task.wait())),
-						DestinationGraphemeCount
-					)
-
-					if IsWritingGraphemes then
-						DialogText.MaxVisibleGraphemes = math.min(CurrentGraphemes, DestinationGraphemeCount)
-						
-						if CharTypeSound and CharTypeSound.IsLoaded == true and CharTypeSound.TimeLength > 0 then
-							local Sound: Sound = CharTypeSound:Clone()
-							Sound.Name = "Playing_" .. CharTypeSound.Name
-							Sound.Looped = false
-							Sound.Parent = script
-							
-							if Sound.IsLoaded then
-								Sound:Play()
-								Sound.Ended:Connect(function()
-									Sound:Destroy()
-									Sound = nil
-								end)
-							end
-						end
-					else
-						break
-					end
-
-					if CurrentGraphemes >= DestinationGraphemeCount then
-						break
-					end
-				else
-					break
-				end
-			end
-
-			IsWritingGraphemes = false
-		end
-	end
-	
-	local function ClearActionMapOptions()
-		for i, v in pairs(ActionMapOptionIds) do
-			Dialog.RemoveOption(v)
-		end
-		ActionMapOptionIds = {}
-	end
-
-	--[[
-	Pauses the proceeding of the dialog
-	specified by the ActionMap array
-	]]--
-	--function Dialog.StopActionMap()
-	--	IsUsingActionMap = false
-	--	Dialog.Pause()
-	--end
-
-	--[[
-	Goes through the actions in the current ActionMap array
-	]]--
-	function Dialog.UseCurrentActionMap(ActionMap: {})
-		ClearActionMapOptions()
-		Dialog.Pause()
-		
-		Dialog.Clear()
-		Dialog.NextString = ActionMapFullString
-
-		-- Type, then wait if needed
-		--local TypedChars = 0
-
-		if #CompiledActionMap > 0 then
-			IsUsingActionMap = true
-			
-			local TypeActions = NpcDialog.TypeActions
-			local Write = TypeActions.Write
-			local Wait = TypeActions.Wait
-			local Call = TypeActions.Call
-			local SetOptions = TypeActions.SetOptions
-			TypeActions = nil
-
-			--for i, v in ipairs(ActionMap) do
-			--	local FirstNumChars = v[1]
-			--	local Delay = v[2]
-
-			--	TypedChars += FirstNumChars
-
-			--	Dialog.Type(FirstNumChars)
-
-			--	local Elapsed = 0
-			--	while IsUsingActionMap and Elapsed <= Delay do
-			--		Elapsed += task.wait()
-			--	end
-
-			--	if IsUsingActionMap == false then
-			--		break
-			--	end
-			--end
-
-			--if IsUsingActionMap and TypedChars < TotalMaxGraphemes then
-			--	Dialog.Type(TotalMaxGraphemes - TypedChars)
-			--end
-
-			for i, v in ipairs(CompiledActionMap) do
-				local Act = v[1]
-				if Act == Write then
-					Dialog.Type(v[2])
-				elseif Act == Wait then
-					local Delay = v[2]
-					local Elapsed = 0
-					
-					while IsUsingActionMap and Elapsed <= Delay do
-						Elapsed += task.wait()
-					end
-				elseif Act == Call then
-					v[2]()
-				elseif Act == SetOptions then
-					Dialog.ClearOptions()
-					
-					--print("set options", #v[2])
-					
-					for i2, v2 in ipairs(v[2]) do
-						local ActionMap = v2.ActionMap
-						
-						if ActionMap then
-							local Id = v2.Id
-							table.insert(ActionMapOptionIds, Id)
-							Dialog.AddOption(Id, v2.Name, nil, function()
-								Dialog.HideOptions()
-								Dialog.CurrentActionMap = ActionMap
-								Dialog.UseCurrentActionMap()
-							end)
-							--print("added action map:", Id, ", table size is now", #ActionMapOptionIds)
-						end
-					end
-					
-					if #DialogOptions > 0 then
-						--print("try showing options")
-						Dialog.ShowOptions()
-					end
-				end
-				
-				if IsUsingActionMap == false then
-					ClearActionMapOptions()
-					return
-				end
-			end
-			
-			IsUsingActionMap = false
-		end
-	end
-	
-	--[[
-	Uses the master action map.
-	See Dialog.ActionMap for details
-	]]--
-	function Dialog.UseActionMap()
-		Dialog.Pause()
-		Dialog.Clear()
-		
-		Dialog.CurrentActionMap = Dialog.ActionMap
-		Dialog.UseCurrentActionMap()
-	end
-
-	local function OnTextListStep(Action)
-		if Action == NpcDialog.ContextActions.Continue then
-			if IsWritingGraphemes then
-				Dialog.FinishTyping()
-			else
-				TextListIndex += 1
-
-				if TextListIndex <= #CurrentTextList then
-					Dialog.Pause()
-					Dialog.Clear()
-					Dialog.NextString = CurrentTextList[TextListIndex]
-					Dialog.Type(TotalMaxGraphemes)
-				else
-					Dialog.StopTextList()
-					Dialog.SetVisible(false)
-				end
-			end
-		end
-	end
-
-	--[[
-	Cancels the proceeding of the dialog
-	specified by the TextList array
-	]]--
-	function Dialog.StopTextList()
-		Dialog.ActionRequested.Disconnect(OnTextListStep)
-		IsUsingTextList = false
-	end
-
-	--[[
-	Goes through the text specified in the TextList property
-	]]--
-	function Dialog.UseTextList()
-		local TextList = Dialog.TextList
-		assert(typeof(TextList) == "table", "TextList property must be an array.")
-
-		if IsUsingTextList == false and #TextList > 0 then
-			IsUsingTextList = true
-
-			TextListIndex = 0
-			CurrentTextList = TextList
-
-			Dialog.ActionRequested.Connect(OnTextListStep)
-			Dialog.ActionRequested.Fire(NpcDialog.ContextActions.Continue)
-		end
-	end
-
-	--[[
-	Goes through 
-	]]--
-
-	--[[
-	Returns:
-	<TextLabel> - The text container used by the dialog
-	]]--
-	function Dialog.GetTextLabel()
-		return DialogText
-	end
-
-	--[[
-	<boolean> - If the continue button is enabled
-	]]--
-	Dialog.SetProperty("UseContinueButton", false, function(IsEnabled)
-		if IsEnabled then
-			if not IsUsingContinueButton then
-				IsUsingContinueButton = true
-				
-				local Continue = NpcDialog.ContextActions.Continue
-				Dialog.AddOption(Continue, Continue)
-			end
-		else
-			if IsUsingContinueButton then
-				Dialog.RemoveOption(NpcDialog.ContextActions.Continue)
-				IsUsingContinueButton = false
-			end
-		end
-	end)
-
-	--[[
-	<boolean> - If clicking the dialog text label finishes the typing
-				animation and/or fires the "continue" action
-	]]--
-	Dialog.SetProperty("TapToFinishEnabled", false, function(IsEnabled)
-		if IsEnabled then
-			if not DialogTextClickEvent then
-				local IsClicked = false
-
-				DialogTextClickEvent = DialogTextBG.Activated:Connect(function()
-					if not IsClicked then
-						IsClicked = true
-
-						if not IsUsingTextList then
-							Dialog.FinishTyping()
-						end
-
-						Dialog.ActionRequested.Fire(NpcDialog.ContextActions.Continue)
-						IsClicked = false
-					end
-				end)
-			end
-		else
-			if DialogTextClickEvent then
-				DialogTextClickEvent:Disconnect()
-				DialogTextClickEvent = nil
-			end
-		end
-	end)
-
-	--[[
-	Fired when a dialog action is requested
-	
-	Params:
-	Action <string> - A numeric identifier used to determine which
-					  action to use (see NpcDialog.ContextActions)
-	]]--
-	Dialog.ActionRequested = Signal.New()
-	
-	--[[
-	Fired when a dialog option is selected
-	
-	Params:
-	Id <string> - The option's string identifier
-	]]--
-	Dialog.OptionSelected = Signal.New()
-
-	local function OnVisibleChanged(IsVisible)
-		local NewTransparency
-		local NewBgTransparency
-		local NewSize
-
-		if IsVisible then
-			NewTransparency = 0
-			NewBgTransparency = Dialog.BackTransparency
-			NewSize = Dialog.FrameSize
-
-			IsFadingIn = true
-		else
-			NewTransparency = 1
-			NewBgTransparency = 1
-			NewSize = Dialog.FrameSize + Dialog.HiddenSizeOffset
-
-			IsFadingIn = false
-
-			Dialog.ActionRequested.Fire(NpcDialog.ContextActions.Close)
-			if Dialog.ClearWhenHidden then
-				ClearActionMapOptions()
-				Dialog.Pause()
-				Dialog.Clear()
-			end
-		end
-
-		-- To do: finish the look and animations lol
-		local TweeningInfo = Dialog.TweeningInfo
-
-		if IsVisible and IsFadingIn then
-			Gui.Visible = true
-		end
-
-		if TweeningInfo then
-			local BgFade = {
-				BackgroundTransparency = NewBgTransparency
-			}
-
-			Util.Tween(Gui, TweeningInfo, {
-				Size = NewSize,
-			})
-
-			Util.Tween(DialogTextBG, TweeningInfo, BgFade)
-			Util.Tween(OptionsFrame, TweeningInfo, BgFade)
-
-			--for i, v in pairs(OptionButtons) do
-			--	task.spawn(v.SetVisible, IsVisible)
-			--end
-			Dialog.HideOptions()
-
-			Util.Tween(DialogText, TweeningInfo, {
-				TextTransparency = NewTransparency
-			})
-
-			task.wait(TweeningInfo.Time)
-		end
-
-		if IsVisible == false and IsFadingIn == false then
-			HideGui()
-		end
-	end
-
-	Dialog.VisibleChanged.Connect(OnVisibleChanged)
-	Dialog.AddDisposalListener(function()
-		Dialog.Pause()
-		Dialog.Clear()
-		Dialog.ClearOptions()
-		
-		Gui:Destroy()
-	end)
-
-	return Dialog
-end
-
-return NpcDialog]]></ProtectedString>
-							<int64 name="SourceAssetId">-1</int64>
-							<BinaryString name="Tags"></BinaryString>
-							<UniqueId name="UniqueId">3a4ad51a698f152101d45d06000244f9</UniqueId>
-						</Properties>
-						<Item class="Sound" referent="RBXB2A3709A50D042419C08FF2955AF390E">
-							<Properties>
-								<BinaryString name="AttributesSerialize"></BinaryString>
-								<float name="EmitterSize">10</float>
-								<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-								<NumberRange name="LoopRegion">0 60000 </NumberRange>
-								<bool name="Looped">false</bool>
-								<string name="Name">CharacterTypeSound</string>
-								<bool name="PlayOnRemove">false</bool>
-								<NumberRange name="PlaybackRegion">0 60000 </NumberRange>
-								<bool name="PlaybackRegionsEnabled">false</bool>
-								<float name="PlaybackSpeed">1</float>
-								<bool name="Playing">false</bool>
-								<token name="RollOffMode">0</token>
-								<Ref name="SoundGroup">null</Ref>
-								<Content name="SoundId"><url>rbxassetid://9120299810</url></Content>
-								<int64 name="SourceAssetId">-1</int64>
-								<BinaryString name="Tags"></BinaryString>
-								<double name="TimePosition">0</double>
-								<UniqueId name="UniqueId">29eac5171ad62b1e026278df00326b1e</UniqueId>
-								<float name="Volume">0.5</float>
-								<float name="xmlRead_MaxDistance_3">10000</float>
-							</Properties>
-						</Item>
-					</Item>
-				</Item>
-			</Item>
 			<Item class="Folder" referent="RBX24F792469CC04A9C99922E0E294A0F0F">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
@@ -79375,6 +76051,3330 @@ return MusicPlayer]]></ProtectedString>
 						<BinaryString name="Tags"></BinaryString>
 						<UniqueId name="UniqueId">5fbd84e54a3c24510251c3ab00599f23</UniqueId>
 					</Properties>
+				</Item>
+			</Item>
+			<Item class="Folder" referent="RBX4A7F718A3F984913B0ECBE80F1665BA6">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<string name="Name">Gui</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e500003286</UniqueId>
+				</Properties>
+				<Item class="ModuleScript" referent="RBXC6F6E3E43B3B4D71BF04C58D8C86BE71">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">BrowserLib</string>
+						<string name="ScriptGuid">{7AC66560-23BB-43A2-BD26-1781C4CF150A}</string>
+						<ProtectedString name="Source"><![CDATA[--[[
+BrowserLib.lua by udev2192
+
+The module that contains all the functions to boost the efficiency of the Map Browser development
+
+Make sure to put sizes and positions according to the anchor point Vector2.new(0.5,0.5)
+
+This module is designed for client use
+
+Revamped 9 March 2021 to be less confusing and more OOP based
+]]--
+
+local mod = {}
+
+-- CONSTANTS --
+local DEFAULT_FONT = Enum.Font.GothamBold -- When a font is not specified when applicable, this font will be applied
+local UI_COLOR_SEQUENCE = ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(128, 0, 255)), ColorSequenceKeypoint.new(1,Color3.fromRGB(204, 0, 255))}) -- The color sequence of the UIGradients used by the text objects
+local GRADIENT_ROTATION_INCREMENT = 0.5 -- How much rotating gradients rotate by for each frame
+local TWEEN_INFO = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out) -- The TweenInfo used to Tween objects
+local CORNER_RADIUS = 0 -- How much to round the corner of the GUI objects out of 1 (leave at 0 to turn this off)
+local DEFAULT_LAYER = 2 -- The default ZIndex a GUI object is set to when one is not specified
+---------------
+
+-- Property Configuration --
+local Defaults = {
+	-- Format: ["Instance/Class name"] = {Properties}
+	["TextButton"] = {
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Size = UDim2.new(0.25,0,0.25,0),
+		Position = UDim2.new(0.5,0,0.5,0),
+
+		BackgroundColor3 = Color3.new(0,0,0),
+		TextColor3 = Color3.new(1,1,1),
+		Font = DEFAULT_FONT,
+		Text = "Blank Text",
+		TextScaled = true,
+		BorderMode = Enum.BorderMode.Inset,
+		BorderColor3 = Color3.new(1,1,1),
+		BorderSizePixel = 2,
+		ZIndex = DEFAULT_LAYER
+	},
+
+	["TextLabel"] = {
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Size = UDim2.new(0.25,0,0.25,0),
+		Position = UDim2.new(0.5,0,0.5,0),
+
+		BackgroundTransparency = 1,
+		TextColor3 = Color3.new(1,1,1),
+		Font = DEFAULT_FONT,
+		Text = "Blank Text",
+		TextScaled = true,
+		BorderMode = Enum.BorderMode.Inset,
+		BorderSizePixel = 0,
+		TextStrokeTransparency = 0,
+		ZIndex = DEFAULT_LAYER
+	},
+
+	["TextBox"] = {
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Size = UDim2.new(0.25,0,0.25,0),
+		Position = UDim2.new(0.5,0,0.5,0),
+		
+		BackgroundTransparency = 1,
+		TextColor3 = Color3.new(1,1,1),
+		Font = DEFAULT_FONT,
+		PlaceholderText = "Blank Placeholder Text",
+		Text = "",
+		TextScaled = true,
+		BorderMode = Enum.BorderMode.Inset,
+		BorderColor3 = Color3.new(1,1,1),
+		BorderSizePixel = 0,
+		ZIndex = DEFAULT_LAYER,
+	},
+
+	["Frame"] = {
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Size = UDim2.new(0.25,0,0.25,0),
+		Position = UDim2.new(0.5,0,0.5,0),
+
+		BorderMode = Enum.BorderMode.Inset,
+		BorderColor3 = Color3.new(1,1,1),
+		BorderSizePixel = 2,
+		BackgroundColor3 = Color3.new(1,1,1),
+		BackgroundTransparency = 0.75,
+		ClipsDescendants = true,
+		ZIndex = DEFAULT_LAYER
+	}
+}
+----------------------------
+
+-- UI framework:
+local ClickConnections = {} -- Stores the Activated connections for buttons
+local GradientConnections = {} -- Stores the Stepped connections for GUI objects with rotating gradients
+local TextBoxConnections = {} -- Stores the FocusLost connections when a function is binded to the FunctionOnInput
+
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local ScreenGui = script.Parent
+
+local RepModules = ReplicatedStorage:WaitForChild("Modules")
+local UtilModules = RepModules:WaitForChild("Utils")
+
+-- Reference the utility library
+local Util = UtilModules:WaitForChild("Utility")
+if Util:IsA("ModuleScript") then
+	Util = require(Util)
+end
+
+-- Apply property configurations:
+for i, v in pairs(Defaults) do
+	if typeof(v) == "table" then
+		Util.SetPropertyDefaults(i, v)
+	end
+end
+
+-- Make some constants accessible by other scripts/modules
+mod.ColorSequence = UI_COLOR_SEQUENCE
+mod.ModuleFont = DEFAULT_FONT
+
+-- Functions/methods (new):
+function mod.ApplyFinishes(Object) -- Applies finishing touches to the provided instance
+	if typeof(Object) == "Instance" then
+		-- Apply the gradient
+		local Gradient = Instance.new("UIGradient") -- Add the gradient to make a cool ui effect
+		Gradient.Color = UI_COLOR_SEQUENCE
+		Gradient.Rotation = 90
+		Gradient.Parent = Object
+
+		-- Apply the corner radius
+		if CORNER_RADIUS > 0 then
+			local Corner = Instance.new("UICorner")
+			Corner.CornerRadius = UDim.new(CORNER_RADIUS, 0)
+			Corner.Parent = Object
+		end
+
+		-- Return the redesigned GUI object
+		return Object
+	else
+		warn("Object type must be an Instance.")
+		return nil
+	end
+end
+
+function mod.RotateGradient(Object, IsRotating) -- Rotates the ui gradient for the specified gui object an even cooler effect
+	if Object ~= nil and Object:IsA("GuiObject") then
+		if IsRotating ~= nil and typeof(IsRotating) == "boolean" then
+			local Gradient = Object:WaitForChild("UIGradient", 4)
+			if Gradient then
+				if IsRotating then
+					GradientConnections[Object] = RunService.Stepped:Connect(function()
+						Gradient.Rotation = Gradient.Rotation + GRADIENT_ROTATION_INCREMENT
+					end)
+				else
+					if GradientConnections[Object] ~= nil then
+						GradientConnections[Object]:Disconnect()
+						GradientConnections[Object] = nil
+					end
+				end
+			else
+				warn("Couldn't find a UIGradient in the specified GUI object.")
+			end
+		else
+			warn("IsRotating (argument 2) isn't specified or isn't a boolean (true/false).")
+		end
+	else
+		warn("The object (argument 1) isn't specified or isn't a GUI object.")
+	end
+end
+
+function mod.New(Type, Properties) -- Constructs a recognized Instance by this UI framework
+	-- Please use this over the old constructors as this one is much more simplified
+	if typeof(Defaults[Type]) == "table" then
+		-- Make the object
+		local Object = Util.CreateInstance(Type, Properties)
+
+		-- Finish off the object
+		mod.ApplyFinishes(Object)
+
+		-- Return the finished object
+		return Object
+	else
+		warn(tostring(Type) .. " isn't recognized by this version of BrowserLib.")
+	end
+end
+
+return mod
+
+--[[
+Old functions/methods (please don't use any of these as they are much harder to use):
+function mod.MakeButton(Text, Size, Position)
+	local Button = Util.CreateInstance("TextButton", {
+		-- Make the UI object
+		Text = Text,
+		Size = Size,
+		Position = Position
+	})
+	
+	mod.ApplyFinishes(Button)
+	
+	return Button
+end
+
+function mod.MakeLabel(Text, Size, Position)
+	local Label = Util.CreateInstance("TextButton", {
+		-- Make the UI object
+		Text = Text,
+		Size = Size,
+		Position = Position
+	})
+
+	mod.ApplyFinishes(Label)
+	
+	return Label
+end
+
+function mod.MakeTextBox(PlaceholderText, Size, Position, Parent, FunctionOnInput, Layer, Font)
+	-- FunctionOnInput should account for the first parameter that is passed to it, which is the text entered
+	local TextBox = Instance.new("TextBox") -- Make the TextBox
+	TextBox.AnchorPoint = Vector2.new(0.5,0.5)
+	TextBox.Size = Size
+	TextBox.Position = Position
+	TextBox.BackgroundTransparency = 1
+	TextBox.TextColor3 = Color3.new(1,1,1)
+	TextBox.Font = Font or DEFAULT_FONT
+	TextBox.PlaceholderText = PlaceholderText or "Blank Placeholder Text"
+	TextBox.Text = ""
+	TextBox.TextScaled = true
+	TextBox.BorderMode = Enum.BorderMode.Inset
+	TextBox.BorderColor3 = Color3.new(1,1,1)
+	TextBox.BorderSizePixel = 0
+	TextBox.ZIndex = Layer or DEFAULT_LAYER
+
+	if CORNER_RADIUS > 0 then
+		local Corner = Instance.new("UICorner")
+		Corner.CornerRadius = UDim.new(CORNER_RADIUS, 0)
+		Corner.Parent = TextBox
+	end
+	
+	if FunctionOnInput ~= nil then
+		if typeof(FunctionOnInput) == "function" then
+			TextBox.FocusLost:Connect(function()
+				local TextBoxText = TextBox.Text
+				FunctionOnInput(TextBoxText)
+				TextBoxText = nil
+			end)
+		else
+			warn("When choosing to specify the FunctionOnInput (argument 5), make sure it is a function and that the first argument of that function will have the text entered passed to")
+		end
+	end
+
+	TextBox.Parent = Parent or ScreenGui
+	return TextBox
+end
+
+function mod.BindFunction(Button, FunctionWhenClicked)
+	if Button ~= nil and Button:IsA("TextButton") then
+		if FunctionWhenClicked ~= nil and typeof(FunctionWhenClicked) == "function" then
+			ClickConnections[Button] = Button.Activated:Connect(FunctionWhenClicked) -- Bind the specified function
+		else
+			warn("FunctionWhenClick (argument 2) isn't specified or isn't a function so the button will do nothing.")
+		end
+	else
+		warn("The Button specified (argument 1) isn't provided or isn't a TextButton.")
+	end
+end
+
+function mod.UnbindFunction(Button)
+	if Button ~= nil and Button:IsA("TextButton") then
+		if ClickConnections[Button] ~= nil then
+			ClickConnections[Button]:Disconnect()
+			ClickConnections[Button] = nil
+		end
+	else
+		warn("The button isn't specified in the first and only argument or the object provided isn't a TextButton.")
+	end
+end
+
+function mod.UnbindFunctionOnInput(TextBox)
+	if TextBox ~= nil and TextBox:IsA("TextBox") then
+		if TextBoxConnections[TextBox] ~= nil then
+			TextBoxConnections[TextBox]:Disconnect()
+			TextBoxConnections[TextBox] = nil
+		end
+	else
+		warn("The TextBox isn't specified in the first and only argument or the object provided isn't a TextBox.")
+	end
+end
+
+function mod.MakeFrame(Size, Position, Parent, Layer, AddColor)
+	local Frame = Instance.new("Frame") -- Make the Frame
+	Frame.AnchorPoint = Vector2.new(0.5,0.5)
+	Frame.Size = Size
+	Frame.Position = Position
+	Frame.BorderMode = Enum.BorderMode.Inset
+	Frame.BorderColor3 = Color3.new(1,1,1)
+	Frame.BorderSizePixel = 2
+	if AddColor then
+		Frame.BackgroundColor3 = Color3.new(1,1,1)
+	else
+		Frame.BackgroundColor3 = Color3.new(0,0,0)
+	end
+	Frame.BackgroundTransparency = 0.75
+	Frame.ClipsDescendants = true
+	Frame.ZIndex = Layer or DEFAULT_LAYER
+	
+	if AddColor then
+		local Gradient = Instance.new("UIGradient") -- Add the gradient to make a cool ui effect
+		Gradient.Color = UI_COLOR_SEQUENCE
+		Gradient.Rotation = 90
+		Gradient.Parent = Frame
+	end
+
+	if CORNER_RADIUS > 0 then
+		local Corner = Instance.new("UICorner")
+		Corner.CornerRadius = UDim.new(CORNER_RADIUS, 0)
+		Corner.Parent = Frame
+	end
+	
+	Frame.Parent = Parent or ScreenGui
+	return Frame
+end
+
+function mod.AddARC(GuiObject, Ratio)
+	-- Add an AspectRatioConstraint to a GUIObject which is needed in certain UI design cases
+	if GuiObject:IsA("GuiBase") then
+		local AspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+		AspectRatioConstraint.AspectRatio = Ratio or 1
+		AspectRatioConstraint.DominantAxis = Enum.DominantAxis.Height
+		AspectRatioConstraint.Parent = GuiObject
+
+		return AspectRatioConstraint
+	end
+end
+
+function mod.Tween(Object, PropertiesToTween, DelayThread) -- The DelayThread should be true/false and specifes whether the tween delays the current thread or not
+	if Object ~= nil then
+		if PropertiesToTween ~= nil and typeof(PropertiesToTween) == "table" then
+			if DelayThread == nil or typeof(DelayThread) == "boolean" then
+				local Tween = TweenService:Create(Object, TWEEN_INFO, PropertiesToTween)
+				local function PlayTween()
+					Tween:Play()
+					Tween.Completed:Wait()
+					Tween:Destroy()
+					Tween = nil
+				end
+				if DelayThread then
+					PlayTween()
+				else
+					coroutine.wrap(PlayTween)()
+				end
+				return Tween
+			else
+				warn("When specified, the DelayThread argument (argument 3) should be a boolean (true/false) detailing whether to yield the current thread while the tween is playing or not")
+			end
+		else
+			warn("PropertiesToTween (argument 2) isn't specified or isn't a table of object properties to tween.")
+		end
+	else
+		warn("The Object (argument 1) isn't specified")
+	end
+end
+--]]]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e500003287</UniqueId>
+					</Properties>
+				</Item>
+				<Item class="Folder" referent="RBX79349D93D3604DCFB10AAFB17AB58398">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<string name="Name">Components</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e500003288</UniqueId>
+					</Properties>
+					<Item class="ModuleScript" referent="RBX6C02AF00701743BAA0BD33DC0E8D7121">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">BaseComponent</string>
+							<string name="ScriptGuid">{9029744D-3DB0-4741-9D40-FE888B68CAC7}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+This acts as a base container/interface for a UI component.
+
+Hiding/showing handling functions can be binded to signals
+that are provided.
+
+By udev2192
+]]--
+
+local UI_CORNER_CLASS_NAME = "UICorner"
+
+local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
+local UtilRepModules = RepModules:WaitForChild("Utils")
+local Themes = script.Parent.Parent:WaitForChild("Themes")
+
+local Object = require(UtilRepModules:WaitForChild("Object"))
+local Signal = require(UtilRepModules:WaitForChild("Signal"))
+local Utils = require(UtilRepModules:WaitForChild("Utility"))
+
+local BaseComponent = {}
+BaseComponent.__index = BaseComponent
+
+export type Component = Object.ObjectPool & {
+	Gui: GuiObject,
+	TweeningInfo: TweenInfo,
+	HandleBeforeDispose: boolean,
+	AutoDestroyGui: boolean,
+	BackImageTransparency: number,
+	CornerRadius: UDim?,
+	
+	GetTheme: () -> {},
+	GetBackground: () -> ImageLabel,
+	SetVisible: (IsVisible: boolean) -> (),
+	SetImage: (Image: ImageLabel, DestroyLast: boolean) -> (),
+	
+	VisibleChanged: Signal.Signal,
+}
+
+BaseComponent.BgImageDefaultZIndex = 2
+BaseComponent.DefaultTheme = "Wavy"
+
+BaseComponent.AspectRatioDominantAxis = Enum.DominantAxis.Height
+
+-- For reference
+BaseComponent.DefaultCornerRadius = UDim.new(0, 10)
+BaseComponent.DefaultGradientFade = NumberSequence.new({
+	NumberSequenceKeypoint.new(0, 1),
+	NumberSequenceKeypoint.new(0.25, 0.25),
+	NumberSequenceKeypoint.new(0.75, 0.25),
+	NumberSequenceKeypoint.new(1, 1)
+})
+
+--[[
+Returns:
+<table> - The table of general utility functions
+]]--
+function BaseComponent.GetUtils()
+	return Utils
+end
+
+--[[
+Calculates a cell size to be used with a UIGridLayout
+based on the number of rows, columns, and the cell padding
+
+Params:
+Rows <number> - The desired number of rows
+Columns <number> - The desired number of columns
+Padding <UDim2> - THe desired content padding
+]]--
+function BaseComponent.GetGridItemSize(Rows: number, Columns: number, Padding: number): UDim2
+	return UDim2.new(
+		(1 / math.max(Rows, 1)) - Padding.X.Scale,
+		-Padding.X.Offset,
+		(1 / math.max(Columns, 1)) - Padding.Y.Scale,
+		-Padding.Y.Offset
+	)
+end
+
+--[[
+Adds a UIGradient fade to the specified GUI component
+
+Params:
+Ui <Instance> - The UI object to apply the gradient to
+Transparency <NumberSequence?> - The transparency sequence to use
+
+Returns:
+<UIGradient> - The UIGradient created
+]]--
+function BaseComponent.AddGradientFade(Ui: Instance?, Transparency: NumberSequence?): UIGradient
+	return Utils.CreateInstance("UIGradient", {
+		Transparency = Transparency or BaseComponent.DefaultGradientFade,
+		Parent = Ui
+	})
+end
+
+--[[
+Applies a UI corner to the UI component provided.
+
+Params:
+Ui <Instance> - The component to apply a UI corner to.
+Radius <UDim> - The radius to apply.
+
+Returns:
+<UIAspectRatioConstraint> - The aspect ratio constraint used.
+]]--
+function BaseComponent.AddCornerRadius(Ui: Instance, Radius: UDim): UICorner
+	return Utils.CreateInstance("UICorner", {
+		CornerRadius = Radius or BaseComponent.DefaultCornerRadius,
+		Parent = Ui
+	})
+end
+
+--[[
+Applies an aspect ratio to a UI component.
+
+Params:
+Ui <Instance> - The component to apply an aspect ratio to.
+Ratio <number> - The aspect ratio of the component (from 0-1).
+
+Returns:
+<UIAspectRatioConstraint> - The aspect ratio constraint used.
+]]--
+function BaseComponent.AddAspectRatio(Ui: Instance, Ratio: number): UIAspectRatioConstraint
+	return Utils.CreateInstance("UIAspectRatioConstraint", {
+		DominantAxis = BaseComponent.AspectRatioDominantAxis,
+		AspectRatio = Ratio,
+		Parent = Ui
+	})
+end
+
+--[[
+Fades to a certain text color for a text-based GUI component
+
+Params:
+TextObject <GuiObject> - The text based component to fade
+Color <Color3> - The destination text color.
+Duration <number> - How long to do the fade
+
+Returns:
+<BaseTween> - The tween created
+]]--
+function BaseComponent.FadeTextColor(TextObject: GuiObject, Color: Color3, Duration: number): Tween
+	return Utils.Tween(
+		TextObject,
+		TweenInfo.new(Duration, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
+		{TextColor3 = Color}
+	)
+end
+
+--[[
+Creates a frame that can be used as a button overlay for hover/click effects
+
+Params:
+Button <GuiObject> - The GuiObject to use when creating the overlay
+Radius <UDim> (optional) - If specified, creates a UICorner to go with
+						   the overlay using this argument as the radius
+
+Returns:
+<Frame> - The overlay created
+]]--
+function BaseComponent.CreateButtonOverlay(Button: GuiObject, Radius: UDim?) : Frame
+	local Frame = Utils.CreateInstance("Frame", {
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Size = UDim2.new(1, 0, 1, 0),
+		Position = UDim2.new(0.5, 0, 0.5, 0),
+
+		BackgroundTransparency = 1,
+		BackgroundColor3 = Color3.new(1, 1, 1),
+		BorderSizePixel = 0
+	})
+	
+	if Radius then
+		BaseComponent.AddCornerRadius(Frame, Radius)
+	end
+	
+	return Frame
+end
+
+--[[
+Constructs the BaseComponent.
+
+Params:
+ClassName (string) - The name of the instance/class to construct
+ThemeName (string) (optional) - The name of the theme used to construct
+							  	the instance/class.
+							  	
+Returns:
+<BaseComponent> - The constructed object
+]]--
+function BaseComponent.New(ClassName: string, ThemeName: string?): Component
+	assert(typeof(ClassName) == "string", "Argument 1 must be a string.")
+
+	ThemeName = ThemeName or BaseComponent.DefaultTheme
+
+	local Obj = Object.New("BaseComponent")
+
+	-- Create the GUI based on the theme provided.
+	local UsedTheme = require(Themes:WaitForChild(ThemeName))
+
+	local IsFadingIn = false
+	
+	local FrameCorner
+	local BackgroundImage
+	local BGImageCorner
+
+	--[[
+	The GUI created from initialization.
+	]]--
+	Obj.Gui = UsedTheme.MakeInstance(ClassName)
+
+	--[[
+	The object's preferred tweening info/animation style.
+	]]--
+	Obj.TweeningInfo = TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+
+	--[[
+	If the hiding animation is played when
+	the object is being disposed.
+	]]--
+	Obj.HandleBeforeDispose = true
+
+	--[[
+	If the GUI is destroyed when Dispose()
+	is called. This waits for the hide animation
+	to be finished if it will be played during
+	object disposal.
+	]]--
+	Obj.AutoDestroyGui = true
+
+	--[[
+	<number> - How transparent the background image is.
+	]]--
+	Obj.BackImageTransparency = 0.5
+	
+	--[[
+	<UDim?> - The dimensions of the UI's corner radius.
+	]]--
+	Obj.SetProperty("CornerRadius", BaseComponent.DefaultCornerRadius, function(Radius)
+		if Radius == nil or Radius == UDim.new(0, 0) then
+			if FrameCorner ~= nil then
+				FrameCorner:Destroy()
+				FrameCorner = nil
+			end
+		else
+			local Gui = Obj.Gui
+			if Gui ~= nil then
+				local Corner = Gui:FindFirstChildOfClass(UI_CORNER_CLASS_NAME)
+					or Instance.new(UI_CORNER_CLASS_NAME)
+				FrameCorner = Corner
+				
+				if Corner ~= nil then
+					Corner.CornerRadius = Radius
+					Corner.Parent = Gui
+				end
+			end
+		end
+		
+		if BGImageCorner ~= nil then
+			BGImageCorner.CornerRadius = Radius
+		end
+	end)
+
+	--[[
+	Fired when the GUI is requested to be visible or invisble.
+	
+	Params:
+	Visible (boolean) - Whether the GUI is being requested for
+						visibility or not.
+	]]--
+	Obj.VisibleChanged = Signal.New()
+
+	--[[
+	Returns the GUI scheme associated.
+	]]--
+	function Obj.GetTheme()
+		return UsedTheme
+	end
+	
+	--[[
+	Returns:
+	<ImageLabel> - The ImageLabel used as the background. If none is
+				   currently set, nil is returned.
+	]]--
+	function Obj.GetBackground()
+		return BackgroundImage
+	end
+
+	--[[
+	Toggles the GUI's visibility and fires it.
+	
+	Params:
+	IsVisible (boolean) - Whether or not to make the GUI visible.
+	]]--
+	function Obj.SetVisible(IsVisible)
+		local Gui = Obj.Gui
+		local VisibleChanged = Obj.VisibleChanged
+
+		if Gui ~= nil and VisibleChanged ~= nil then
+			if IsVisible == true then
+				--Gui.Visible = true
+				IsFadingIn = true
+				VisibleChanged.Fire(true)
+			else
+				IsFadingIn = false
+				VisibleChanged.Fire(false)
+				--Gui.Visible = false
+			end
+
+			if BackgroundImage ~= nil then
+				if IsVisible == IsFadingIn then
+					local BGTransparency
+
+					if IsFadingIn == true then
+						BGTransparency = Obj.BackImageTransparency or 0
+					else
+						BGTransparency = 1
+					end
+
+					local TweeningInfo = Obj.TweeningInfo
+
+					if TweeningInfo ~= nil then
+						coroutine.wrap(function()
+							if IsVisible == IsFadingIn and IsFadingIn == true then
+								BackgroundImage.Visible = true
+							end
+
+							local Tween = Utils.Tween(
+								BackgroundImage,
+								TweeningInfo,
+								{ImageTransparency = BGTransparency}
+							)
+
+							task.wait(TweeningInfo.Time)
+
+							-- See if it animated back before
+							-- toggling visibility
+							if IsVisible == IsFadingIn and IsFadingIn == false then
+								BackgroundImage.Visible = false
+								BackgroundImage.ImageTransparency = 1
+							end
+						end)()
+					else
+						if IsVisible == IsFadingIn then
+							BackgroundImage.ImageTransparency = BGTransparency
+						end
+					end 
+				end
+			end
+		end
+
+		Gui, VisibleChanged = nil, nil
+	end
+
+	--[[
+	Sets the ImageLabel instance to use as a background.
+	If an ImageLabel is provided, its ZIndex, Transparency,
+	and Parent properties will be overriden.
+	
+	A UI corner will also be added to the ImageLabel.
+	
+	Params:
+	Image <ImageLabel> - The image label instance to use.
+						 Specify with nil the current one.
+	DestroyLast <boolean> - Whether or not to destroy the
+							last background image.
+	]]--
+	function Obj.SetImage(Image, DestroyLast)
+		assert(Image == nil or (typeof(Image) == "Instance" and Image:IsA("ImageLabel")), "Argument 1 must be an ImageLabel or nil.")
+
+		local LastImage
+
+		if Image ~= nil then
+			if DestroyLast == true then
+				LastImage = BackgroundImage
+			end
+
+			BackgroundImage = Image
+			BGImageCorner = BaseComponent.AddCornerRadius(Image, BaseComponent.DefaultCornerRadius)
+
+			Image.ZIndex = BaseComponent.BgImageDefaultZIndex
+
+			local Gui = Obj.Gui
+			if Gui ~= nil then
+				if Gui.Visible == true then
+					Image.ImageTransparency = Obj.BackImageTransparency or 0
+					Image.Visible = true
+				else
+					Image.ImageTransparency = 1
+					Image.Visible = false
+				end
+
+				Image.Parent = Gui
+			end
+		elseif BackgroundImage ~= nil then
+			BackgroundImage.Parent = nil
+			BackgroundImage, BGImageCorner = nil
+		end
+
+		if DestroyLast == true then
+			LastImage = LastImage or BackgroundImage
+
+			if LastImage ~= nil then
+				LastImage:Destroy()
+			end
+		end
+	end
+
+	Obj.OnDisposal = function()
+		if Obj.HandleBeforeDispose == true then
+			Obj.SetVisible(false)
+		end
+
+		local VisibleChanged = Obj.VisibleChanged
+		if VisibleChanged ~= nil then
+			VisibleChanged.DisconnectAll()
+		end
+		VisibleChanged = nil
+		
+		Obj.SetImage(nil)
+
+		if Obj.AutoDestroyGui == true then
+			local Gui = Obj.Gui
+			if Gui ~= nil then
+				Gui:Destroy()
+			end
+			Gui = nil
+		end
+
+		UsedTheme = nil
+	end
+
+	return Obj
+end
+
+return BaseComponent]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e500003289</UniqueId>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXCC50392EB1CD4533B9DA289CD90BF40E">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">GradientFrame</string>
+							<string name="ScriptGuid">{25863C9C-CF72-4DE8-9E17-4AFA90EF5B2E}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+A frame with a customizable gradient.
+
+By udev2192
+]]--
+
+local ZERO_UDIM2 = UDim2.new(0, 0, 0, 0)
+
+local BaseComponent = require(script.Parent:WaitForChild("BaseComponent"))
+
+local GradientFrame = {}
+GradientFrame.__index = GradientFrame
+GradientFrame.UiClassName = "Frame"
+GradientFrame.GradientClassName = "UIGradient"
+
+--[[
+<table> - A set of gradient transparency presets for convienence.
+]]--
+GradientFrame.TransparencyPresets = {
+	Underline = NumberSequence.new(
+		{
+			NumberSequenceKeypoint.new(0, 1),
+			NumberSequenceKeypoint.new(0.25, 0),
+			NumberSequenceKeypoint.new(0.75, 0),
+			NumberSequenceKeypoint.new(1, 1)
+		}
+	)
+}
+
+function GradientFrame.New()
+	local Frame = BaseComponent.New(GradientFrame.UiClassName)
+	local Theme = BaseComponent.GetTheme()
+
+	local FrameGui = Frame.Gui
+
+	local CurrentGradient
+
+	Theme.ApplyProperties(FrameGui, {
+		Visible = false
+	})
+
+	--[[
+	Stamps a clone of the provided UIGradient onto
+	the frame
+	
+	Params:
+	Gradient <UIGradient> - The UIGradient to attach.
+							Pass nil to this argument to
+							get rid of the gradient.
+	IsCloning <boolean> - If the clone of the gradient will be used
+						  (optional, defaults to true)
+	]]--
+	function Frame.SetGradient(Gradient, IsCloning)
+		if IsCloning == nil then
+			IsCloning = true
+		end
+
+		if Gradient ~= nil then
+			if CurrentGradient ~= nil then
+				Frame.SetGradient(nil)
+			end
+
+			local Used
+
+			if IsCloning == true then
+				Used = Gradient:Clone()
+			else
+				Used = Gradient
+			end
+
+			CurrentGradient = Used
+			Used.Parent = FrameGui
+		else
+			CurrentGradient:Destroy()
+			CurrentGradient = nil
+		end
+	end
+
+	--[[
+	Stamps a UIGradient onto the frame using a ColorSequence.
+	
+	Params:
+	Color <ColorSequence> - The color sequence to use.
+	
+	Returns:
+	<UIGradient> - The UIGradient made
+	]]--
+	function Frame.SetGradientColor(Color)
+		local Gradient = Instance.new("UIGradient")
+		Gradient.Color = Color
+
+		Frame.SetGradient(Gradient, false)
+
+		return Gradient
+	end
+
+	return Frame
+end
+
+return GradientFrame]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e50000328a</UniqueId>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXB3F62FEDE242455F82052076BEB7B6FB">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">GridMenu</string>
+							<string name="ScriptGuid">{D9B8B9B3-555C-4AC1-AF4F-F1C75BDDC84B}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+This component provides a menu that has multiple options the user can select
+via a grid of options.
+
+Default UI scheme is designed for specific games
+
+By udev2192
+]]--
+
+local ZERO_UDIM2 = UDim2.new(0, 0, 0, 0)
+local PRIMARY_COMPONENT_ZINDEX = 3
+local MENU_FRAME_ZINDEX = 1
+local CLOSE_BUTTON_NAME = "CloseButton"
+
+local Package = script.Parent
+local BaseComponent = require(Package:WaitForChild("BaseComponent"))
+local IconButton = require(Package:WaitForChild("IconButton"))
+local Util = BaseComponent.GetUtils()
+
+local GridMenu = {}
+GridMenu.__index = GridMenu
+
+-- The default name used for the GridMenu gui instance.
+GridMenu.GuiName = script.Name
+
+--[[
+The color used by the closed button create in the
+corresponding constructor.
+]]--
+GridMenu.CloseButtonColor = Color3.fromHSV(0, 1, 0.6)
+
+GridMenu.CloseButtonCornerRadius = BaseComponent.DefaultCornerRadius
+GridMenu.ContentFrameSize = UDim2.new(0.85, 0, 0.6, 0)
+--GridMenu.CloseButtonAspectRatio = 1
+
+-- The color gradient of the line at the top of the menu
+GridMenu.HeaderLineGradient = ColorSequence.new({
+	ColorSequenceKeypoint.new(0, Color3.fromHSV(0, 0, 1)),
+	ColorSequenceKeypoint.new(1, Color3.fromHSV(0, 0, 0.5))
+})
+
+-- Toggles a component/GUI instance's visibility.
+local function ToggleGuiVisibility(Gui, IsVisible)
+	if typeof(Gui) == "Instance" then
+		Gui.Visible = IsVisible
+	elseif typeof(Gui) == "table" and Gui.SetVisible ~= nil then
+		Gui.SetVisible(IsVisible)
+	end
+end
+
+-- Gets the GUI instance from a component.
+local function GetGuiFromComponent(Component)
+	if typeof(Component) == "Instance" then
+		return Component
+	elseif typeof(Component) == "table" and Component.Gui ~= nil then
+		return Component.Gui
+	else
+		return nil
+	end
+end
+
+function GridMenu.New()
+	local Menu = BaseComponent.New("Frame")
+	local IsFadingIn = false
+	
+	local CloseButtonInit = IconButton.New("X")
+	local CloseConnection
+	local IsClosing = false
+	
+	local DefaultCornerRadius = BaseComponent.DefaultCornerRadius
+
+	Menu.CloseButton = CloseButtonInit
+	
+	-- The contents in the content frame.
+	local Contents = {}
+	
+	local ContentFrameSize = GridMenu.ContentFrameSize
+	
+	-- If the menu will override a GUI instance's
+	-- layout order.
+	Menu.OverridesLayoutOrder = true
+	
+	-- The next size of the line displayed at the top.
+	Menu.HeaderLineSize = UDim2.new(ContentFrameSize.X.Scale, ContentFrameSize.X.Offset, 0.01, 0)
+	
+	-- The next position of the menu frame.
+	Menu.FramePosition = UDim2.new(0.5, 0, 0.5, 0)
+	
+	-- The position offset of the menu frame when it gets hidden.
+	Menu.FrameHideOffset = UDim2.new(0, 0, 0, 0)--UDim2.new(0, 0, 0.1, 0)
+	
+	-- Background image transparency when the menu is made visible.
+	Menu.BackImageTransparency = 0.5
+	
+	Menu.CornerRadius = UDim.new(0, 10)
+	
+	Menu.Rows = 2
+	Menu.Columns = 5
+	Menu.ContentPadding = UDim2.new(0.05, 0, 0.05, 0)
+	
+	local function GetHiddenHeaderLineSize()
+		local LineSize = Menu.HeaderLineSize or ZERO_UDIM2
+		
+		return UDim2.new(0, 0, LineSize.Y.Scale, LineSize.Y.Offset)
+	end
+	
+	local function GetFrameHiddenPos()
+		return Menu.FramePosition + Menu.FrameHideOffset
+	end
+	
+	local function ToggleCloseVisible(IsVisible)
+		local CloseButton = Menu.CloseButton
+		if CloseButton ~= nil then
+			CloseButton.SetVisible(Menu.ShowsCloseButton and IsVisible)
+		end
+	end
+	
+	Menu.SetProperty("ShowsCloseButton", true, function(IsVisible)
+		IsVisible = IsVisible and IsFadingIn
+		
+		CloseButtonInit.Gui.Visible = IsVisible
+	end)
+	
+	-- Create the GUI components
+	local MenuFrame = Menu.Gui
+	MenuFrame.Visible = false
+	MenuFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	MenuFrame.BackgroundTransparency = 1
+	MenuFrame.ClipsDescendants = true
+	MenuFrame.ZIndex = MENU_FRAME_ZINDEX
+	MenuFrame.Name = GridMenu.GuiName
+	MenuFrame.Position = GetFrameHiddenPos()
+	assert(MenuFrame ~= nil, "The GUI from the BaseComponent is missing.")
+	
+	local Theme = Menu.GetTheme()
+	
+	local TitleLabel = Theme.MakeInstance("TextLabel", {
+		Font = Enum.Font.GothamBold,
+		Size = UDim2.new(ContentFrameSize.X.Scale, ContentFrameSize.X.Offset, 0.1, 0),
+		Position = UDim2.new(0.5, 0, 0.15, 0),
+		TextTransparency = 1,
+		TextStrokeTransparency = 1,
+		BackgroundTransparency = 1,
+		Text = "Title",
+		Name = "Title",
+		
+		TextXAlignment = Enum.TextXAlignment.Left,
+		
+		ZIndex = PRIMARY_COMPONENT_ZINDEX,
+		
+		Parent = MenuFrame
+	})
+	
+	local HeaderLine = Theme.MakeInstance("Frame", {
+		Size = GetHiddenHeaderLineSize(),
+		Position = UDim2.new(0.5, 0, 0.25, 0),
+		BorderSizePixel = 0,
+		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		BackgroundTransparency = 0,
+		Name = "HeaderLine",
+		
+		ZIndex = PRIMARY_COMPONENT_ZINDEX,
+		
+		Parent = MenuFrame
+	})
+	
+	local CloseButtonGui = CloseButtonInit.Gui
+	if CloseButtonGui ~= nil then
+		ToggleCloseVisible(false)
+		CloseButtonGui.BackgroundColor3 = GridMenu.CloseButtonColor
+
+		CloseButtonGui.AnchorPoint = Vector2.new(0.5, 0.5)
+		CloseButtonGui.Size = UDim2.new(0.1, 0, 0.1, 0)
+		CloseButtonGui.Position = UDim2.new(0.9, 0, 0.125, 0)
+		
+		--BaseComponent.AddAspectRatio(CloseButtonGui, GridMenu.CloseButtonAspectRatio)
+
+		CloseButtonGui.ZIndex = PRIMARY_COMPONENT_ZINDEX
+
+		CloseButtonGui.Name = CLOSE_BUTTON_NAME
+
+		CloseConnection = CloseButtonInit.GetButton().Activated:Connect(function()
+			if IsClosing == false then
+				IsClosing = true
+
+				Menu.SetVisible(false)
+
+				IsClosing = false
+			end
+		end)
+		
+		BaseComponent.AddCornerRadius(CloseButtonGui, GridMenu.CloseButtonCornerRadius)
+
+		CloseButtonGui.Parent = Menu.Gui
+	else
+		error("Close button IconButton is missing the .Gui property.")
+	end
+
+	CloseButtonInit = nil
+	
+	-- Initialize the frame that display the buttons/labels
+	local ContentFrame = Theme.MakeInstance("Frame", {
+		Size = GridMenu.ContentFrameSize,
+		Position = UDim2.new(0.5, 0, 0.6, 0),
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		ClipsDescendants = true,
+		Name = "ContentFrame",
+		
+		ZIndex = PRIMARY_COMPONENT_ZINDEX,
+		
+		Parent = MenuFrame
+	})
+	
+	-- Apply a grid layout to the content frame
+	local Layout = Theme.MakeInstance("UIGridLayout", {
+		SortOrder = Enum.SortOrder.LayoutOrder,
+
+		HorizontalAlignment = Enum.HorizontalAlignment.Center,
+		VerticalAlignment = Enum.VerticalAlignment.Center
+	})
+	
+	Menu.ContentFrame = ContentFrame
+	
+	--[[
+	Updates the layout of the content frame.
+	]]--
+	function Menu.UpdateLayout()
+		local Padding = Menu.ContentPadding
+		Layout.CellPadding = Padding
+		Layout.CellSize = BaseComponent.GetGridItemSize(Menu.Rows, Menu.Columns, Padding)
+	end
+	
+	Menu.UpdateLayout()
+	
+	--[[
+	<boolean> - If the grid layout is currently being used.
+	]]--
+	Menu.SetProperty("IsUsingGrid", false, function(IsUsing)
+		if IsUsing == true then
+			Menu.UpdateLayout()
+			Layout.Parent = ContentFrame
+		else
+			if Layout.Parent ~= nil then
+				Layout.Parent = nil
+			end
+		end
+	end)
+	
+	-- Apply a gradient to the animation line
+	Theme.MakeInstance("UIGradient", {
+		Color = GridMenu.HeaderLineGradient,
+		Rotation = 0,
+		Transparency = NumberSequence.new({
+			NumberSequenceKeypoint.new(0, 1),
+			NumberSequenceKeypoint.new(0.5, 0),
+			NumberSequenceKeypoint.new(1, 1)
+		}),
+		Parent = HeaderLine
+	})
+	
+	-- Give the menu rounded corners
+	local MenuCorner = BaseComponent.AddCornerRadius(MenuFrame, DefaultCornerRadius)
+	
+	DefaultCornerRadius, ContentFrameSize = nil
+	
+	-- Refreshes the stored components' layout order.
+	local function RefreshLayoutOrder()
+		if Menu.OverridesLayoutOrder == true then
+			for i, v in pairs(Contents) do
+				local Gui = GetGuiFromComponent(v)
+				
+				if Gui ~= nil then
+					Gui.LayoutOrder = i
+				end
+				
+				Gui = nil
+			end
+		end
+	end
+	
+	-- Visibility handler
+	local function OnVisibleChanged(IsVisible)	
+		local Transparency
+		local NewImageTransparency
+		local NewHeaderLineSize
+		local DestinationPos
+		local DestinationOffsetted = GetFrameHiddenPos()
+		
+		-- Determine destination tween variables
+		if IsVisible == true then
+			Transparency = 0
+			NewImageTransparency = Menu.BackImageTransparency or 0
+			
+			NewHeaderLineSize = Menu.HeaderLineSize
+			DestinationPos = Menu.FramePosition
+			
+			IsFadingIn = true
+		else
+			Transparency = 1
+			NewImageTransparency = 1
+			
+			NewHeaderLineSize = GetHiddenHeaderLineSize()
+			DestinationPos = GetFrameHiddenPos()
+			
+			IsFadingIn = false
+		end
+		
+		-- Animate
+		local Info = Menu.TweeningInfo
+		if Info ~= nil then
+			if IsFadingIn == true and IsVisible == true then
+				MenuFrame.Visible = true
+			end
+			
+			ToggleCloseVisible(IsVisible)
+			
+			Util.Tween(MenuFrame, Info, {Position = DestinationPos, BackgroundTransparency = Transparency})
+			Util.Tween(HeaderLine, Info, {Size = NewHeaderLineSize})
+			Util.Tween(TitleLabel, Info, {TextTransparency = Transparency})
+			
+			--if BackgroundImage ~= nil then
+			--	Util.Tween(BackgroundImage, Info, {ImageTransparency = NewImageTransparency})
+			--end
+			
+			for i, v in pairs(Contents) do
+				ToggleGuiVisibility(v, IsVisible)
+			end
+			
+			task.wait(Info.Time)
+			
+			if IsFadingIn == false and IsVisible == false then
+				MenuFrame.Visible = false
+				MenuFrame.Position = DestinationOffsetted
+			end
+		end
+	end
+	
+	--[[
+	Returns:
+	<boolean> - If the GUI is currently trying to be shown.
+	]]--
+	function Menu.IsFadingIn()
+		return IsFadingIn
+	end
+	
+	--[[
+	Sets the title displayed at the top of the menu.
+	
+	Params:
+	Title <string> - The title to display.
+	]]--
+	function Menu.SetTitle(Title)
+		assert(typeof(Title) == "string", "Argument 1 must be a string.")
+		
+		TitleLabel.Text = Title
+	end
+	
+	--[[
+	Adds a component to the content frame.
+	
+	Params:
+	Component <variant> - The component or GUI instance to add.
+	LayoutOrder <number> - An optional argument that specifies
+						   the component to add's layout order.
+	]]--
+	function Menu.AddComponent(Component, LayoutOrder)
+		if typeof(LayoutOrder) == "number" then
+			table.insert(Contents, LayoutOrder, Component)
+		else
+			table.insert(Contents, Component)
+		end
+		
+		RefreshLayoutOrder()
+		GetGuiFromComponent(Component).Parent = ContentFrame
+	end
+	
+	--[[
+	Destroys the close button used and disconnects the
+	event code used to make it work.
+	]]--
+	function Menu.DestroyCloseButton()
+		local CloseButton = Menu.CloseButton
+		if CloseButton ~= nil then
+			CloseButton.Dispose()
+			CloseButton = nil
+		end
+
+		if CloseConnection ~= nil then
+			CloseConnection:Disconnect()
+			CloseConnection = nil
+
+			IsClosing = nil
+		end
+	end
+	
+	--[[
+	Removes a component from the content frame.
+	
+	Params:
+	Component <variant> - The component or GUI instance to remove.
+	]]--
+	function Menu.RemoveComponent(Component)
+		local Index = table.find(Contents, Component)
+		if Index ~= nil then
+			-- Maually remove from the table to preserve
+			-- the layout order of other components.
+			Contents[Index] = nil
+		end
+		
+		GetGuiFromComponent(Component).Parent = nil
+		RefreshLayoutOrder()
+	end
+	
+	Menu.VisibleChanged.Connect(OnVisibleChanged)
+	
+	Menu.AddDisposalListener(function()
+		Menu.VisibleChanged.Disconnect(OnVisibleChanged)
+		Menu.DestroyCloseButton()
+		
+		-- Only destroy Layout and MenuFrame because
+		-- it contains all the other UI components
+		-- used to make the menu.
+		Layout:Destroy()
+		MenuFrame:Destroy()
+		
+		-- Then, garbage collect the GUI.
+		MenuFrame, TitleLabel, HeaderLine, ContentFrame = nil, nil, nil, nil
+	end)
+	
+	return Menu
+end
+
+return GridMenu]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e50000328b</UniqueId>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBX3BDB20F8F46B4037BEBC79127BA0B3D3">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">IconButton</string>
+							<string name="ScriptGuid">{473C4C8B-D358-4567-95D7-159C58702DB4}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+A text button but with an icon and animation to go with it.
+
+You can set if it's clickable (so there won't have to be a separate
+class for the TextLabel variant)
+
+The image itself is also able to be toggled.
+
+By udev2192
+]]--
+
+local ZERO_UDIM2 = UDim2.new(0, 0, 0, 0)
+
+local BaseComponent = require(script.Parent:WaitForChild("BaseComponent"))
+local Util = BaseComponent.GetUtils()
+
+local IconButton = {}
+IconButton.__index = IconButton
+
+local DefaultSounds = script:WaitForChild("DefaultSounds")
+
+local function AssertBoolean(Value, ArgNum)
+	assert(typeof(Value) == "boolean", "Argument " .. ArgNum .. " must be a boolean")
+end
+
+function IconButton.New(ButtonText)
+	local Button = BaseComponent.New("Frame")
+	local ButtonGui = Button.Gui
+	local Theme = Button.GetTheme()
+	
+	local IsFadingIn = false
+	local HoverEffectFadingIn = false
+	local ClickEffectEnabled = false
+	
+	local ClickEffectConnections = {}
+	
+	local HoverEffectFrame: Frame
+	
+	-- The background transparency of the button when it's visible.
+	Button.BackTransparency = 0
+	
+	Button.HoverEffectSizeOffset = UDim2.new(0.1, 0, 0.1, 0)
+	Button.ClickSizeOffset = UDim2.new(0, 10, 0, 10)--UDim2.new(0.1, 0, 0.1, 0)
+	Button.ClickEffectTweenInfo = TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+	
+	Button.ClickSound = DefaultSounds:WaitForChild("Click")
+	Button.HoverOnSound = DefaultSounds:WaitForChild("HoverOn")
+	Button.HoverOffSound = nil
+	
+	Theme.ApplyProperties(ButtonGui, ButtonGui.ClassName, {
+		Visible = false,
+		Size = UDim2.new(0.5, 0, 0.1, 0),
+		Position = UDim2.new(0.5, 0, 0.5, 0),
+		BackgroundTransparency = 1,
+		BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+		BorderSizePixel = 0,
+		ClipsDescendants = false,
+		Name = script.Name
+	})
+	
+	-- Create the GUI components that make up the button.
+	local RealButton = Theme.MakeInstance("TextButton", {
+		-- The actual button.
+		Visible = true,
+		
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Size = UDim2.new(1, 0, 1, 0),
+		Position = UDim2.new(0.5, 0, 0.5, 0),
+		
+		TextStrokeTransparency = 1,
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		Text = "",
+		Name = "InputReceiver",
+		
+		ZIndex = 3,
+		AutoButtonColor = false,
+		ClipsDescendants = false,
+		
+		Parent = ButtonGui
+	})
+	
+	local ButtonText = Theme.MakeInstance("TextLabel", {
+		Size = UDim2.new(0.9, 0, 0.9, 0),
+		Position = UDim2.new(0.5, 0, 0.5, 0),
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		TextTransparency = 1,
+		TextStrokeTransparency = 1,
+		Text = ButtonText or "BUTTON",
+		Name = "ButtonText",
+		
+		ZIndex = 2,
+		Parent = ButtonGui
+	})
+	
+	local IconFrame = Theme.MakeInstance("ImageLabel", {
+		Visible = false,
+		Size = UDim2.new(0.3, 0, 0.5, 0),
+		Position = UDim2.new(0.3, 0, 0.5, 0),
+		ImageTransparency = 1,
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		ImageColor3 = ButtonText.TextColor3,
+		ScaleType = Enum.ScaleType.Fit,
+		Image = "",
+		Name = "Icon",
+		
+		ZIndex = 2,
+		Parent = ButtonGui
+	})
+	
+	-- Give the button rounded corners
+	--local UICorner = Theme.MakeInstance("UICorner", {
+	--	CornerRadius = IconButton.DefaultCornerRadius,
+	--	Parent = ButtonGui
+	--})
+	
+	-- Visibility handler
+	local function OnVisibleChanged(IsVisible)	
+		local Transparency = 0
+		local BGTransparency = 0
+		local NewHeaderLineSize = nil
+		local DestinationPos = nil
+
+		-- Determine destination tween variables
+		if IsVisible == true then
+			Transparency = 0
+			BGTransparency = Button.BackTransparency
+
+			IsFadingIn = true
+		else
+			Transparency = 1
+			BGTransparency = 1
+
+			IsFadingIn = false
+		end
+
+		-- Animate
+		local Info = Button.TweeningInfo
+		if Info ~= nil then
+			if IsFadingIn == true and IsVisible == true then
+				ButtonGui.Visible = true
+			end
+			
+			Util.Tween(ButtonGui, Info, {BackgroundTransparency = BGTransparency})
+			Util.Tween(ButtonText, Info, {TextTransparency = Transparency, TextStrokeTransparency = 1})
+			Util.Tween(IconFrame, Info, {ImageTransparency = Transparency})
+
+			task.wait(Info.Time)
+
+			if IsFadingIn == false and IsVisible == false then
+				ButtonGui.Visible = false
+			end
+		end
+	end
+	
+	--[[
+	Returns:
+	
+	<TextButton> - The actual button that you can bind input to.
+	]]--
+	function Button.GetButton()
+		return RealButton
+	end
+	
+	--[[
+	Returns:
+	
+	<TextLabel> - The display text label for the button.
+	]]--
+	function Button.GetDisplayLabel()
+		return ButtonText
+	end
+	
+	--[[
+	Sets the text displayed on the button.
+	
+	Params:
+	Text <string> - The text to display.
+	]]--
+	function Button.SetText(Text)
+		ButtonText.Text = Text
+	end
+	
+	--[[
+	Sets the icon displayed via the specified url.
+	
+	Params:
+	URL <Color3> - The URL of the image to display.
+				   If this argument is nil, the image is hidden
+				   and the button text is centered.
+	]]--
+	function Button.SetIcon(URL)
+		if URL ~= nil then
+			ButtonText.Size = UDim2.new(0.6, 0, 0.9, 0)
+			ButtonText.Position = UDim2.new(0.6, 0, 0.5, 0)
+			
+			IconFrame.Image = URL
+			IconFrame.Visible = true
+		else
+			IconFrame.Visible = false
+			IconFrame.Image = ""
+			
+			ButtonText.Size = UDim2.new(0.9, 0, 0.9, 0)
+			ButtonText.Position = UDim2.new(0.5, 0, 0.5, 0)
+		end
+	end
+	
+	--[[
+	Sets the color of the UI components that make up the button.
+	
+	Params:
+	NewColor <string> - The color to change to.
+	]]--
+	function Button.SetColor(NewColor)
+		ButtonText.TextColor3 = NewColor
+		IconFrame.ImageColor3 = NewColor
+	end
+	
+	--[[
+	Sets if rich text is enabled.
+	
+	Params:
+	UseRichText <boolean> - Whether or not to use rich text.
+	]]--
+	function Button.SetRichTextEnabled(UseRichText)
+		AssertBoolean(UseRichText, 1)
+		
+		ButtonText.RichText = UseRichText
+	end
+	
+	--[[
+	Sets if the button can take in input (including clicks).
+	
+	Params:
+	IsEnabled <boolean> - Whether or not to use rich text.
+	]]--
+	function Button.SetInputEnabled(IsEnabled)
+		AssertBoolean(IsEnabled, 1)
+		
+		RealButton.Visible = IsEnabled
+	end
+	
+	local function SetClickFrameToMaxSize()
+		Util.Tween(HoverEffectFrame, TweenInfo, {
+			Size = RealButton.Size + Button.HoverEffectSizeOffset
+		})
+	end
+	
+	--[[
+	<boolean> - Whether or not there is a hover and click animation
+	]]--
+	Button.SetProperty("ClickEffectEnabled", true, function(Enabled)
+		if Enabled then
+			if ClickEffectEnabled == false then
+				ClickEffectEnabled = true
+				
+				table.insert(ClickEffectConnections, RealButton.MouseLeave:Connect(function()
+					HoverEffectFadingIn = false
+					
+					if HoverEffectFrame then
+						local TweeningInfo = Button.ClickEffectTweenInfo
+						Util.Tween(HoverEffectFrame, TweeningInfo, {
+							BackgroundTransparency = 1,
+						})
+						
+						local Sound = Button.HoverOffSound
+						if Sound then
+							Sound:Play()
+						end
+						
+						local Elapsed = 0
+						local WaitTime = TweeningInfo.Time
+						while true do
+							if HoverEffectFadingIn == false and HoverEffectFrame and Elapsed < WaitTime then
+								Elapsed += task.wait()
+							else
+								break
+							end
+						end
+
+						if HoverEffectFadingIn == false and HoverEffectFrame then
+							HoverEffectFrame:Destroy()
+							HoverEffectFrame = nil
+						end
+					end
+				end))
+				
+				table.insert(ClickEffectConnections, RealButton.MouseEnter:Connect(function()
+					HoverEffectFadingIn = true
+					
+					if HoverEffectFrame == nil then
+						HoverEffectFrame = BaseComponent.CreateButtonOverlay(RealButton, Button.CornerRadius)
+						HoverEffectFrame.Parent = RealButton
+					end
+					
+					Util.Tween(HoverEffectFrame, Button.ClickEffectTweenInfo, {
+						BackgroundTransparency = 0.5
+					})
+					
+					local Sound = Button.HoverOnSound
+					if Sound then
+						Sound:Play()
+					end
+				end))
+				
+				table.insert(ClickEffectConnections, RealButton.Activated:Connect(function()
+					local ClickFrame = BaseComponent.CreateButtonOverlay(RealButton, Button.CornerRadius)
+					ClickFrame.BackgroundTransparency = 0.5
+					ClickFrame.Parent = RealButton
+					
+					local TweeningInfo = Button.ClickEffectTweenInfo
+					Util.Tween(ClickFrame, TweeningInfo, {
+						Size = RealButton.Size + Button.ClickSizeOffset,
+						BackgroundTransparency = 1
+					})
+					
+					local Sound = Button.ClickSound
+					if Sound then
+						Sound:Play()
+					end
+					
+					task.wait(TweeningInfo.Time)
+					ClickFrame:Destroy()
+				end))
+			end
+		else
+			if ClickEffectEnabled then
+				for i, v in pairs(ClickEffectConnections) do
+					v:Disconnect()
+				end
+				
+				ClickEffectConnections = {}
+				ClickEffectEnabled = false
+			end
+		end
+	end)
+	
+	--Button.SetProperty("CornerRadius", BaseComponent.DefaultCornerRadius, function(Radius)
+	--	UICorner.CornerRadius = Radius
+	--end)
+	
+	Button.VisibleChanged.Connect(OnVisibleChanged)
+	
+	Button.AddDisposalListener(function()
+		ButtonGui:Destroy()
+		Button.ClickEffectEnabled = false
+	end)
+	
+	return Button
+end
+
+return IconButton]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e50000328c</UniqueId>
+						</Properties>
+						<Item class="Folder" referent="RBXEE569085A7F44B44AF5843922E86995B">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+								<string name="Name">DefaultSounds</string>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+								<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e50000328d</UniqueId>
+							</Properties>
+							<Item class="Sound" referent="RBXB8D4985F950042A0920E386CECC7EE42">
+								<Properties>
+									<BinaryString name="AttributesSerialize"></BinaryString>
+									<float name="EmitterSize">10</float>
+									<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+									<NumberRange name="LoopRegion">0 60000 </NumberRange>
+									<bool name="Looped">false</bool>
+									<string name="Name">Click</string>
+									<bool name="PlayOnRemove">false</bool>
+									<NumberRange name="PlaybackRegion">0 60000 </NumberRange>
+									<bool name="PlaybackRegionsEnabled">false</bool>
+									<float name="PlaybackSpeed">1</float>
+									<bool name="Playing">false</bool>
+									<token name="RollOffMode">0</token>
+									<Ref name="SoundGroup">null</Ref>
+									<Content name="SoundId"><url>rbxassetid://12221976</url></Content>
+									<int64 name="SourceAssetId">-1</int64>
+									<BinaryString name="Tags"></BinaryString>
+									<double name="TimePosition">0</double>
+									<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e50000328e</UniqueId>
+									<float name="Volume">0.5</float>
+									<float name="xmlRead_MaxDistance_3">10000</float>
+								</Properties>
+							</Item>
+							<Item class="Sound" referent="RBXC49BFA0847DE48BFBB51122F1356D4B5">
+								<Properties>
+									<BinaryString name="AttributesSerialize"></BinaryString>
+									<float name="EmitterSize">10</float>
+									<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+									<NumberRange name="LoopRegion">0 60000 </NumberRange>
+									<bool name="Looped">false</bool>
+									<string name="Name">HoverOn</string>
+									<bool name="PlayOnRemove">false</bool>
+									<NumberRange name="PlaybackRegion">0 60000 </NumberRange>
+									<bool name="PlaybackRegionsEnabled">false</bool>
+									<float name="PlaybackSpeed">1</float>
+									<bool name="Playing">false</bool>
+									<token name="RollOffMode">0</token>
+									<Ref name="SoundGroup">null</Ref>
+									<Content name="SoundId"><url>rbxassetid://12222170</url></Content>
+									<int64 name="SourceAssetId">-1</int64>
+									<BinaryString name="Tags"></BinaryString>
+									<double name="TimePosition">0</double>
+									<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e50000328f</UniqueId>
+									<float name="Volume">0.5</float>
+									<float name="xmlRead_MaxDistance_3">10000</float>
+								</Properties>
+							</Item>
+						</Item>
+					</Item>
+					<Item class="ModuleScript" referent="RBX8BFB7163C8A3482BB2C13F0F626493CF">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">MenuSet</string>
+							<string name="ScriptGuid">{77A95906-FD58-4FB3-9D0E-5E668CAF60B2}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+Provides a GUI-based structure that can hold multiple instances of the GridMenu.
+
+In other words, this makes sets of menus much easier to handle. This is because
+it makes sure only one gui frame is displayed at a time.
+
+By udev2192
+]]--
+
+local BaseComponent = require(script.Parent:WaitForChild("BaseComponent"))
+
+local MenuSet = {}
+MenuSet.__index = MenuSet
+MenuSet.ClassName = script.Name
+MenuSet.GuiClassName = "Frame"
+
+local function AssertString(ArgNum, String)
+	assert(typeof(String) == "string", "Argument " .. ArgNum .. " must be a string.")
+end
+
+function MenuSet.New()
+	local Set = BaseComponent.New(MenuSet.GuiClassName)
+	local Gui = Set.Gui
+	
+	Gui.Name = MenuSet.ClassName
+	Gui.ClipsDescendants = false
+	Gui.BackgroundTransparency = 1
+	
+	-- Stored gui components
+	local Stored = {}
+	local Listeners = {}
+	
+	-- Shown gui ids
+	local Shown = {}
+	
+	--[[
+	<boolean> - Whether or not to limit the frames shown at a certain time
+				to 1.
+	]]--
+	Set.SingleFrameOnly = true
+	
+	--[[
+	<string> - The string identifier of the
+			   menu being shown.
+			   If none are being shown,
+			   this field is nil.
+	]]--
+	Set.ShownId = nil
+	
+	--[[
+	<Vector2> - A specific anchor point to enforce.
+			  	Leave this value as nil to not enforce this.
+	]]--
+	Set.GuiAnchorPoint = Vector2.new(0.5, 0.5)
+	
+	--[[
+	<UDim2> - A specific GUI size to enforce.
+			  Leave this value as nil to not enforce this.
+	]]--
+	Set.GuiSize = UDim2.new(1, 0, 1, 0)
+	
+	--[[
+	<UDim2> - A specific GUI position to enforce.
+			  Leave this value as nil to not enforce this.
+	]]--
+	Set.GuiPosition = UDim2.new(0.5, 0, 0.5, 0)
+	
+	--[[
+	Params:
+	<string> - The string identifier that refers to the menu
+			   requesting to be hidden.
+	]]--
+	function Set.Hide(Name)
+		local Component = Stored[Name]
+
+		if Component ~= nil then
+			Set.ShownId = nil
+
+			local ShowIndex = table.find(Shown, Name)
+			if ShowIndex ~= nil then
+				table.remove(Shown, ShowIndex)
+			end
+
+			Component.SetVisible(false)
+		end
+	end
+
+	--[[
+	Hides all of the currently shown menus.
+	]]--
+	function Set.HideAll()
+		for i, v in pairs(Shown) do
+			Set.ShownId = nil
+			Set.Hide(v)
+		end
+	end
+
+	--[[
+	Params:
+	<string> - The string identifier that refers to the menu
+			   requesting to be shown.
+	]]--
+	function Set.Show(Name)
+		local Component = Stored[Name]
+
+		if Component ~= nil then
+			-- Hide the previous
+			if Set.SingleFrameOnly == true then
+				local LastId = Set.ShownId
+				if LastId ~= nil then
+					Set.Hide(LastId)
+				end
+			end
+
+			-- Show the current
+			table.insert(Shown, Name)
+			Set.ShownId = Name
+			Component.SetVisible(true)
+		end
+	end
+	
+	--[[
+	Removes a component from the set.
+	
+	Params:
+	<string> - The string identifier that refers
+			   to the component being removed.
+	]]--
+	function Set.Remove(Name)
+		Stored[Name] = nil
+		
+		local Connection = Listeners[Name]
+		if Connection ~= nil then
+			Connection:Disconnect()
+			Listeners[Name] = nil
+			Connection = nil
+		end
+	end
+	
+	--[[
+	Adds a component to the set. The specified
+	component will get reparented to the gui set's frame.
+	
+	Params:
+	<string> - The string identifier for the gui.
+	<BaseComponent> - The component itself.
+	]]--
+	function Set.Add(Name, NewGui)
+		AssertString(1, Name)
+		assert(typeof(NewGui) == "table" and NewGui.SetVisible ~= nil, "Argument 2 must be a BaseComponent.")
+		
+		Stored[Name] = NewGui
+		
+		local CloseButton = NewGui.CloseButton
+		if CloseButton ~= nil then
+			Listeners[Name] = CloseButton.GetButton().Activated:Connect(function()
+				Set.Hide(Name)
+			end)
+		end
+		
+		local ActualGui = NewGui.Gui
+		if ActualGui ~= nil then
+			local Anchor = Set.GuiAnchorPoint
+			local Size = Set.GuiSize
+			local Pos = Set.GuiPosition
+			
+			if Anchor ~= nil then
+				ActualGui.AnchorPoint = Anchor
+			end
+			if Size ~= nil then
+				ActualGui.Size = Size
+			end
+			if Pos ~= nil then
+				ActualGui.Position = Pos
+			end
+			
+			ActualGui.Parent = Gui
+		end
+	end
+	
+	Set.AddDisposalListener(Set.HideAll)
+	
+	return Set
+end
+
+return MenuSet]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e500003290</UniqueId>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXCE12877A87754BF291161AA130330EE8">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">NpcDialog</string>
+							<string name="ScriptGuid">{9C20C342-CC3E-4B56-A20F-D4443EBAAF3E}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+Displays a GUI that can be used to display an NPC dialog
+
+By udev2192
+]]--
+
+local UIComponents = script.Parent
+
+local BaseComponent = require(UIComponents:WaitForChild("BaseComponent"))
+local IconButton = require(UIComponents:WaitForChild("IconButton"))
+
+local UtilRepModules = UIComponents.Parent.Parent:WaitForChild("Utils")
+
+local Signal = require(
+	UtilRepModules
+	:WaitForChild("Signal")
+)
+
+local Util = BaseComponent.GetUtils()
+local TweenGroup = require(UtilRepModules:WaitForChild("TweenGroup"))
+
+local NpcDialog = {}
+NpcDialog.__index = NpcDialog
+
+NpcDialog.ClassName = script.Name
+NpcDialog.DefaultBackgroundColor = Color3.fromRGB(0, 0, 0)
+
+--[[
+<table> - Dialog context actions by string
+]]--
+NpcDialog.ContextActions = {
+	Start = "Start",
+	Continue = "...",
+	SkipToEnd = "Skip to End",
+	Close = "Leave"
+}
+
+--[[
+<NpcDialog.TypeActions> - A list of typing actions for the grapheme animation
+]]--
+NpcDialog.TypeActions = {
+	Write = 1,
+	Wait = 2,
+	Call = 3,
+	SetOptions = 4
+}
+
+function NpcDialog.Lerp(a, b, t)
+	return a + (b - a) * t
+end
+
+function NpcDialog.New()
+	local Dialog = BaseComponent.New("Frame")
+	local Gui = Dialog.Gui
+	local Theme = Dialog.GetTheme()
+
+	local CornerRadii = {}
+	local DialogOptions = {}
+	
+	--local OptionButtons = {}
+	--local OptionButtonEvents = {}
+
+	-- [character #] = duration in seconds
+	--local Delays = {}
+	local CompiledActionMap = {}
+	local ActionMapOptionIds = {}
+
+	-- Names originally assigned to each option
+	-- (order matters so the RemoveOption function works)
+	local OptionButtonIds = {}
+
+	local IsWritingGraphemes = false
+	local IsUsingTextList = false
+	local IsUsingActionMap = false
+	local IsUsingContinueButton = false
+	local IsFadingIn = false
+
+	local DestinationGraphemeCount = 0
+	local TotalMaxGraphemes = 0
+	local TextListIndex = 0
+
+	local CurrentTextList
+	local DialogTextClickEvent
+	local ActionMapFullString
+
+	Dialog.FrameSize = UDim2.new(1, 0, 0.25, 0)
+	Dialog.FramePosition = UDim2.new(0.5, 0, 0.75, 0)
+	Dialog.HiddenSizeOffset = UDim2.new(-0.075, 0, -0.075, 0)
+	Dialog.BackTransparency = 0.5
+	Dialog.MinColumns = 5
+	Dialog.OptionsPadding = UDim2.new(0.1, 0, 0.1, 0)
+	Dialog.ClearWhenHidden = true
+	
+	--[[
+	<string?> - The id of the last selected option
+	]]--
+	Dialog.LastAnswerId = nil
+
+	Gui.Visible = false
+	Gui.AnchorPoint = Vector2.new(0.5, 0.5)
+	Gui.Size = Dialog.FrameSize
+	Gui.Position = Dialog.FramePosition
+
+	Gui.BackgroundColor3 = NpcDialog.DefaultBackgroundColor
+	Gui.BackgroundTransparency = 1
+	Gui.BorderSizePixel = 0
+	Gui.Name = NpcDialog.ClassName
+
+	BaseComponent.AddAspectRatio(Gui, 2.75)
+
+	local DialogTextBG = Theme.MakeInstance("TextButton", {
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Size = UDim2.new(0.63, 0, 1, 0),
+		Position = UDim2.new(0.315, 0, 0.5, 0),
+
+		BackgroundTransparency = 1,
+		BackgroundColor3 = NpcDialog.DefaultBackgroundColor,
+		BorderSizePixel = 0,
+
+		TextTransparency = 1,
+		TextStrokeTransparency = 1,
+		Text = "",
+
+		AutoButtonColor = false,
+
+		Parent = Gui
+	})
+
+	local OptionsFrame = Theme.MakeInstance("Frame", {
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Size = UDim2.new(0.33, 0, 1, 0),
+		Position = UDim2.new(0.835, 0, 0.5, 0),
+
+		BackgroundTransparency = 1,
+		BackgroundColor3 = NpcDialog.DefaultBackgroundColor,
+		BorderSizePixel = 0,
+
+		Name = "OptionsFrame",
+
+		Parent = Gui
+	})
+
+	local OptionsGridHandler = Theme.MakeInstance("UIGridLayout", {
+		SortOrder = Enum.SortOrder.LayoutOrder,
+
+		HorizontalAlignment = Enum.HorizontalAlignment.Center,
+		VerticalAlignment = Enum.VerticalAlignment.Center,
+
+		CellPadding = Dialog.OptionsPadding,
+		CellSize = BaseComponent.GetGridItemSize(1, Dialog.MinColumns, Dialog.OptionsPadding),
+
+		Parent = OptionsFrame
+	})
+
+	local DialogText = Theme.MakeInstance("TextLabel", {
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Size = UDim2.new(0.9, 0, 0.9, 0),
+		Position = UDim2.new(0.5, 0, 0.5, 0),
+
+		TextXAlignment = Enum.TextXAlignment.Left,
+		TextYAlignment = Enum.TextYAlignment.Top,
+
+		BorderSizePixel = 0,
+		MaxVisibleGraphemes = 0,
+
+		BackgroundTransparency = 1,
+		TextStrokeTransparency = 1,
+		TextTransparency = 1,
+
+		Font = Enum.Font.Gotham,
+
+		Parent = DialogTextBG
+	})
+
+	-- Extra rounded corners
+	for i, v in pairs({DialogTextBG, OptionsFrame}) do
+		table.insert(CornerRadii, BaseComponent.AddCornerRadius(v, Dialog.CornerRadius))
+	end
+
+	local function HideGui()
+		Gui.Visible = false
+
+		Gui.BackgroundTransparency = 1
+		Gui.Size = Dialog.FrameSize + Dialog.HiddenSizeOffset
+	end
+
+	HideGui()
+
+	--[[
+	<number> - The scrolling speed of the dialog in
+			   characters per second.
+	]]--
+	Dialog.ScrollSpeed = 30
+
+	--[[
+	<array> - An array of strings to type when scrolling
+			  through the dialog. This is useful for
+			  text-only dialogs, where the only option
+			  is continuing to the next bit of text
+	]]--
+	Dialog.TextList = {}
+	
+	Dialog.CharacterTypeSound = script:WaitForChild("CharacterTypeSound")
+
+	--[[
+	<string> - The next string to display on the dialog
+	]]--
+	Dialog.SetProperty("NextString", "", function(NewString)
+		TotalMaxGraphemes = string.len(NewString)
+		DialogText.Text = NewString
+	end)
+
+	--[[
+	<array> - The currently used action map. This is intended to be set
+			  using values from Dialog.ActionMap
+	]]--
+	Dialog.SetProperty("CurrentActionMap", {}, function(Map: {{[number]: any}})
+		DialogText.MaxVisibleGraphemes = 0
+		DialogText.Text = ""
+		ActionMapFullString = ""
+		--Delays = {}
+		CompiledActionMap = {}
+
+		local Length = #Map
+
+		if Length > 0 then
+			local Write = NpcDialog.TypeActions.Write
+
+			for i, v in ipairs(Map) do
+				if v[1] == Write then
+					local Str = v[2]
+					ActionMapFullString ..= Str
+					--elseif v[1] == Wait then
+					--	table.insert(Delays, {NextString:len(), v[2]})
+					--	ActionMapFullString ..= NextString
+					--	NextString = ""
+					table.insert(CompiledActionMap, {Write, Str:len()})
+				else
+					table.insert(CompiledActionMap, v)
+				end
+			end
+		end
+	end)
+	
+	--[[  
+	<array>
+	A list of actions for the npc dialog to iterate over using
+	UseActionMap().
+	
+	An example usage of ActionMap would be:
+	local CurrentDialog = NpcDialog.New()
+	local Actions = NpcDialog.TypeActions
+	CurrentDialog.ActionMap = {
+		{Actions.Write, "Hello!"}
+		{Actions.Wait, 0.5}
+		{Actions.Write, " This is an example of a dialog with a delay."}
+	}
+	CurrentDialog.UseActionMap()
+	]]--
+	Dialog.SetProperty("ActionMap", {}, function(Map: {{[number]: any}})
+		Dialog.CurrentActionMap = Map
+	end)
+
+	--[[
+	Sets the corner radius of the components used by the dialog
+	
+	Params:
+	Radius <UDim> - The radius dimensions to use.
+	]]--
+	function Dialog.SetCornerRadius(Radius)
+		Dialog.CornerRadius = Radius
+	end
+
+	--[[
+	Stops the typing "animation"
+	]]--
+	function Dialog.Pause()
+		IsUsingActionMap = false
+		IsWritingGraphemes = false
+	end
+
+	--[[
+	Clears the NPC dialog text
+	]]--
+	function Dialog.Clear()
+		DestinationGraphemeCount = 0
+		DialogText.MaxVisibleGraphemes = 0
+	end
+
+	--local function RefreshOptionLayout()
+	--	for i, v in ipairs(OptionButtons) do
+	--		local Button = v.Button
+
+	--		if Button then
+	--			Button.Gui.LayoutOrder = i
+	--		end
+	--	end
+	--end
+	
+	local function RemoveOptionByIndex(Index: number, Table: {})
+		if Table == nil then
+			Table = DialogOptions[Index]
+			
+			if Table == nil then
+				return
+			end
+		end
+		
+		table.remove(DialogOptions, Index)
+		
+		Table.Connection:Disconnect()
+		Table.Button.Dispose()
+	end
+	
+	--[[
+	Removes a dialog option and destroys it
+	
+	Params:
+	Id <string> - The option's string identifier
+	]]--
+	function Dialog.RemoveOption(Id)
+		assert(typeof(Id) == "string", "Argument 1 must be a string")
+		
+		for i, v in ipairs(DialogOptions) do
+			if Id == v.Id then
+				RemoveOptionByIndex(i, v)
+				break
+			end
+		end
+
+		--local Connection = OptionButtonEvents[Id]
+		--if Connection then
+		--	Connection:Disconnect()
+
+		--	OptionButtonEvents[Id] = nil
+		--	Connection = nil
+		--end
+
+		--local Index = table.find(OptionButtonIds, Id)
+		----print(Name, 1)
+		--if Index then
+		--	--print(Name, 2)
+		--	OptionButtons[Index].Dispose()
+
+		--	table.remove(OptionButtons, Index)
+		--	table.remove(OptionButtonIds, Index)
+		--end
+	end
+
+	--[[
+	Removes all currently stored options
+	]]--
+	function Dialog.ClearOptions()	
+		--while #OptionButtonIds > 0 do
+		--	Dialog.RemoveOption(OptionButtonIds[1])
+		--end
+		while #DialogOptions > 0 do
+			RemoveOptionByIndex(1)
+		end
+	end
+
+	--[[
+	Creates a dialog option using an IconButton
+	(Please use this in a synchronized thread since RemoveOption()
+	might break if you don't)
+	
+	Params:
+	Id <string> - An internal identifier for the option
+	Name <string> - The option's name/text
+	Order <number> (optional) - The order to place the button from top-left
+								to bottom-right. If left unspecified, the
+								button will be placed at the bottom-right
+	
+	Returns:
+	<IconButton> - The button created
+	]]--
+	function Dialog.AddOption(Id: string, Name: string, Order: number?, Callback: () -> ()?)
+		assert(typeof(Id) == "string", "Argument 1 must be a string")
+		assert(typeof(Name) == "string", "Argument 2 must be a string")
+		assert(Order == nil or typeof(Order) == "number", "Argument 3 must be a number or nil")
+		assert(Callback == nil or typeof(Callback) == "function", "Argument 4 must be a function or nil")
+
+		-- Important to check we're not creating
+		-- a duplicate option to prevent problems with
+		-- RemoveOption()
+		--assert(table.find(OptionButtonIds, Id) == nil, "The option by the name of '" .. Name .. "' already exists")
+
+		local Option = IconButton.New(Name)
+		local IsClicked = false
+		Option.AutoDestroyGui = true
+		Option.CornerRadius = Dialog.CornerRadius
+		
+		local OptionTable = {
+			Id = Id,
+			Button = Option,
+			Connection = Option.GetButton().Activated:Connect(function()
+				if not IsClicked then
+					IsClicked = true
+					Dialog.LastAnswerId = Id
+					Dialog.OptionSelected.Fire(Id)
+
+					if Callback then
+						Callback()
+					end
+
+					IsClicked = false
+				end
+			end)
+		}
+		
+		if Order then
+			table.insert(DialogOptions, Order, OptionTable)
+		else
+			table.insert(DialogOptions, OptionTable)
+		end
+		
+		Option.Gui.Parent = OptionsFrame
+
+		--if Order then
+		--	table.insert(OptionButtonIds, Order, Id)
+		--	table.insert(OptionButtons, Order, Option)
+		--else
+		--	table.insert(OptionButtonIds, Id)
+		--	table.insert(OptionButtons, Option)
+		--end
+		
+		-- For easy listener binding to Dialog.ActionRequested
+
+		--RefreshOptionLayout()
+		--Option.Gui.Parent = OptionsFrame
+
+		return Option
+	end
+	
+	--[[
+	Hides the dialog options
+	]]--
+	function Dialog.HideOptions()
+		for i, v in ipairs(DialogOptions) do
+			local Button = v.Button
+
+			if Button then
+				Button.SetVisible(false)
+			end
+		end
+	end
+	
+	--[[
+	Shows the dialog options
+	]]--
+	function Dialog.ShowOptions()
+		for i, v in ipairs(DialogOptions) do
+			local Button = v.Button
+
+			if Button then
+				Button.Gui.LayoutOrder = i
+				Button.SetVisible(true)
+			end
+		end
+	end
+
+	--[[
+	Returns:
+	<boolean> - If the typing animation is currently being played
+	]]--
+	function Dialog.IsTyping()
+		return IsWritingGraphemes
+	end
+
+	--[[
+	Returns:
+	<number> - The current number of characters typed
+	]]--
+	function Dialog.GetCharactersTyped()
+		return DialogText.MaxVisibleGraphemes
+	end
+
+	--[[
+	Skips to the end of the typing sequence
+	]]--
+	function Dialog.FinishTyping()
+		Dialog.Pause()
+		DialogText.MaxVisibleGraphemes = TotalMaxGraphemes
+	end
+
+	--[[
+	"Types" some text onto the dialog.
+	
+	Params:
+	NumGraphemes <number> - The amount of graphemes to type next.
+	]]--
+	function Dialog.Type(NumGraphemes)
+		assert(typeof(NumGraphemes) == "number", "Argument 1 must be a number.")
+
+		local PromptedString = Dialog.NextString
+
+		if PromptedString then
+			DestinationGraphemeCount = math.floor(math.min(DestinationGraphemeCount + NumGraphemes, TotalMaxGraphemes))
+		end
+
+		if not IsWritingGraphemes then
+			IsWritingGraphemes = true
+
+			local CurrentGraphemes = DialogText.MaxVisibleGraphemes
+			local CharTypeSound = Dialog.CharacterTypeSound
+
+			while IsWritingGraphemes do
+				local NextString = Dialog.NextString
+
+				if NextString then
+					CurrentGraphemes = math.min(
+						math.ceil(CurrentGraphemes + (Dialog.ScrollSpeed * task.wait())),
+						DestinationGraphemeCount
+					)
+
+					if IsWritingGraphemes then
+						DialogText.MaxVisibleGraphemes = math.min(CurrentGraphemes, DestinationGraphemeCount)
+						
+						if CharTypeSound and CharTypeSound.IsLoaded == true and CharTypeSound.TimeLength > 0 then
+							local Sound: Sound = CharTypeSound:Clone()
+							Sound.Name = "Playing_" .. CharTypeSound.Name
+							Sound.Looped = false
+							Sound.Parent = script
+							
+							if Sound.IsLoaded then
+								Sound:Play()
+								Sound.Ended:Connect(function()
+									Sound:Destroy()
+									Sound = nil
+								end)
+							end
+						end
+					else
+						break
+					end
+
+					if CurrentGraphemes >= DestinationGraphemeCount then
+						break
+					end
+				else
+					break
+				end
+			end
+
+			IsWritingGraphemes = false
+		end
+	end
+	
+	local function ClearActionMapOptions()
+		for i, v in pairs(ActionMapOptionIds) do
+			Dialog.RemoveOption(v)
+		end
+		ActionMapOptionIds = {}
+	end
+
+	--[[
+	Pauses the proceeding of the dialog
+	specified by the ActionMap array
+	]]--
+	--function Dialog.StopActionMap()
+	--	IsUsingActionMap = false
+	--	Dialog.Pause()
+	--end
+
+	--[[
+	Goes through the actions in the current ActionMap array
+	]]--
+	function Dialog.UseCurrentActionMap(ActionMap: {})
+		ClearActionMapOptions()
+		Dialog.Pause()
+		
+		Dialog.Clear()
+		Dialog.NextString = ActionMapFullString
+
+		-- Type, then wait if needed
+		--local TypedChars = 0
+
+		if #CompiledActionMap > 0 then
+			IsUsingActionMap = true
+			
+			local TypeActions = NpcDialog.TypeActions
+			local Write = TypeActions.Write
+			local Wait = TypeActions.Wait
+			local Call = TypeActions.Call
+			local SetOptions = TypeActions.SetOptions
+			TypeActions = nil
+
+			--for i, v in ipairs(ActionMap) do
+			--	local FirstNumChars = v[1]
+			--	local Delay = v[2]
+
+			--	TypedChars += FirstNumChars
+
+			--	Dialog.Type(FirstNumChars)
+
+			--	local Elapsed = 0
+			--	while IsUsingActionMap and Elapsed <= Delay do
+			--		Elapsed += task.wait()
+			--	end
+
+			--	if IsUsingActionMap == false then
+			--		break
+			--	end
+			--end
+
+			--if IsUsingActionMap and TypedChars < TotalMaxGraphemes then
+			--	Dialog.Type(TotalMaxGraphemes - TypedChars)
+			--end
+
+			for i, v in ipairs(CompiledActionMap) do
+				local Act = v[1]
+				if Act == Write then
+					Dialog.Type(v[2])
+				elseif Act == Wait then
+					local Delay = v[2]
+					local Elapsed = 0
+					
+					while IsUsingActionMap and Elapsed <= Delay do
+						Elapsed += task.wait()
+					end
+				elseif Act == Call then
+					v[2]()
+				elseif Act == SetOptions then
+					Dialog.ClearOptions()
+					
+					--print("set options", #v[2])
+					
+					for i2, v2 in ipairs(v[2]) do
+						local ActionMap = v2.ActionMap
+						
+						if ActionMap then
+							local Id = v2.Id
+							table.insert(ActionMapOptionIds, Id)
+							Dialog.AddOption(Id, v2.Name, nil, function()
+								Dialog.HideOptions()
+								Dialog.CurrentActionMap = ActionMap
+								Dialog.UseCurrentActionMap()
+							end)
+							--print("added action map:", Id, ", table size is now", #ActionMapOptionIds)
+						end
+					end
+					
+					if #DialogOptions > 0 then
+						--print("try showing options")
+						Dialog.ShowOptions()
+					end
+				end
+				
+				if IsUsingActionMap == false then
+					ClearActionMapOptions()
+					return
+				end
+			end
+			
+			IsUsingActionMap = false
+		end
+	end
+	
+	--[[
+	Uses the master action map.
+	See Dialog.ActionMap for details
+	]]--
+	function Dialog.UseActionMap()
+		Dialog.Pause()
+		Dialog.Clear()
+		
+		Dialog.CurrentActionMap = Dialog.ActionMap
+		Dialog.UseCurrentActionMap()
+	end
+
+	local function OnTextListStep(Action)
+		if Action == NpcDialog.ContextActions.Continue then
+			if IsWritingGraphemes then
+				Dialog.FinishTyping()
+			else
+				TextListIndex += 1
+
+				if TextListIndex <= #CurrentTextList then
+					Dialog.Pause()
+					Dialog.Clear()
+					Dialog.NextString = CurrentTextList[TextListIndex]
+					Dialog.Type(TotalMaxGraphemes)
+				else
+					Dialog.StopTextList()
+					Dialog.SetVisible(false)
+				end
+			end
+		end
+	end
+
+	--[[
+	Cancels the proceeding of the dialog
+	specified by the TextList array
+	]]--
+	function Dialog.StopTextList()
+		Dialog.ActionRequested.Disconnect(OnTextListStep)
+		IsUsingTextList = false
+	end
+
+	--[[
+	Goes through the text specified in the TextList property
+	]]--
+	function Dialog.UseTextList()
+		local TextList = Dialog.TextList
+		assert(typeof(TextList) == "table", "TextList property must be an array.")
+
+		if IsUsingTextList == false and #TextList > 0 then
+			IsUsingTextList = true
+
+			TextListIndex = 0
+			CurrentTextList = TextList
+
+			Dialog.ActionRequested.Connect(OnTextListStep)
+			Dialog.ActionRequested.Fire(NpcDialog.ContextActions.Continue)
+		end
+	end
+
+	--[[
+	Goes through 
+	]]--
+
+	--[[
+	Returns:
+	<TextLabel> - The text container used by the dialog
+	]]--
+	function Dialog.GetTextLabel()
+		return DialogText
+	end
+
+	--[[
+	<boolean> - If the continue button is enabled
+	]]--
+	Dialog.SetProperty("UseContinueButton", false, function(IsEnabled)
+		if IsEnabled then
+			if not IsUsingContinueButton then
+				IsUsingContinueButton = true
+				
+				local Continue = NpcDialog.ContextActions.Continue
+				Dialog.AddOption(Continue, Continue)
+			end
+		else
+			if IsUsingContinueButton then
+				Dialog.RemoveOption(NpcDialog.ContextActions.Continue)
+				IsUsingContinueButton = false
+			end
+		end
+	end)
+
+	--[[
+	<boolean> - If clicking the dialog text label finishes the typing
+				animation and/or fires the "continue" action
+	]]--
+	Dialog.SetProperty("TapToFinishEnabled", false, function(IsEnabled)
+		if IsEnabled then
+			if not DialogTextClickEvent then
+				local IsClicked = false
+
+				DialogTextClickEvent = DialogTextBG.Activated:Connect(function()
+					if not IsClicked then
+						IsClicked = true
+
+						if not IsUsingTextList then
+							Dialog.FinishTyping()
+						end
+
+						Dialog.ActionRequested.Fire(NpcDialog.ContextActions.Continue)
+						IsClicked = false
+					end
+				end)
+			end
+		else
+			if DialogTextClickEvent then
+				DialogTextClickEvent:Disconnect()
+				DialogTextClickEvent = nil
+			end
+		end
+	end)
+
+	--[[
+	Fired when a dialog action is requested
+	
+	Params:
+	Action <string> - A numeric identifier used to determine which
+					  action to use (see NpcDialog.ContextActions)
+	]]--
+	Dialog.ActionRequested = Signal.New()
+	
+	--[[
+	Fired when a dialog option is selected
+	
+	Params:
+	Id <string> - The option's string identifier
+	]]--
+	Dialog.OptionSelected = Signal.New()
+
+	local function OnVisibleChanged(IsVisible)
+		local NewTransparency
+		local NewBgTransparency
+		local NewSize
+
+		if IsVisible then
+			NewTransparency = 0
+			NewBgTransparency = Dialog.BackTransparency
+			NewSize = Dialog.FrameSize
+
+			IsFadingIn = true
+		else
+			NewTransparency = 1
+			NewBgTransparency = 1
+			NewSize = Dialog.FrameSize + Dialog.HiddenSizeOffset
+
+			IsFadingIn = false
+
+			Dialog.ActionRequested.Fire(NpcDialog.ContextActions.Close)
+			if Dialog.ClearWhenHidden then
+				ClearActionMapOptions()
+				Dialog.Pause()
+				Dialog.Clear()
+			end
+		end
+
+		-- To do: finish the look and animations lol
+		local TweeningInfo = Dialog.TweeningInfo
+
+		if IsVisible and IsFadingIn then
+			Gui.Visible = true
+		end
+
+		if TweeningInfo then
+			local BgFade = {
+				BackgroundTransparency = NewBgTransparency
+			}
+
+			Util.Tween(Gui, TweeningInfo, {
+				Size = NewSize,
+			})
+
+			Util.Tween(DialogTextBG, TweeningInfo, BgFade)
+			Util.Tween(OptionsFrame, TweeningInfo, BgFade)
+
+			--for i, v in pairs(OptionButtons) do
+			--	task.spawn(v.SetVisible, IsVisible)
+			--end
+			Dialog.HideOptions()
+
+			Util.Tween(DialogText, TweeningInfo, {
+				TextTransparency = NewTransparency
+			})
+
+			task.wait(TweeningInfo.Time)
+		end
+
+		if IsVisible == false and IsFadingIn == false then
+			HideGui()
+		end
+	end
+
+	Dialog.VisibleChanged.Connect(OnVisibleChanged)
+	Dialog.AddDisposalListener(function()
+		Dialog.Pause()
+		Dialog.Clear()
+		Dialog.ClearOptions()
+		
+		Gui:Destroy()
+	end)
+
+	return Dialog
+end
+
+return NpcDialog]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e500003291</UniqueId>
+						</Properties>
+						<Item class="Sound" referent="RBX5E5409EEA0DD4D82AB435ED451C20568">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<float name="EmitterSize">10</float>
+								<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+								<NumberRange name="LoopRegion">0 60000 </NumberRange>
+								<bool name="Looped">false</bool>
+								<string name="Name">CharacterTypeSound</string>
+								<bool name="PlayOnRemove">false</bool>
+								<NumberRange name="PlaybackRegion">0 60000 </NumberRange>
+								<bool name="PlaybackRegionsEnabled">false</bool>
+								<float name="PlaybackSpeed">1</float>
+								<bool name="Playing">false</bool>
+								<token name="RollOffMode">0</token>
+								<Ref name="SoundGroup">null</Ref>
+								<Content name="SoundId"><url>rbxassetid://9120299810</url></Content>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+								<double name="TimePosition">0</double>
+								<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e500003292</UniqueId>
+								<float name="Volume">0.5</float>
+								<float name="xmlRead_MaxDistance_3">10000</float>
+							</Properties>
+						</Item>
+					</Item>
+				</Item>
+				<Item class="Folder" referent="RBXD9369665E6F04BE8B5EA9A827765A5F9">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<string name="Name">Themes</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e500003293</UniqueId>
+					</Properties>
+					<Item class="ModuleScript" referent="RBX296195DADFFA431386552ABEAF8A5332">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Wavy</string>
+							<string name="ScriptGuid">{890BD38E-1370-4D7F-A9FB-8909A7AB23AF}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+This is a simplistic/aEsThEtIc gui theme.
+
+Originally designed for the FE2 Map Browser, which is a
+long abandoned project.
+
+By udev2192
+]]--
+
+local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
+local Utils = RepModules:WaitForChild("Utils")
+local BaseScheme = require(Utils:WaitForChild("BaseScheme"))
+
+RepModules, Utils = nil, nil
+
+local Wavy = BaseScheme.GetScheme("UI_" .. script.Name)
+
+-- CONSTANTS --
+local DEFAULT_FONT = Enum.Font.Gotham -- When a font is not specified when applicable, this font will be applied
+local UI_COLOR_SEQUENCE = ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(128, 0, 255)), ColorSequenceKeypoint.new(1,Color3.fromRGB(204, 0, 255))}) -- The color sequence of the UIGradients used by the text objects
+local GRADIENT_ROTATION_INCREMENT = 0.5 -- How much rotating gradients rotate by for each frame
+local TWEEN_INFO = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out) -- The TweenInfo used to Tween objects
+local CORNER_RADIUS = 0 -- How much to round the corner of the GUI objects out of 1 (leave at 0 to turn this off)
+local DEFAULT_LAYER = 2 -- The default ZIndex a GUI object is set to when one is not specified
+---------------
+
+-- Property Configuration --
+local Defaults = {
+	-- Format: ["Instance/Class name"] = {Properties}
+	["TextButton"] = {
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Size = UDim2.new(0.25,0,0.25,0),
+		Position = UDim2.new(0.5,0,0.5,0),
+
+		BackgroundColor3 = Color3.new(0,0,0),
+		TextColor3 = Color3.new(1,1,1),
+		Font = DEFAULT_FONT,
+		Text = "Blank Text",
+		TextScaled = true,
+		BorderMode = Enum.BorderMode.Inset,
+		BorderColor3 = Color3.new(1,1,1),
+		BorderSizePixel = 2,
+		ZIndex = DEFAULT_LAYER
+	},
+
+	["TextLabel"] = {
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Size = UDim2.new(0.25,0,0.25,0),
+		Position = UDim2.new(0.5,0,0.5,0),
+
+		BackgroundTransparency = 1,
+		TextColor3 = Color3.new(1,1,1),
+		Font = DEFAULT_FONT,
+		Text = "Blank Text",
+		TextScaled = true,
+		BorderMode = Enum.BorderMode.Inset,
+		BorderSizePixel = 0,
+		TextStrokeTransparency = 0,
+		ZIndex = DEFAULT_LAYER
+	},
+
+	["TextBox"] = {
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Size = UDim2.new(0.25,0,0.25,0),
+		Position = UDim2.new(0.5,0,0.5,0),
+		
+		BackgroundTransparency = 1,
+		TextColor3 = Color3.new(1,1,1),
+		Font = DEFAULT_FONT,
+		PlaceholderText = "Blank Placeholder Text",
+		Text = "",
+		TextScaled = true,
+		BorderMode = Enum.BorderMode.Inset,
+		BorderColor3 = Color3.new(1,1,1),
+		BorderSizePixel = 0,
+		ZIndex = DEFAULT_LAYER,
+	},
+
+	["Frame"] = {
+		AnchorPoint = Vector2.new(0.5,0.5),
+		Size = UDim2.new(0.25,0,0.25,0),
+		Position = UDim2.new(0.5,0,0.5,0),
+
+		BorderMode = Enum.BorderMode.Inset,
+		BorderColor3 = Color3.new(1,1,1),
+		BorderSizePixel = 2,
+		BackgroundColor3 = Color3.new(1,1,1),
+		BackgroundTransparency = 0.75,
+		ClipsDescendants = true,
+		ZIndex = DEFAULT_LAYER
+	}
+}
+----------------------------
+
+-- UI framework:
+local ClickConnections = {} -- Stores the Activated connections for buttons
+local GradientConnections = {} -- Stores the Stepped connections for GUI objects with rotating gradients
+local TextBoxConnections = {} -- Stores the FocusLost connections when a function is binded to the FunctionOnInput
+
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local ScreenGui = script.Parent
+
+local RepModules = ReplicatedStorage:WaitForChild("Modules")
+local UtilModules = RepModules:WaitForChild("Utils")
+
+-- Reference the utility library
+local Util = UtilModules:WaitForChild("Utility")
+if Util:IsA("ModuleScript") then
+	Util = require(Util)
+end
+
+-- Apply property configurations:
+for i, v in pairs(Defaults) do
+	if typeof(v) == "table" then
+		Util.SetPropertyDefaults(i, v)
+	end
+end
+
+-- Make some constants accessible by other scripts/modules
+Wavy.ColorSequence = UI_COLOR_SEQUENCE
+Wavy.ModuleFont = DEFAULT_FONT
+
+-- Apply defaults
+Wavy.Defaults = Defaults
+
+-- Functions/methods (new):
+function Wavy.ApplyFinishes(Object) -- Applies finishing touches to the provided instance
+	if typeof(Object) == "Instance" then
+		-- Apply the gradient
+		local Gradient = Instance.new("UIGradient") -- Add the gradient to make a cool ui effect
+		Gradient.Color = UI_COLOR_SEQUENCE
+		Gradient.Rotation = 90
+		Gradient.Parent = Object
+
+		-- Apply the corner radius
+		if CORNER_RADIUS > 0 then
+			local Corner = Instance.new("UICorner")
+			Corner.CornerRadius = UDim.new(CORNER_RADIUS, 0)
+			Corner.Parent = Object
+		end
+
+		-- Return the redesigned GUI object
+		return Object
+	else
+		warn("Object type must be an Instance.")
+		return nil
+	end
+end
+
+function Wavy.RotateGradient(Object, IsRotating) -- Rotates the ui gradient for the specified gui object an even cooler effect
+	if Object ~= nil and Object:IsA("GuiObject") then
+		if IsRotating ~= nil and typeof(IsRotating) == "boolean" then
+			local Gradient = Object:WaitForChild("UIGradient", 4)
+			if Gradient then
+				if IsRotating then
+					GradientConnections[Object] = RunService.Stepped:Connect(function()
+						Gradient.Rotation = Gradient.Rotation + GRADIENT_ROTATION_INCREMENT
+					end)
+				else
+					if GradientConnections[Object] ~= nil then
+						GradientConnections[Object]:Disconnect()
+						GradientConnections[Object] = nil
+					end
+				end
+			else
+				warn("Couldn't find a UIGradient in the specified GUI object.")
+			end
+		else
+			warn("IsRotating (argument 2) isn't specified or isn't a boolean (true/false).")
+		end
+	else
+		warn("The object (argument 1) isn't specified or isn't a GUI object.")
+	end
+end
+
+-- Kept for backwards compatibility.
+function Wavy.New(Type, Properties) -- Constructs a recognized Instance by this UI framework
+	-- Please use this over the old constructors as this one is much more simplified
+	if typeof(Defaults[Type]) == "table" then
+		-- Make the object
+		local Object = Util.CreateInstance(Type, Properties)
+
+		-- Finish off the object
+		Wavy.ApplyFinishes(Object)
+
+		-- Return the finished object
+		return Object
+	else
+		warn(tostring(Type) .. " isn't recognized by this version of BrowserLib.")
+	end
+end
+
+return Wavy
+
+--[[
+Old functions/methods (please don't use any of these as they are much harder to use):
+function mod.MakeButton(Text, Size, Position)
+	local Button = Util.CreateInstance("TextButton", {
+		-- Make the UI object
+		Text = Text,
+		Size = Size,
+		Position = Position
+	})
+	
+	mod.ApplyFinishes(Button)
+	
+	return Button
+end
+
+function mod.MakeLabel(Text, Size, Position)
+	local Label = Util.CreateInstance("TextButton", {
+		-- Make the UI object
+		Text = Text,
+		Size = Size,
+		Position = Position
+	})
+
+	mod.ApplyFinishes(Label)
+	
+	return Label
+end
+
+function mod.MakeTextBox(PlaceholderText, Size, Position, Parent, FunctionOnInput, Layer, Font)
+	-- FunctionOnInput should account for the first parameter that is passed to it, which is the text entered
+	local TextBox = Instance.new("TextBox") -- Make the TextBox
+	TextBox.AnchorPoint = Vector2.new(0.5,0.5)
+	TextBox.Size = Size
+	TextBox.Position = Position
+	TextBox.BackgroundTransparency = 1
+	TextBox.TextColor3 = Color3.new(1,1,1)
+	TextBox.Font = Font or DEFAULT_FONT
+	TextBox.PlaceholderText = PlaceholderText or "Blank Placeholder Text"
+	TextBox.Text = ""
+	TextBox.TextScaled = true
+	TextBox.BorderMode = Enum.BorderMode.Inset
+	TextBox.BorderColor3 = Color3.new(1,1,1)
+	TextBox.BorderSizePixel = 0
+	TextBox.ZIndex = Layer or DEFAULT_LAYER
+
+	if CORNER_RADIUS > 0 then
+		local Corner = Instance.new("UICorner")
+		Corner.CornerRadius = UDim.new(CORNER_RADIUS, 0)
+		Corner.Parent = TextBox
+	end
+	
+	if FunctionOnInput ~= nil then
+		if typeof(FunctionOnInput) == "function" then
+			TextBox.FocusLost:Connect(function()
+				local TextBoxText = TextBox.Text
+				FunctionOnInput(TextBoxText)
+				TextBoxText = nil
+			end)
+		else
+			warn("When choosing to specify the FunctionOnInput (argument 5), make sure it is a function and that the first argument of that function will have the text entered passed to")
+		end
+	end
+
+	TextBox.Parent = Parent or ScreenGui
+	return TextBox
+end
+
+function mod.BindFunction(Button, FunctionWhenClicked)
+	if Button ~= nil and Button:IsA("TextButton") then
+		if FunctionWhenClicked ~= nil and typeof(FunctionWhenClicked) == "function" then
+			ClickConnections[Button] = Button.Activated:Connect(FunctionWhenClicked) -- Bind the specified function
+		else
+			warn("FunctionWhenClick (argument 2) isn't specified or isn't a function so the button will do nothing.")
+		end
+	else
+		warn("The Button specified (argument 1) isn't provided or isn't a TextButton.")
+	end
+end
+
+function mod.UnbindFunction(Button)
+	if Button ~= nil and Button:IsA("TextButton") then
+		if ClickConnections[Button] ~= nil then
+			ClickConnections[Button]:Disconnect()
+			ClickConnections[Button] = nil
+		end
+	else
+		warn("The button isn't specified in the first and only argument or the object provided isn't a TextButton.")
+	end
+end
+
+function mod.UnbindFunctionOnInput(TextBox)
+	if TextBox ~= nil and TextBox:IsA("TextBox") then
+		if TextBoxConnections[TextBox] ~= nil then
+			TextBoxConnections[TextBox]:Disconnect()
+			TextBoxConnections[TextBox] = nil
+		end
+	else
+		warn("The TextBox isn't specified in the first and only argument or the object provided isn't a TextBox.")
+	end
+end
+
+function mod.MakeFrame(Size, Position, Parent, Layer, AddColor)
+	local Frame = Instance.new("Frame") -- Make the Frame
+	Frame.AnchorPoint = Vector2.new(0.5,0.5)
+	Frame.Size = Size
+	Frame.Position = Position
+	Frame.BorderMode = Enum.BorderMode.Inset
+	Frame.BorderColor3 = Color3.new(1,1,1)
+	Frame.BorderSizePixel = 2
+	if AddColor then
+		Frame.BackgroundColor3 = Color3.new(1,1,1)
+	else
+		Frame.BackgroundColor3 = Color3.new(0,0,0)
+	end
+	Frame.BackgroundTransparency = 0.75
+	Frame.ClipsDescendants = true
+	Frame.ZIndex = Layer or DEFAULT_LAYER
+	
+	if AddColor then
+		local Gradient = Instance.new("UIGradient") -- Add the gradient to make a cool ui effect
+		Gradient.Color = UI_COLOR_SEQUENCE
+		Gradient.Rotation = 90
+		Gradient.Parent = Frame
+	end
+
+	if CORNER_RADIUS > 0 then
+		local Corner = Instance.new("UICorner")
+		Corner.CornerRadius = UDim.new(CORNER_RADIUS, 0)
+		Corner.Parent = Frame
+	end
+	
+	Frame.Parent = Parent or ScreenGui
+	return Frame
+end
+
+function mod.AddARC(GuiObject, Ratio)
+	-- Add an AspectRatioConstraint to a GUIObject which is needed in certain UI design cases
+	if GuiObject:IsA("GuiBase") then
+		local AspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+		AspectRatioConstraint.AspectRatio = Ratio or 1
+		AspectRatioConstraint.DominantAxis = Enum.DominantAxis.Height
+		AspectRatioConstraint.Parent = GuiObject
+
+		return AspectRatioConstraint
+	end
+end
+
+function mod.Tween(Object, PropertiesToTween, DelayThread) -- The DelayThread should be true/false and specifes whether the tween delays the current thread or not
+	if Object ~= nil then
+		if PropertiesToTween ~= nil and typeof(PropertiesToTween) == "table" then
+			if DelayThread == nil or typeof(DelayThread) == "boolean" then
+				local Tween = TweenService:Create(Object, TWEEN_INFO, PropertiesToTween)
+				local function PlayTween()
+					Tween:Play()
+					Tween.Completed:Wait()
+					Tween:Destroy()
+					Tween = nil
+				end
+				if DelayThread then
+					PlayTween()
+				else
+					coroutine.wrap(PlayTween)()
+				end
+				return Tween
+			else
+				warn("When specified, the DelayThread argument (argument 3) should be a boolean (true/false) detailing whether to yield the current thread while the tween is playing or not")
+			end
+		else
+			warn("PropertiesToTween (argument 2) isn't specified or isn't a table of object properties to tween.")
+		end
+	else
+		warn("The Object (argument 1) isn't specified")
+	end
+end
+--]]]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">76ed5a7ff716a9b5045a09e500003294</UniqueId>
+						</Properties>
+					</Item>
 				</Item>
 			</Item>
 		</Item>
