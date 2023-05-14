@@ -3,3 +3,6 @@
 
 # sourcemap
 sourcemap.json
+
+# build folder (this is where release files are stored)
+build
