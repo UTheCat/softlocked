@@ -5,7 +5,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 --local ServerStorage = game:GetService("ServerStorage")
 
-local RepModules = ReplicatedStorage:WaitForChild("Modules")
+local RepModules = ReplicatedStorage:WaitForChild("SoftlockedReplicated")
 local Replicators = RepModules:WaitForChild("Replicators")
 
 require(Replicators:WaitForChild("BaseReplicator"))

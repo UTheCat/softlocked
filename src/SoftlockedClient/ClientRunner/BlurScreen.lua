@@ -7,7 +7,7 @@ local Players = game:GetService("Players")
 local ORIGINAL_RESPAWN_TIME = Players.RespawnTime
 --local DEFAULT_BLUR_COLOR = Color3.new(1, 1, 1)
 
-local RepModules = ReplicatedStorage:WaitForChild("Modules")
+local RepModules = ReplicatedStorage:WaitForChild("SoftlockedReplicated")
 local Adapters = RepModules:WaitForChild("Adapters")
 local UtilRepModules = RepModules:WaitForChild("Utils")
 

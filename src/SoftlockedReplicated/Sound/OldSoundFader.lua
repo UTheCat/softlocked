@@ -5,7 +5,7 @@
 
 local TweenService = game:GetService("TweenService")
 
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
+local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated")
 local UtilRepModules = RepModules:WaitForChild("Utils")
 
 local TimeWaiter = require(UtilRepModules:WaitForChild("TimeWaiter"))

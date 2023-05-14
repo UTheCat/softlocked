@@ -1,6 +1,6 @@
 local TypeActions = require(
 	game:GetService("ReplicatedStorage")
-	:WaitForChild("Modules")
+	:WaitForChild("SoftlockedReplicated")
 	:WaitForChild("Gui")
 	:WaitForChild("Components")
 	:WaitForChild("NpcDialog")

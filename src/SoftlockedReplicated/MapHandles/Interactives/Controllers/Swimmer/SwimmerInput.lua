@@ -11,7 +11,7 @@ local ContextAction = game:GetService("ContextActionService")
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
-local RepModules = ReplicatedStorage:WaitForChild("Modules")
+local RepModules = ReplicatedStorage:WaitForChild("SoftlockedReplicated")
 local UtilRepModules = RepModules:WaitForChild("Utils")
 
 local Object = require(UtilRepModules:WaitForChild("Object"))

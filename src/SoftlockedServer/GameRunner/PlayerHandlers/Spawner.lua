@@ -6,7 +6,7 @@ local Players = game:GetService("Players")
 local RepStorage = game:GetService("ReplicatedStorage")
 local PhysicsService = game:GetService("PhysicsService")
 
-local RepModules = RepStorage:WaitForChild("Modules")
+local RepModules = RepStorage:WaitForChild("SoftlockedReplicated")
 local UtilRepModules = RepModules:WaitForChild("Utils")
 
 local Runtime = require(UtilRepModules:WaitForChild("Runtime"))

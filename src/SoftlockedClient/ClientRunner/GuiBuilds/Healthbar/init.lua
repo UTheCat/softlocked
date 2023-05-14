@@ -14,7 +14,7 @@ local StarterGui = game:GetService("StarterGui")
 local TweenService = game:GetService("TweenService")
 
 local BaseComponent = require(game:GetService("ReplicatedStorage")
-	:WaitForChild("Modules")
+	:WaitForChild("SoftlockedReplicated")
 	:WaitForChild("Gui")
 	:WaitForChild("Components")
 	:WaitForChild("BaseComponent")

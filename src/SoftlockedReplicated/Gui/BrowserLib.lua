@@ -100,7 +100,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local ScreenGui = script.Parent
 
-local RepModules = ReplicatedStorage:WaitForChild("Modules")
+local RepModules = ReplicatedStorage:WaitForChild("SoftlockedReplicated")
 local UtilModules = RepModules:WaitForChild("Utils")
 
 -- Reference the utility library

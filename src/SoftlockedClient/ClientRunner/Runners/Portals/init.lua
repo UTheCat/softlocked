@@ -6,7 +6,7 @@ Names in the "Portals" model should match with PortalData
 By udev2192
 ]]--
 
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
+local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated")
 local Utils = RepModules:WaitForChild("Utils")
 local MapHandles = RepModules:WaitForChild("MapHandles")
 

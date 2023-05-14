@@ -6,7 +6,7 @@
 
 local Players = game:GetService("Players")
 
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
+local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated")
 
 local CharAdapter = require(RepModules:WaitForChild("Adapters"):WaitForChild("CharacterAdapter"))
 local Object = require(RepModules:WaitForChild("ObjectGetter")).GetClass()

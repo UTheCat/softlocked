@@ -6,7 +6,7 @@ loading icon with a little animation to go with it
 local RunService = game:GetService("RunService")
 
 local BaseComponent = require(game:GetService("ReplicatedStorage")
-	:WaitForChild("Modules")
+	:WaitForChild("SoftlockedReplicated")
 	:WaitForChild("Gui")
 	:WaitForChild("Components")
 	:WaitForChild("BaseComponent")

@@ -8,7 +8,7 @@ By udev2192
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
+local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated")
 local UtilRepModules = RepModules:WaitForChild("Utils")
 
 local Object = require(UtilRepModules:WaitForChild("Object"))

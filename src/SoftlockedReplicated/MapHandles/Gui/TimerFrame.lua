@@ -6,7 +6,7 @@ ui design comes mostly from Celeste by Extremely OK Games
 
 local RunService = game:GetService("RunService")
 
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
+local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated")
 local Utils = RepModules:WaitForChild("Utils")
 
 local BaseComponent = require(

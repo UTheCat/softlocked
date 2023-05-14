@@ -12,7 +12,7 @@ local TOP_RIG_NAME = "Head"
 local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local RepModules = ReplicatedStorage:WaitForChild("Modules")
+local RepModules = ReplicatedStorage:WaitForChild("SoftlockedReplicated")
 local UtilRepModules = RepModules:WaitForChild("Utils")
 
 local Object = require(UtilRepModules:WaitForChild("Object"))

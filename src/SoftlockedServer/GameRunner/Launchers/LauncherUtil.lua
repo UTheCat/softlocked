@@ -3,7 +3,7 @@
 -- By udev2192
 
 -- The name of the client package.
-local CLIENT_PACKAGE_NAME = "SoftlockClient"
+local CLIENT_PACKAGE_NAME = "SoftlockedClient"
 
 -- LaunchMode attribute name for the client package.
 local CLIENT_MODE_ATTRIBUTE = "LaunchMode"

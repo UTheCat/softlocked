@@ -11,7 +11,7 @@ local FOLLOW_ID_PREFIX = "CameraFxFollowingId_"
 
 local RunService = game:GetService("RunService")
 
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
+local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated")
 local UtilRepModules = RepModules:WaitForChild("Utils")
 
 local Object = require(UtilRepModules:WaitForChild("Object"))

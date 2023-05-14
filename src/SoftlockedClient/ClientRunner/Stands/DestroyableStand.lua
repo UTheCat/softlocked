@@ -3,7 +3,7 @@
 
 local Players = game:GetService("Players")
 
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
+local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated")
 local UtilModules = RepModules:WaitForChild("Utils")
 
 local Runtime = require(UtilModules:WaitForChild("Runtime"))

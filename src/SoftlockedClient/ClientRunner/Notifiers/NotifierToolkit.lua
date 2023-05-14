@@ -3,7 +3,7 @@
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local UtilRepModules = ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Utils")
+local UtilRepModules = ReplicatedStorage:WaitForChild("SoftlockedReplicated"):WaitForChild("Utils")
 
 local Runtime = require(UtilRepModules:WaitForChild("Runtime"))
 

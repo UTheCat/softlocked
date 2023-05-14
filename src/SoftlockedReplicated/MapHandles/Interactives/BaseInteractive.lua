@@ -11,7 +11,7 @@ local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local PhysicsService = game:GetService("PhysicsService")
 
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
+local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated")
 
 local Interactives = script.Parent
 local MapHandles = Interactives.Parent

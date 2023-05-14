@@ -7,7 +7,7 @@ long abandoned project.
 By udev2192
 ]]--
 
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
+local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated")
 local Utils = RepModules:WaitForChild("Utils")
 local BaseScheme = require(Utils:WaitForChild("BaseScheme"))
 
@@ -103,7 +103,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local ScreenGui = script.Parent
 
-local RepModules = ReplicatedStorage:WaitForChild("Modules")
+local RepModules = ReplicatedStorage:WaitForChild("SoftlockedReplicated")
 local UtilModules = RepModules:WaitForChild("Utils")
 
 -- Reference the utility library

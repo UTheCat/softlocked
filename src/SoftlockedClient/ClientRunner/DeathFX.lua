@@ -3,7 +3,7 @@
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local RepModules = ReplicatedStorage:WaitForChild("Modules")
+local RepModules = ReplicatedStorage:WaitForChild("SoftlockedReplicated")
 local Adapters = RepModules:WaitForChild("Adapters")
 local UtilRepModules = RepModules:WaitForChild("Utils")
 

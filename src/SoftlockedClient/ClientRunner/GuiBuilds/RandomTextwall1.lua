@@ -4,14 +4,14 @@ A menu for measuring estimated internet speed.
 By udev2192
 ]]--
 
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
+local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated")
 
 local Replicators = RepModules:WaitForChild("Replicators")
 
 local SpeedTest = require(Replicators:WaitForChild("SpeedTest"))
 
 local Components = game:GetService("ReplicatedStorage")
-:WaitForChild("Modules")
+:WaitForChild("SoftlockedReplicated")
 :WaitForChild("Gui")
 :WaitForChild("Components")
 
