@@ -1,4 +1,13 @@
 {
   "className": "ScreenGui",
-  "ignoreUnknownInstances": true
+  "$properties": {
+    "IgnoreGuiInset": {
+      "type": "boolean",
+      "value": true
+    },
+    "ResetOnSpawn": {
+      "type": "boolean",
+      "value": false
+    }
+  }
 }
