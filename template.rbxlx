@@ -17826,7 +17826,7 @@ local Object = require(Utils:WaitForChild("Object"))
 local PlayerAdapter = require(ZiplineService:WaitForChild("PlayerAdapter"))
 local Zipline = require(ZiplineService:WaitForChild("Zipline"))
 
-local Areas = workspace:WaitForChild("Areas")
+local Areas = workspace--:WaitForChild("Areas")
 
 local ZipRunner = {}
 
@@ -67978,8 +67978,8 @@ return MapLauncher]]></ProtectedString>
 					<Item class="Sound" referent="RBX95FDF0D7A7974EC4B17CC47E3565A30D">
 						<Properties>
 							<BinaryString name="AttributesSerialize"><![CDATA[AwAAAAsAAABBdHRyaWJ1dGlvbgI0AAAAU2hvd2JpeiBQbHVzIDIgLSBHYW1lc2hvd3MgLSAi
-SGlnaGVyIFN0YWtlcyAiIldpbiIiIgkAAABTdGFydFRpbWUFAAAAAAwAAABUYXJnZXRWb2x1
-bWUGAAAAAAAA8D8=]]></BinaryString>
+SGlnaGVyIFN0YWtlcyAiIldpbiIiIgkAAABTdGFydFRpbWUGAAAAAAAAAAAMAAAAVGFyZ2V0
+Vm9sdW1lBgAAAAAAAPA/]]></BinaryString>
 							<float name="EmitterSize">10</float>
 							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
 							<NumberRange name="LoopRegion">0 60000 </NumberRange>
