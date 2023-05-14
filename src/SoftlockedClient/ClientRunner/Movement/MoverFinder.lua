@@ -20,7 +20,7 @@ MoverFinder.__index = MoverFinder
 -- Ex: "_ExampleMover"
 MoverFinder.Prefix = "_"
 
-MoverFinder.DefaultSearchInstance = workspace:WaitForChild("Areas")
+MoverFinder.DefaultSearchInstance = workspace --:WaitForChild("Areas")
 
 local function IsPart(Part)
 	return typeof(Part) == "Instance" and Part:IsA("Part")

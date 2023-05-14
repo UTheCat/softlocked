@@ -49711,7 +49711,7 @@ MoverFinder.__index = MoverFinder
 -- Ex: "_ExampleMover"
 MoverFinder.Prefix = "_"
 
-MoverFinder.DefaultSearchInstance = workspace:WaitForChild("Areas")
+MoverFinder.DefaultSearchInstance = workspace --:WaitForChild("Areas")
 
 local function IsPart(Part)
 	return typeof(Part) == "Instance" and Part:IsA("Part")
@@ -51949,7 +51949,7 @@ local Object = require(Utils:WaitForChild("Object"))
 local PlayerAdapter = require(ZiplineService:WaitForChild("PlayerAdapter"))
 local Zipline = require(ZiplineService:WaitForChild("Zipline"))
 
-local Areas = workspace--:WaitForChild("Areas")
+local Areas = workspace --:WaitForChild("Areas")
 
 local ZipRunner = {}
 
