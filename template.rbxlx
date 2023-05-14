@@ -2886,8 +2886,8 @@ gcLgc4RKxr21zq2UlJSM]]></BinaryString>
 				</Properties>
 				<Item class="Sound" referent="RBX1427BB18494D462C8E5863990650CB29">
 					<Properties>
-						<BinaryString name="AttributesSerialize"><![CDATA[BAAAAAsAAABBdHRyaWJ1dGlvbgINAAAAVGltZSBUbyBSZWxheAgAAABQcmlvcml0eQUAAAAA
-CQAAAFN0YXJ0VGltZQUAAAAADAAAAFRhcmdldFZvbHVtZQYAAAAAAADwPw==]]></BinaryString>
+						<BinaryString name="AttributesSerialize"><![CDATA[BAAAAAsAAABBdHRyaWJ1dGlvbgIKAAAAU3BhY2UgQXRvbQgAAABQcmlvcml0eQUAAAAACQAA
+AFN0YXJ0VGltZQUAAAAADAAAAFRhcmdldFZvbHVtZQYAAAAAAADwPw==]]></BinaryString>
 						<float name="EmitterSize">10</float>
 						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
 						<NumberRange name="LoopRegion">0 60000 </NumberRange>
@@ -2900,7 +2900,7 @@ CQAAAFN0YXJ0VGltZQUAAAAADAAAAFRhcmdldFZvbHVtZQYAAAAAAADwPw==]]></BinaryString>
 						<bool name="Playing">false</bool>
 						<token name="RollOffMode">0</token>
 						<Ref name="SoundGroup">null</Ref>
-						<Content name="SoundId"><url>rbxassetid://9044702906</url></Content>
+						<Content name="SoundId"><url>rbxassetid://1836875382</url></Content>
 						<int64 name="SourceAssetId">1841025723</int64>
 						<BinaryString name="Tags"></BinaryString>
 						<double name="TimePosition">0</double>
@@ -46599,94 +46599,6 @@ return Healthbar]]></ProtectedString>
 							</Properties>
 						</Item>
 					</Item>
-					<Item class="ModuleScript" referent="RBX24EA0BD7A15141F99B65B112A3E811C7">
-						<Properties>
-							<BinaryString name="AttributesSerialize"></BinaryString>
-							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">RandomTextwall1</string>
-							<string name="ScriptGuid">{DFFBBC1C-4277-4544-B734-04B78AEF17D3}</string>
-							<ProtectedString name="Source"><![CDATA[--[[
-A menu for measuring estimated internet speed.
-
-By udev2192
-]]--
-
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated")
-
-local Replicators = RepModules:WaitForChild("Replicators")
-
-local SpeedTest = require(Replicators:WaitForChild("SpeedTest"))
-
-local Components = game:GetService("ReplicatedStorage")
-:WaitForChild("SoftlockedReplicated")
-:WaitForChild("Gui")
-:WaitForChild("Components")
-
-local BaseComponent = require(Components:WaitForChild("BaseComponent"))
-local GridMenu = require(Components:WaitForChild("GridMenu"))
-local IconButton = require(Components:WaitForChild("IconButton"))
-
-local Util = BaseComponent.GetUtils()
-
-RepModules, Replicators, Components = nil
-
-local TextwallMenu = {}
-
-function TextwallMenu.New()
-	local Menu = GridMenu.New()
-	Menu.IsUsingGrid = true
-	Menu.BackImageTransparency = 0.75
-	Menu.SetTitle("information")
-	Menu.Gui.Size = UDim2.new(0.5, 0, 0.5, 0)
-	Menu.Gui.ZIndex = 5
-
-	Menu.BackTransparency = 0.5
-	Menu.Rows = 1
-	Menu.Columns = 1
-	Menu.ContentPadding = UDim2.new(0, 0, 0, 0)
-	Menu.UpdateLayout()
-
-	local SecondaryMenuInfo = IconButton.New(
-		[[<b>SOFTLOCKED</b>
-		A bloated attempt at a tower fangame.
-		
-		This game has a lot of bugs!
-		
-		<b>Why did you make this?</b>
-		idk
-		
-		Background comes from Obby and Glitching Practice since I'm too lazy to upload a new background.
-		]])
-
-	SecondaryMenuInfo.BackTransparency = 0.75
-	SecondaryMenuInfo.SetRichTextEnabled(true)
-	SecondaryMenuInfo.SetInputEnabled(false)
-	Menu.AddComponent(SecondaryMenuInfo)
-	
-	Menu.SetImage(
-		Util.CreateInstance(("ImageLabel"), {
-			AnchorPoint = Vector2.new(0.5, 0.5),
-			Size = UDim2.new(1, 0, 1, 0),
-			Position = UDim2.new(0.5, 0, 0.5, 0),
-
-			BackgroundTransparency = 1,
-			BorderSizePixel = 0,
-
-			ScaleType = Enum.ScaleType.Crop,
-			Image = "rbxassetid://6401417348"
-		})
-	)
-
-	return Menu
-end
-
-return TextwallMenu]]></ProtectedString>
-							<int64 name="SourceAssetId">-1</int64>
-							<BinaryString name="Tags"></BinaryString>
-							<UniqueId name="UniqueId">467d15678261d80e0471ce1f00003330</UniqueId>
-						</Properties>
-					</Item>
 					<Item class="ModuleScript" referent="RBX17933011F3A94CC99B44677F967B473C">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
@@ -46960,6 +46872,93 @@ return SpeedTestMenu]]></ProtectedString>
 							<UniqueId name="UniqueId">467d15678261d80e0471ce1f00003331</UniqueId>
 						</Properties>
 					</Item>
+					<Item class="ModuleScript" referent="RBX290535CB89CD4FEA8AC70105E7C5C8FE">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">InfoMenu</string>
+							<string name="ScriptGuid">{74BBBE33-D4DA-40DA-84D8-CBC8BA998838}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+Info menu
+
+By udev2192
+]]--
+
+local Info = require(game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated"):WaitForChild("Info"))
+
+--local Replicators = RepModules:WaitForChild("Replicators")
+
+--local SpeedTest = require(Replicators:WaitForChild("SpeedTest"))
+
+local Components = game:GetService("ReplicatedStorage")
+:WaitForChild("SoftlockedReplicated")
+:WaitForChild("Gui")
+:WaitForChild("Components")
+
+local BaseComponent = require(Components:WaitForChild("BaseComponent"))
+local GridMenu = require(Components:WaitForChild("GridMenu"))
+local IconButton = require(Components:WaitForChild("IconButton"))
+
+local Util = BaseComponent.GetUtils()
+
+RepModules, Replicators, Components = nil
+
+local InfoMenu = {}
+
+function InfoMenu.New()
+	local Menu = GridMenu.New()
+	Menu.IsUsingGrid = true
+	Menu.BackImageTransparency = 0.75
+	Menu.SetTitle("information")
+	Menu.Gui.Size = UDim2.new(0.5, 0, 0.5, 0)
+	Menu.Gui.ZIndex = 5
+
+	Menu.BackTransparency = 0.5
+	Menu.Rows = 1
+	Menu.Columns = 1
+	Menu.ContentPadding = UDim2.new(0, 0, 0, 0)
+	Menu.UpdateLayout()
+
+	local SecondaryMenuInfo = IconButton.New(
+		[[<b>SOFTLOCKED</b>
+		An open source obby-runner.
+
+		Source code is available at UTheDev/softlocked
+		]]
+
+		.. "\nVersion: " .. Info.Version
+	
+	)
+
+	SecondaryMenuInfo.BackTransparency = 0.75
+	SecondaryMenuInfo.SetRichTextEnabled(true)
+	SecondaryMenuInfo.SetInputEnabled(false)
+	Menu.AddComponent(SecondaryMenuInfo)
+	
+	Menu.SetImage(
+		Util.CreateInstance(("ImageLabel"), {
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			Size = UDim2.new(1, 0, 1, 0),
+			Position = UDim2.new(0.5, 0, 0.5, 0),
+
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+
+			ScaleType = Enum.ScaleType.Crop,
+			Image = "rbxassetid://6401417348"
+		})
+	)
+
+	return Menu
+end
+
+return InfoMenu]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">28f9a0595c49c7fb0472ce6400007680</UniqueId>
+						</Properties>
+					</Item>
 				</Item>
 				<Item class="ModuleScript" referent="RBX38FF27DA9E4646A8B4ADBEC29817AF9E">
 					<Properties>
@@ -47088,8 +47087,8 @@ local Players = game:GetService("Players")
 local RepModules = ReplicatedStorage:WaitForChild("SoftlockedReplicated")
 local Adapters = RepModules:WaitForChild("Adapters")
 local GuiModules = RepModules:WaitForChild("Gui")
-local Replicators = RepModules:WaitForChild("Replicators")
-local Sound = RepModules:WaitForChild("Sound")
+--local Replicators = RepModules:WaitForChild("Replicators")
+--local Sound = RepModules:WaitForChild("Sound")
 local UtilRepModules = RepModules:WaitForChild("Utils")
 
 local Package = script.Parent.Parent
@@ -47100,7 +47099,7 @@ local Movement = Package:WaitForChild("Movement")
 local Notifiers = Package:WaitForChild("Notifiers")
 --local PartCutters = Package:WaitForChild("PartCutters")
 local Runners = Package:WaitForChild("Runners")
-local Stands = Package:WaitForChild("Stands")
+--local Stands = Package:WaitForChild("Stands")
 
 local GuiBuilds = Package:WaitForChild("GuiBuilds")
 local GuiComponents = GuiModules:WaitForChild("Components")
@@ -47112,16 +47111,16 @@ local Util = require(UtilRepModules:WaitForChild("Utility"))
 
 local AreaAdapter = require(Adapters:WaitForChild("AreaAdapter"))
 local CharAdapter = require(Adapters:WaitForChild("CharacterAdapter"))
-local Hitbox = require(Adapters:WaitForChild("Hitbox"))
+--local Hitbox = require(Adapters:WaitForChild("Hitbox"))
 
-local BaseCameraFX = require(CameraFX:WaitForChild("BaseCameraFX"))
+--local BaseCameraFX = require(CameraFX:WaitForChild("BaseCameraFX"))
 local Deathcam = require(CameraFX:WaitForChild("Deathcam"))
 
 local BrowserLib = require(GuiModules:WaitForChild("BrowserLib"))
 
 local Healthbar = require(GuiBuilds:WaitForChild("Healthbar"))
 --local IntroText = require(GuiBuilds:WaitForChild("IntroText"))
-local RandomTextwall1 = require(GuiBuilds:WaitForChild("RandomTextwall1"))
+local InfoMenu = require(GuiBuilds:WaitForChild("InfoMenu"))
 local SpeedTestMenu = require(GuiBuilds:WaitForChild("SpeedTestMenu"))
 
 local GridMenu = require(GuiComponents:WaitForChild("GridMenu"))
@@ -47136,14 +47135,14 @@ local Meter = require(Notifiers:WaitForChild("MeterNotification"))
 
 local Portals = require(Runners:WaitForChild("Portals"))
 
-local DestroyableStand = require(Stands:WaitForChild("DestroyableStand"))
-local MultiplayerStand = require(Stands:WaitForChild("MultiplayerStand"))
+--local DestroyableStand = require(Stands:WaitForChild("DestroyableStand"))
+--local MultiplayerStand = require(Stands:WaitForChild("MultiplayerStand"))
 
 local DeathFX = require(Package:WaitForChild("DeathFX"))
 --local InteractiveRunner = require(Package:WaitForChild("InteractiveRunner"))
-local ZipRunner = require(Package:WaitForChild("ZiplineRunner"))
+--local ZipRunner = require(Package:WaitForChild("ZiplineRunner"))
 
-local MusicPlayer = require(Sound:WaitForChild("MusicPlayer"))
+--local MusicPlayer = require(Sound:WaitForChild("MusicPlayer"))
 local Swimmer = require(Liquids:WaitForChild("Swimmer"))
 --local PartCutFinder = require(PartCutters:WaitForChild("CuttableFinder"))
 
@@ -47259,7 +47258,7 @@ function Launcher.New()
 		local ObjSwimmer = Swimmer.New(Player)
 		ObjSwimmer.SetWorkspaceUse(true)
 
-		local ObjZipRunner = ZipRunner.New(Player)
+		--local ObjZipRunner = ZipRunner.New(Player)
 
 		for i, v in pairs(Obj.MoverNames) do
 			local Finder = MoverFinder.New(v, LocalCharAdapter)
@@ -47386,7 +47385,7 @@ function Launcher.New()
 			--	LobbyBGM.MainSound = LobbyBGMSound
 			--end
 			
-			local RootPart = Char:WaitForChild("HumanoidRootPart")
+			--local RootPart = Char:WaitForChild("HumanoidRootPart")
 			--TestHitbox.BindToPart(RootPart)
 			--LobbyBGM.MusicZoneHitbox = RootPart
 			--print("Root part binded to hitbox")
@@ -47420,7 +47419,7 @@ function Launcher.New()
 		-- Gui components that go into the menu set
 		TestMenuSet.Add("Main", TestGridMenu)
 		TestMenuSet.Add("Ping", SpeedTestMenu.New())
-		TestMenuSet.Add("Rant", RandomTextwall1.New())
+		TestMenuSet.Add("Info", InfoMenu.New())
 		
 		local SpeedTestButton = IconButton.New()
 		SpeedTestButton.SetText("Ping Test")
@@ -47559,7 +47558,7 @@ function Launcher.New()
 		end)
 		
 		SecondaryMenuButton.GetButton().Activated:Connect(function()
-			TestMenuSet.Show("Rant")
+			TestMenuSet.Show("Info")
 		end)
 		
 		-- Mute button
@@ -47687,13 +47686,24 @@ function Launcher.New()
 
 		-- Get rid of loading text and display place/build version
 		task.spawn(function()
+			task.wait()
+			
+			if not game:IsLoaded() then
+				game.Loaded:Wait()
+			end
+
 			local FadeTweenDur = 0.5
 			local FadeTween = TweenInfo.new(FadeTweenDur, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
 
 			Util.Tween(LoadingText, FadeTween, {TextTransparency = 1, TextStrokeTransparency = 1})
 			Runtime.WaitForDur(FadeTweenDur)
-			LoadingText.Text = "BUILD V" .. game.PlaceVersion
+			LoadingText.Text = "place version: " .. game.PlaceVersion
 			Util.Tween(LoadingText, FadeTween, {TextTransparency = 0.5, TextStrokeTransparency = 0.5})
+			Runtime.WaitForDur(FadeTweenDur + 10)
+			Util.Tween(LoadingText, FadeTween, {TextTransparency = 1, TextStrokeTransparency = 1})
+			Runtime.WaitForDur(FadeTweenDur)
+			LoadingText:Destroy()
+			LoadingText = nil
 			
 			FadeTween, FadeTweenDur = nil, nil
 		end)
@@ -98176,6 +98186,27 @@ return Util]]></ProtectedString>
 						<UniqueId name="UniqueId">467d15678261d80e0471ce1f000033f7</UniqueId>
 					</Properties>
 				</Item>
+			</Item>
+			<Item class="ModuleScript" referent="RBX146A5442678C4FAC83620230F079C6EE">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">Info</string>
+					<string name="ScriptGuid">{713FA7CE-AC46-43CF-91CE-BD9D696E6A35}</string>
+					<ProtectedString name="Source"><![CDATA[--[[
+    Module/package info
+]]--
+
+local Info = {}
+
+Info.Version = "1.0.0"
+
+return Info]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<UniqueId name="UniqueId">28f9a0595c49c7fb0472ce6400007682</UniqueId>
+				</Properties>
 			</Item>
 		</Item>
 	</Item>

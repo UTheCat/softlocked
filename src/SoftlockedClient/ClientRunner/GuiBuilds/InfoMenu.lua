@@ -1,14 +1,14 @@
 --[[
-A menu for measuring estimated internet speed.
+Info menu
 
 By udev2192
 ]]--
 
-local RepModules = game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated")
+local Info = require(game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated"):WaitForChild("Info"))
 
-local Replicators = RepModules:WaitForChild("Replicators")
+--local Replicators = RepModules:WaitForChild("Replicators")
 
-local SpeedTest = require(Replicators:WaitForChild("SpeedTest"))
+--local SpeedTest = require(Replicators:WaitForChild("SpeedTest"))
 
 local Components = game:GetService("ReplicatedStorage")
 :WaitForChild("SoftlockedReplicated")
@@ -23,9 +23,9 @@ local Util = BaseComponent.GetUtils()
 
 RepModules, Replicators, Components = nil
 
-local TextwallMenu = {}
+local InfoMenu = {}
 
-function TextwallMenu.New()
+function InfoMenu.New()
 	local Menu = GridMenu.New()
 	Menu.IsUsingGrid = true
 	Menu.BackImageTransparency = 0.75
@@ -41,15 +41,14 @@ function TextwallMenu.New()
 
 	local SecondaryMenuInfo = IconButton.New(
 		[[<b>SOFTLOCKED</b>
-		A bloated attempt at a tower fangame.
-		
-		This game has a lot of bugs!
-		
-		<b>Why did you make this?</b>
-		idk
-		
-		Background comes from Obby and Glitching Practice since I'm too lazy to upload a new background.
-		]])
+		An open source obby-runner.
+
+		Source code is available at UTheDev/softlocked
+		]]
+
+		.. "\nVersion: " .. Info.Version
+	
+	)
 
 	SecondaryMenuInfo.BackTransparency = 0.75
 	SecondaryMenuInfo.SetRichTextEnabled(true)
@@ -73,4 +72,4 @@ function TextwallMenu.New()
 	return Menu
 end
 
-return TextwallMenu
+return InfoMenu

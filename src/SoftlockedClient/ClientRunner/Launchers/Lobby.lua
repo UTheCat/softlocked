@@ -7,8 +7,8 @@ local Players = game:GetService("Players")
 local RepModules = ReplicatedStorage:WaitForChild("SoftlockedReplicated")
 local Adapters = RepModules:WaitForChild("Adapters")
 local GuiModules = RepModules:WaitForChild("Gui")
-local Replicators = RepModules:WaitForChild("Replicators")
-local Sound = RepModules:WaitForChild("Sound")
+--local Replicators = RepModules:WaitForChild("Replicators")
+--local Sound = RepModules:WaitForChild("Sound")
 local UtilRepModules = RepModules:WaitForChild("Utils")
 
 local Package = script.Parent.Parent
@@ -19,7 +19,7 @@ local Movement = Package:WaitForChild("Movement")
 local Notifiers = Package:WaitForChild("Notifiers")
 --local PartCutters = Package:WaitForChild("PartCutters")
 local Runners = Package:WaitForChild("Runners")
-local Stands = Package:WaitForChild("Stands")
+--local Stands = Package:WaitForChild("Stands")
 
 local GuiBuilds = Package:WaitForChild("GuiBuilds")
 local GuiComponents = GuiModules:WaitForChild("Components")
@@ -31,16 +31,16 @@ local Util = require(UtilRepModules:WaitForChild("Utility"))
 
 local AreaAdapter = require(Adapters:WaitForChild("AreaAdapter"))
 local CharAdapter = require(Adapters:WaitForChild("CharacterAdapter"))
-local Hitbox = require(Adapters:WaitForChild("Hitbox"))
+--local Hitbox = require(Adapters:WaitForChild("Hitbox"))
 
-local BaseCameraFX = require(CameraFX:WaitForChild("BaseCameraFX"))
+--local BaseCameraFX = require(CameraFX:WaitForChild("BaseCameraFX"))
 local Deathcam = require(CameraFX:WaitForChild("Deathcam"))
 
 local BrowserLib = require(GuiModules:WaitForChild("BrowserLib"))
 
 local Healthbar = require(GuiBuilds:WaitForChild("Healthbar"))
 --local IntroText = require(GuiBuilds:WaitForChild("IntroText"))
-local RandomTextwall1 = require(GuiBuilds:WaitForChild("RandomTextwall1"))
+local InfoMenu = require(GuiBuilds:WaitForChild("InfoMenu"))
 local SpeedTestMenu = require(GuiBuilds:WaitForChild("SpeedTestMenu"))
 
 local GridMenu = require(GuiComponents:WaitForChild("GridMenu"))
@@ -55,14 +55,14 @@ local Meter = require(Notifiers:WaitForChild("MeterNotification"))
 
 local Portals = require(Runners:WaitForChild("Portals"))
 
-local DestroyableStand = require(Stands:WaitForChild("DestroyableStand"))
-local MultiplayerStand = require(Stands:WaitForChild("MultiplayerStand"))
+--local DestroyableStand = require(Stands:WaitForChild("DestroyableStand"))
+--local MultiplayerStand = require(Stands:WaitForChild("MultiplayerStand"))
 
 local DeathFX = require(Package:WaitForChild("DeathFX"))
 --local InteractiveRunner = require(Package:WaitForChild("InteractiveRunner"))
-local ZipRunner = require(Package:WaitForChild("ZiplineRunner"))
+--local ZipRunner = require(Package:WaitForChild("ZiplineRunner"))
 
-local MusicPlayer = require(Sound:WaitForChild("MusicPlayer"))
+--local MusicPlayer = require(Sound:WaitForChild("MusicPlayer"))
 local Swimmer = require(Liquids:WaitForChild("Swimmer"))
 --local PartCutFinder = require(PartCutters:WaitForChild("CuttableFinder"))
 
@@ -178,7 +178,7 @@ function Launcher.New()
 		local ObjSwimmer = Swimmer.New(Player)
 		ObjSwimmer.SetWorkspaceUse(true)
 
-		local ObjZipRunner = ZipRunner.New(Player)
+		--local ObjZipRunner = ZipRunner.New(Player)
 
 		for i, v in pairs(Obj.MoverNames) do
 			local Finder = MoverFinder.New(v, LocalCharAdapter)
@@ -305,7 +305,7 @@ function Launcher.New()
 			--	LobbyBGM.MainSound = LobbyBGMSound
 			--end
 			
-			local RootPart = Char:WaitForChild("HumanoidRootPart")
+			--local RootPart = Char:WaitForChild("HumanoidRootPart")
 			--TestHitbox.BindToPart(RootPart)
 			--LobbyBGM.MusicZoneHitbox = RootPart
 			--print("Root part binded to hitbox")
@@ -339,7 +339,7 @@ function Launcher.New()
 		-- Gui components that go into the menu set
 		TestMenuSet.Add("Main", TestGridMenu)
 		TestMenuSet.Add("Ping", SpeedTestMenu.New())
-		TestMenuSet.Add("Rant", RandomTextwall1.New())
+		TestMenuSet.Add("Info", InfoMenu.New())
 		
 		local SpeedTestButton = IconButton.New()
 		SpeedTestButton.SetText("Ping Test")
@@ -478,7 +478,7 @@ function Launcher.New()
 		end)
 		
 		SecondaryMenuButton.GetButton().Activated:Connect(function()
-			TestMenuSet.Show("Rant")
+			TestMenuSet.Show("Info")
 		end)
 		
 		-- Mute button
@@ -606,13 +606,24 @@ function Launcher.New()
 
 		-- Get rid of loading text and display place/build version
 		task.spawn(function()
+			task.wait()
+			
+			if not game:IsLoaded() then
+				game.Loaded:Wait()
+			end
+
 			local FadeTweenDur = 0.5
 			local FadeTween = TweenInfo.new(FadeTweenDur, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
 
 			Util.Tween(LoadingText, FadeTween, {TextTransparency = 1, TextStrokeTransparency = 1})
 			Runtime.WaitForDur(FadeTweenDur)
-			LoadingText.Text = "BUILD V" .. game.PlaceVersion
+			LoadingText.Text = "place version: " .. game.PlaceVersion
 			Util.Tween(LoadingText, FadeTween, {TextTransparency = 0.5, TextStrokeTransparency = 0.5})
+			Runtime.WaitForDur(FadeTweenDur + 10)
+			Util.Tween(LoadingText, FadeTween, {TextTransparency = 1, TextStrokeTransparency = 1})
+			Runtime.WaitForDur(FadeTweenDur)
+			LoadingText:Destroy()
+			LoadingText = nil
 			
 			FadeTween, FadeTweenDur = nil, nil
 		end)
