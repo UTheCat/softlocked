@@ -4,6 +4,6 @@
 
 local Info = {}
 
-Info.Version = "1.0.0"
+Info.Version = "0.1.0"
 
 return Info

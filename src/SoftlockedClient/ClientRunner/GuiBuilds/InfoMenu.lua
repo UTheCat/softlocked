@@ -1,7 +1,7 @@
 --[[
-Info menu
+Softlocked's info menu
 
-By udev2192
+By UTheDev
 ]]--
 
 local Info = require(game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated"):WaitForChild("Info"))
