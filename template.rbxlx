@@ -46009,7 +46009,7 @@ By udev2192
 
 local RunService = game:GetService("RunService")
 local StarterGui = game:GetService("StarterGui")
-local TweenService = game:GetService("TweenService")
+--local TweenService = game:GetService("TweenService")
 
 local BaseComponent = require(game:GetService("ReplicatedStorage")
 	:WaitForChild("SoftlockedReplicated")
@@ -46070,8 +46070,8 @@ function Healthbar.New(ShowDefault)
 
 	local CircleEffectRunner
 
-	local HumanoidResponder
-	local DeltaTween
+	--local HumanoidResponder
+	--local DeltaTween
 	local OriginalShakePos
 
 	local CurrentHumanoid
@@ -46819,7 +46819,7 @@ function SpeedTestMenu.New()
 			BorderSizePixel = 0,
 
 			ScaleType = Enum.ScaleType.Crop,
-			Image = "rbxassetid://6544983775"
+			Image = "rbxassetid://13447335131"
 		})
 	)
 	

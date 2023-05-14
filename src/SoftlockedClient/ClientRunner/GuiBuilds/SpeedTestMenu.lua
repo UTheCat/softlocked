@@ -211,7 +211,7 @@ function SpeedTestMenu.New()
 			BorderSizePixel = 0,
 
 			ScaleType = Enum.ScaleType.Crop,
-			Image = "rbxassetid://6544983775"
+			Image = "rbxassetid://13447335131"
 		})
 	)
 	

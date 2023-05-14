@@ -11,7 +11,7 @@ By udev2192
 
 local RunService = game:GetService("RunService")
 local StarterGui = game:GetService("StarterGui")
-local TweenService = game:GetService("TweenService")
+--local TweenService = game:GetService("TweenService")
 
 local BaseComponent = require(game:GetService("ReplicatedStorage")
 	:WaitForChild("SoftlockedReplicated")
@@ -72,8 +72,8 @@ function Healthbar.New(ShowDefault)
 
 	local CircleEffectRunner
 
-	local HumanoidResponder
-	local DeltaTween
+	--local HumanoidResponder
+	--local DeltaTween
 	local OriginalShakePos
 
 	local CurrentHumanoid
