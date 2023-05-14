@@ -16,7 +16,7 @@ local Object = require(Utils:WaitForChild("Object"))
 local PlayerAdapter = require(ZiplineService:WaitForChild("PlayerAdapter"))
 local Zipline = require(ZiplineService:WaitForChild("Zipline"))
 
-local Areas = workspace:WaitForChild("Areas")
+local Areas = workspace--:WaitForChild("Areas")
 
 local ZipRunner = {}
 
