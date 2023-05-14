@@ -28,7 +28,7 @@ local InfoMenu = {}
 function InfoMenu.New()
 	local Menu = GridMenu.New()
 	Menu.IsUsingGrid = true
-	Menu.BackImageTransparency = 0.75
+	Menu.BackImageTransparency = 0.5
 	Menu.SetTitle("information")
 	Menu.Gui.Size = UDim2.new(0.5, 0, 0.5, 0)
 	Menu.Gui.ZIndex = 5
@@ -43,7 +43,7 @@ function InfoMenu.New()
 		[[<b>SOFTLOCKED</b>
 		An open source obby-runner.
 
-		Source code is available at UTheDev/softlocked
+		Source code is available on GitHub at UTheDev/softlocked
 		]]
 
 		.. "\nVersion: " .. Info.Version
@@ -65,7 +65,7 @@ function InfoMenu.New()
 			BorderSizePixel = 0,
 
 			ScaleType = Enum.ScaleType.Crop,
-			Image = "rbxassetid://6401417348"
+			Image = "rbxassetid://13447335131"
 		})
 	)
 
