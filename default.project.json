@@ -5,24 +5,32 @@
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
       "$ignoreUnknownInstances": true,
-      "$path": "src/ReplicatedStorage"
+      "SoftlockedReplicated": {
+        "$path": "src/SoftlockedReplicated"
+      }
     },
     "ServerScriptService": {
       "$className": "ServerScriptService",
       "$ignoreUnknownInstances": true,
-      "$path": "src/ServerScriptService"
+      "SoftlockedReplicated": {
+        "$path": "src/SoftlockedServer"
+      }
     },
     "ServerStorage": {
       "$className": "ServerStorage",
       "$ignoreUnknownInstances": true,
-      "$path": "src/ServerStorage"
+      "SoftlockedClient": {
+        "$path": "src/SoftlockedClient"
+      }
     },
     "StarterPlayer": {
       "$className": "StarterPlayer",
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
         "$ignoreUnknownInstances": true,
-        "$path": "src/StarterPlayer/StarterPlayerScripts"
+        "PlayerModule": {
+          "$path": "src/PlayerModule"
+        }
       },
       "$ignoreUnknownInstances": true
     },
