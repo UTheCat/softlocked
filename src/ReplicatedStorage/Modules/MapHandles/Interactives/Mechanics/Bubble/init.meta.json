@@ -1,0 +1,17 @@
+{
+  "BlowSound": {
+    "$path": "BlowSound.rbxmx"
+  },
+  "MoveEffect": {
+    "$path": "MoveEffect.rbxmx"
+  },
+  "MoveSound": {
+    "$path": "MoveSound.rbxmx"
+  },
+  "PopEffect": {
+    "$path": "PopEffect.rbxmx"
+  },
+  "PopSound": {
+    "$path": "PopSound.rbxmx"
+  }
+}
