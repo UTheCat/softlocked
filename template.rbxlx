@@ -46880,9 +46880,9 @@ return SpeedTestMenu]]></ProtectedString>
 							<string name="Name">InfoMenu</string>
 							<string name="ScriptGuid">{74BBBE33-D4DA-40DA-84D8-CBC8BA998838}</string>
 							<ProtectedString name="Source"><![CDATA[--[[
-Info menu
+Softlocked's info menu
 
-By udev2192
+By UTheDev
 ]]--
 
 local Info = require(game:GetService("ReplicatedStorage"):WaitForChild("SoftlockedReplicated"):WaitForChild("Info"))
@@ -98200,7 +98200,7 @@ return Util]]></ProtectedString>
 
 local Info = {}
 
-Info.Version = "1.0.0"
+Info.Version = "0.1.0"
 
 return Info]]></ProtectedString>
 					<int64 name="SourceAssetId">-1</int64>
