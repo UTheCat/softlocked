@@ -1,5 +1,5 @@
 # softlocked, a random git repository
-This project has been archived. If you'd like, you can check out its successor, [Jumpvalley](https://github.com/UTheCat/jumpvalley).
+This project has been archived.
 
 ## Inspirations
 Softlocked, this now archived project, takes lots of inspiration from these cool platformers that you should consider playing:
