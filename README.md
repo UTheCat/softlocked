@@ -1,4 +1,4 @@
-# softlocked, a random git repository on the internet
+# softlocked, a random git repository
 This project has been archived. If you'd like, you can check out its successor, [Jumpvalley](https://github.com/UTheCat/jumpvalley).
 
 ## Inspirations
